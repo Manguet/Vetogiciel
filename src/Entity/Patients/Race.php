@@ -2,17 +2,22 @@
 
 namespace App\Entity\Patients;
 
+use App\Interfaces\DateTime\EntityDateInterface;
+use App\Traits\DateTime\EntityDateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Patients\RaceRepository")
+ * @ORM\HasLifecycleCallbacks
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Race
+class Race implements EntityDateInterface
 {
+    use EntityDateTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

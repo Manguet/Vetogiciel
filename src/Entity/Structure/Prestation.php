@@ -3,6 +3,8 @@
 namespace App\Entity\Structure;
 
 use App\Entity\Patients\Consultation;
+use App\Interfaces\DateTime\EntityDateInterface;
+use App\Traits\DateTime\EntityDateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,11 +13,14 @@ use App\Repository\Structure\PrestationRepository;
 
 /**
  * @ORM\Entity(repositoryClass=PrestationRepository::class)
+ * @ORM\HasLifecycleCallbacks
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Prestation
+class Prestation implements EntityDateInterface
 {
+    use EntityDateTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

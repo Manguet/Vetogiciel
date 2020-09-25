@@ -2,17 +2,22 @@
 
 namespace App\Entity\Patients;
 
+use App\Interfaces\DateTime\EntityDateInterface;
+use App\Traits\DateTime\EntityDateTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Patients\DocumentRepository;
 
 /**
  * @ORM\Entity(repositoryClass=DocumentRepository::class)
+ * @ORM\HasLifecycleCallbacks
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Document
+class Document implements EntityDateInterface
 {
+    use EntityDateTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

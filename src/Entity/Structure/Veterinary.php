@@ -2,17 +2,22 @@
 
 namespace App\Entity\Structure;
 
+use App\Interfaces\DateTime\EntityDateInterface;
+use App\Traits\DateTime\EntityDateTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Structure\VeterinaryRepository;
 
 /**
  * @ORM\Entity(repositoryClass=VeterinaryRepository::class)
+ * @ORM\HasLifecycleCallbacks
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Veterinary
+class Veterinary implements EntityDateInterface
 {
+    use EntityDateTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
