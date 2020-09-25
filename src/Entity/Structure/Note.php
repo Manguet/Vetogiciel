@@ -8,6 +8,8 @@ use App\Repository\Structure\NoteRepository;
 
 /**
  * @ORM\Entity(repositoryClass=NoteRepository::class)
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class Note
 {

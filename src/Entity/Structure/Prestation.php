@@ -11,6 +11,8 @@ use App\Repository\Structure\PrestationRepository;
 
 /**
  * @ORM\Entity(repositoryClass=PrestationRepository::class)
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class Prestation
 {

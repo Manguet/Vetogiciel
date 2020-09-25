@@ -8,6 +8,8 @@ use App\Repository\Structure\VatRepository;
 
 /**
  * @ORM\Entity(repositoryClass=VatRepository::class)
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class Vat
 {

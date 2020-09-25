@@ -8,6 +8,8 @@ use App\Repository\Patients\CommentRepository;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class Comment
 {

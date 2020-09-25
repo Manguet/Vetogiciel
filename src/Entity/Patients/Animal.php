@@ -9,6 +9,8 @@ use App\Entity\Structure\WaitingRoom;
 
 /**
  * @ORM\Entity(repositoryClass=AnimalRepository::class)
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class Animal
 {

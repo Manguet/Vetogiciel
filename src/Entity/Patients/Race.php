@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Patients\RaceRepository")
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class Race
 {

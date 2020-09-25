@@ -8,6 +8,8 @@ use App\Repository\Patients\SpeciesRepository;
 
 /**
  * @ORM\Entity(repositoryClass=SpeciesRepository::class)
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class Species
 {

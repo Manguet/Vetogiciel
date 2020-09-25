@@ -11,6 +11,8 @@ use App\Repository\Structure\WaitingRoomRepository;
 
 /**
  * @ORM\Entity(repositoryClass=WaitingRoomRepository::class)
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class WaitingRoom
 {

@@ -10,6 +10,8 @@ use App\Repository\Patients\FolderRepository;
 
 /**
  * @ORM\Entity(repositoryClass=FolderRepository::class)
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class Folder
 {

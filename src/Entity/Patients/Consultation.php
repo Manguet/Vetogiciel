@@ -12,6 +12,8 @@ use App\Repository\Patients\ConsultationRepository;
 
 /**
  * @ORM\Entity(repositoryClass=ConsultationRepository::class)
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class Consultation
 {

@@ -8,6 +8,8 @@ use App\Repository\External\LaboratoryRepository;
 
 /**
  * @ORM\Entity(repositoryClass=LaboratoryRepository::class)
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class Laboratory
 {

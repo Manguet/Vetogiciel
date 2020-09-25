@@ -8,6 +8,8 @@ use App\Repository\Structure\BillRepository;
 
 /**
  * @ORM\Entity(repositoryClass=BillRepository::class)
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class Bill
 {

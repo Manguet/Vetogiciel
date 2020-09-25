@@ -8,6 +8,8 @@ use App\Repository\Patients\DocumentRepository;
 
 /**
  * @ORM\Entity(repositoryClass=DocumentRepository::class)
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class Document
 {

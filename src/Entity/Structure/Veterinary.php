@@ -8,6 +8,8 @@ use App\Repository\Structure\VeterinaryRepository;
 
 /**
  * @ORM\Entity(repositoryClass=VeterinaryRepository::class)
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class Veterinary
 {

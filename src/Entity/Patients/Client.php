@@ -10,6 +10,8 @@ use App\Repository\Patients\ClientRepository;
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class Client
 {

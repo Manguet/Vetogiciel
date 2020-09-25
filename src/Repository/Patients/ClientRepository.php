@@ -7,10 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method Client|null find($id, $lockMode = null, $lockVersion = null)
- * @method Client|null findOneBy(array $criteria, array $orderBy = null)
- * @method Client[]    findAll()
- * @method Client[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class ClientRepository extends ServiceEntityRepository
 {
