@@ -2,6 +2,8 @@
 
 namespace App\Entity\Patients;
 
+use App\Interfaces\DateTime\EntityDateInterface;
+use App\Traits\DateTime\EntityDateTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Patients\AnimalRepository;
@@ -9,9 +11,14 @@ use App\Entity\Structure\WaitingRoom;
 
 /**
  * @ORM\Entity(repositoryClass=AnimalRepository::class)
+ * @ORM\HasLifecycleCallbacks
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Animal
+class Animal implements EntityDateInterface
 {
+    use EntityDateTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

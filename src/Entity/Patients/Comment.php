@@ -2,15 +2,22 @@
 
 namespace App\Entity\Patients;
 
+use App\Interfaces\DateTime\EntityDateInterface;
+use App\Traits\DateTime\EntityDateTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Patients\CommentRepository;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
+ * @ORM\HasLifecycleCallbacks
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Comment
+class Comment implements EntityDateInterface
 {
+    use EntityDateTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

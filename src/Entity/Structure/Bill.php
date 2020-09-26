@@ -2,15 +2,22 @@
 
 namespace App\Entity\Structure;
 
+use App\Interfaces\DateTime\EntityDateInterface;
+use App\Traits\DateTime\EntityDateTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Structure\BillRepository;
 
 /**
  * @ORM\Entity(repositoryClass=BillRepository::class)
+ * @ORM\HasLifecycleCallbacks
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Bill
+class Bill implements EntityDateInterface
 {
+    use EntityDateTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
