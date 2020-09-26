@@ -7,10 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method Laboratory|null find($id, $lockMode = null, $lockVersion = null)
- * @method Laboratory|null findOneBy(array $criteria, array $orderBy = null)
- * @method Laboratory[]    findAll()
- * @method Laboratory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class LaboratoryRepository extends ServiceEntityRepository
 {

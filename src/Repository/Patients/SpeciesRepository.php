@@ -7,10 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method Species|null find($id, $lockMode = null, $lockVersion = null)
- * @method Species|null findOneBy(array $criteria, array $orderBy = null)
- * @method Species[]    findAll()
- * @method Species[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class SpeciesRepository extends ServiceEntityRepository
 {

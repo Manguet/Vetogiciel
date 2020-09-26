@@ -1,20 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DefaultController!{% endblock %}
-
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div id="clinic">
+        {{ include('base/_carousel.html.twig') }}
+    </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-    <i class="far fa-address-card"></i>
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/benjamin/Documents/Hackathon/hackathon/src/Controller/DefaultController.php'|file_link(0) }}">src/Controller/DefaultController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/benjamin/Documents/Hackathon/hackathon/templates/default/index.html.twig'|file_link(0) }}">templates/default/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <div id="sector">
+        {{ include('base/_sectors.html.twig') }}
+    </div>
+
+    <div id="informations">
+        {{ include('base/_informations.html.twig') }}
+    </div>
+
+    <div id="blog">
+        {{ include('base/_blog.html.twig') }}
+    </div>
+
+    <div>
+        {{ include('base/_legals.html.twig') }}
+    </div>
+
+    <div>
+        {{ include('base/_footer.html.twig') }}
+    </div>
 {% endblock %}

@@ -1,0 +1,40 @@
+{% if articles %}
+    <div class="container mt-5">
+        <div class="text-center">
+            <hr class="mt-5">
+            <h2 class="mt-5">
+                Le <span class="main-color">Blog </span> santé
+            </h2>
+            <h4>Pour vous aider à mieux comprendre se que nous faisons</h4>
+
+            <div class="card-deck mt-5">
+
+                {% for article in articles %}
+                    <div class="card">
+                        <img class="card-img-top" src="{{ asset('build/images/carousel-1.jpg') }}" alt="{{ article.title }}" title="image de {{ article.title }}">
+                        <div class="card-body">
+                            <button class="custom-button card-title">
+                                <a href="#">
+                                    {{ article.title }}
+                                </a>
+                            </button>
+                            {% if article.description %}
+                                <p class="card-text">
+                                    {{ article.description|slice(0, 300) ~ '...' }}
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>

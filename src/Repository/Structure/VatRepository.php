@@ -7,10 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method Vat|null find($id, $lockMode = null, $lockVersion = null)
- * @method Vat|null findOneBy(array $criteria, array $orderBy = null)
- * @method Vat[]    findAll()
- * @method Vat[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class VatRepository extends ServiceEntityRepository
 {

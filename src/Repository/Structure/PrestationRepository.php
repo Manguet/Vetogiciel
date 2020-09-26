@@ -7,10 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method Prestation|null find($id, $lockMode = null, $lockVersion = null)
- * @method Prestation|null findOneBy(array $criteria, array $orderBy = null)
- * @method Prestation[]    findAll()
- * @method Prestation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class PrestationRepository extends ServiceEntityRepository
 {
