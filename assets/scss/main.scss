@@ -1,0 +1,10 @@
+body {
+  background-color: $main-color;
+  color: $black;
+  font-family: $text-font;
+  font-size: 1.2em;
+
+  .main-color {
+    color: $second-color;
+  }
+}
