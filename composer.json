@@ -5,8 +5,23 @@
         "php": "^7.1.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "assoconnect/mjml-bundle": "^1.5",
+        "cmen/google-charts-bundle": "^3.2",
+        "composer/package-versions-deprecated": "^1.11",
+        "doctrine/doctrine-bundle": "^2.1",
+        "doctrine/doctrine-migrations-bundle": "^3.0",
+        "doctrine/orm": "^2.7",
+        "eternicode/bootstrap-datepicker": "^1.9",
+        "fresh/doctrine-enum-bundle": "~6.6",
+        "league/csv": "^9.0",
+        "notfloran/mjml-bundle": "^3.4",
+        "omines/datatables-bundle": "^0.5.1",
+        "php-http/curl-client": "^2.1",
+        "pugx/autocompleter-bundle": "^1.6",
+        "select2/select2": "^4.0",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "4.4.*",
+        "symfony/config": "4.4.*",
         "symfony/console": "4.4.*",
         "symfony/dotenv": "4.4.*",
         "symfony/expression-language": "4.4.*",
@@ -17,7 +32,6 @@
         "symfony/intl": "4.4.*",
         "symfony/mailer": "4.4.*",
         "symfony/monolog-bundle": "^3.1",
-        "symfony/orm-pack": "*",
         "symfony/process": "4.4.*",
         "symfony/security-bundle": "4.4.*",
         "symfony/serializer-pack": "*",
@@ -26,7 +40,13 @@
         "symfony/validator": "4.4.*",
         "symfony/web-link": "4.4.*",
         "symfony/webpack-encore-bundle": "^1.7",
-        "symfony/yaml": "4.4.*"
+        "symfony/yaml": "4.4.*",
+        "symfonycasts/verify-email-bundle": "^1.1",
+        "tattali/calendar-bundle": "^1.2",
+        "tetranz/select2entity-bundle": "^3.1",
+        "twig/extra-bundle": "^3.2",
+        "twig/inky-extra": "^3.2",
+        "twig/twig": "^3.2"
     },
     "require-dev": {
         "symfony/debug-pack": "*",
@@ -72,7 +92,7 @@
     },
     "conflict": {
         "symfony/symfony": "*",
-        "doctrine/persistence": "1.3.*"
+        "doctrine/persistence": "1.3.2"
     },
     "extra": {
         "symfony": {

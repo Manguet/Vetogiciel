@@ -1,0 +1,12 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block navbar %}
+    {{ include('admin/base/_navbar.html.twig') }}
+{% endblock %}
+
+{% block body %}
+    <div class="index-admin">
+        <h1 class="mb-5">Bienvenue sur</h1>
+        <img class="mt-5" src="{{ asset('build/images/vetogiciel-logo.png') }}" alt="Vetogiciel" title="vetogiciel">
+    </div>
+{% endblock %}

@@ -1,0 +1,90 @@
+/** NAV BAR */
+
+.accueil-content {
+
+  a {
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  ul {
+    margin-left: 0px;
+  }
+
+  li {
+    list-style: none;
+  }
+
+  .light-logo {
+    height: 10vh;
+  }
+
+  .wrapper{
+    display: flex;
+    position: relative;
+  }
+
+  .wrapper .sidebar{
+    width: 220px;
+    height: 100%;
+    background-color: $main-color;
+    padding: 30px 0px;
+    position: fixed;
+    border-right: 1px solid $grey-shadow;
+    box-shadow: 2px 0px 5px $grey-shadow;
+    z-index: 9;
+  }
+
+  .wrapper .sidebar h2{
+    color: $black;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .wrapper .sidebar ul li{
+    padding: 15px;
+    border-bottom: 1px solid $light-grey;
+    border-top: 1px solid $light-grey;
+  }
+
+  .wrapper .sidebar ul li a{
+    color: $black;
+    display: block;
+  }
+
+  .wrapper .sidebar ul li .actual-link {
+    color: $second-color;
+    text-decoration: none;
+    margin-left: 5px;
+  }
+
+  .wrapper .sidebar ul li a .fas{
+    width: 25px;
+  }
+
+  .wrapper .sidebar ul li:hover a{
+    color: $second-color;
+    text-decoration: none;
+    margin-left: 5px;
+  }
+
+
+
+  .wrapper .main_content{
+    width: 100%;
+    margin-left: 220px;
+  }
+
+  .wrapper .main_content .info{
+    margin: 20px;
+    color: $black;
+    line-height: 25px;
+  }
+
+  .wrapper .main_content .info div{
+    margin-bottom: 20px;
+  }
+
+}

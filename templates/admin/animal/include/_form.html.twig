@@ -1,0 +1,76 @@
+<div>
+    {{ form_start(form) }}
+
+    <ul class="tabs">
+        <li class="tab-link current" data-tab="tab-1">Informations Générales</li>
+        <li class="tab-link" data-tab="tab-2">Identification</li>
+        <li class="tab-link" data-tab="tab-3">Information Complémentaires</li>
+    </ul>
+
+    <div id="tab-1" class="tab-content current">
+        <div>
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+        </div>
+
+        <div>
+            {{ form_label(form.birthdate) }}
+            {{ form_widget(form.birthdate) }}
+        </div>
+
+        <div>
+            {{ form_label(form.age) }}
+            {{ form_widget(form.age) }}
+        </div>
+
+        <div class="d-flex flex-column">
+            {{ form_label(form.race) }}
+            {{ form_widget(form.race) }}
+        </div>
+
+        <div class="d-flex flex-column">
+            {{ form_label(form.species) }}
+            {{ form_widget(form.species) }}
+        </div>
+
+        <div>
+            {{ form_label(form.color) }}
+            {{ form_widget(form.color) }}
+        </div>
+    </div>
+
+    <div id="tab-2" class="tab-content">
+        <div>
+            {{ form_label(form.transponder) }}
+            {{ form_widget(form.transponder) }}
+        </div>
+
+        <div>
+            {{ form_label(form.tatoo) }}
+            {{ form_widget(form.tatoo) }}
+        </div>
+
+        <div>
+            {{ form_label(form.idLocalization) }}
+            {{ form_widget(form.idLocalization) }}
+        </div>
+    </div>
+
+    <div id="tab-3" class="tab-content">
+        <div>
+            {{ form_label(form.isLof) }}
+            {{ form_widget(form.isLof) }}
+        </div>
+
+        <div>
+            {{ form_label(form.isInsured) }}
+            {{ form_widget(form.isInsured) }}
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center mb-5">
+        {{ form_widget(form.save) }}
+    </div>
+
+    {{ form_end(form) }}
+</div>

@@ -4,7 +4,7 @@ namespace App\Repository\Contents;
 
 use App\Entity\Contents\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>

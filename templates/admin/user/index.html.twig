@@ -1,0 +1,72 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block morestylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/datatables.bootstrap.css') }}"/>
+{% endblock %}
+
+{% block body %}
+    <div class="accueil-content">
+        <div class="wrapper">
+            {% include('admin/manage/_general_nav.html.twig') %}
+            <div class="main_content">
+                <div class="info">
+                    <div class="container">
+                        <div class="mt-5">
+                            <a href="{{ path('admin_user_new') }}">
+                                <button class="custom-button mb-3">
+                                    <i class="fas fa-user-plus"></i> Créer un client
+                                </button>
+                            </a>
+                        </div>
+
+                        <div id="my-tab">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block endjavascript %}
+    <script src="{{ asset('bundles/datatables/js/datatables.js') }}"></script>
+    <script>
+        $(function() {
+            $('#my-tab').initDataTables({{ datatable_settings(table) }}, {
+                searching: true,
+                dom:'lTfgtpi',
+                language: {
+                    "url": "https://cdn.datatables.net/plug-ins/1.10.21/i18n/French.json"
+                },
+                pageLength: 25
+            }).then(function (dt) {
+
+                /** Ajax delete */
+                $('#my-tab tbody').on('click', '.deleteAjax', function (e) {
+                    e.preventDefault();
+
+                    let url = $(this).attr('href');
+                    swal({
+                        title      : 'ATTENTION',
+                        text       : 'Voulez-vous vraiment supprimer ce client ?',
+                        icon       : 'warning',
+                        buttons    : true,
+                        dangerMode : true,
+                    }).then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                type      : 'POST',
+                                url       : url,
+                                data_type : 'json',
+                                data      : {}
+                            }).done(function (data) {
+                                dt.ajax.reload();
+                            })
+                        }
+                    })
+                })
+            })
+        });
+    </script>
+{% endblock %}

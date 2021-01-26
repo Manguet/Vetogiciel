@@ -2,13 +2,19 @@
 
 namespace App\Entity\Patients;
 
+use App\Entity\Structure\Clinic;
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\UserEntityInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\UserEntityTrait;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Patients\ClientRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
@@ -16,26 +22,10 @@ use App\Repository\Patients\ClientRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Client implements EntityDateInterface
+class Client implements EntityDateInterface, UserEntityInterface, UserInterface
 {
     use EntityDateTrait;
-
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=80, nullable=true)
-     */
-    private $firstname;
-
-    /**
-     * @ORM\Column(type="string", length=80)
-     */
-    private $lastname;
+    use UserEntityTrait;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -56,11 +46,6 @@ class Client implements EntityDateInterface
      * @ORM\Column(type="string", length=80, nullable=true)
      */
     private $city;
-
-    /**
-     * @ORM\Column(type="string", length=80, nullable=true)
-     */
-    private $email;
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
@@ -87,45 +72,43 @@ class Client implements EntityDateInterface
      */
     private $animals;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastVisit;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Clinic::class)
+     */
+    private $clinic;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified = false;
+
+    /**
+     * @return void
+     */
     public function __construct()
     {
         $this->animals = new ArrayCollection();
+        $this->clinic = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getFirstname(): ?string
-    {
-        return $this->firstname;
-    }
-
-    public function setFirstname(?string $firstname): self
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
-
-    public function setLastname(string $lastname): self
-    {
-        $this->lastname = $lastname;
-
-        return $this;
-    }
-
+    /**
+     * @return string|null
+     */
     public function getAddress(): ?string
     {
         return $this->address;
     }
 
+    /**
+     * @param string|null $address
+     *
+     * @return $this
+     */
     public function setAddress(?string $address): self
     {
         $this->address = $address;
@@ -133,11 +116,19 @@ class Client implements EntityDateInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getAddress2(): ?string
     {
         return $this->address2;
     }
 
+    /**
+     * @param string|null $address2
+     *
+     * @return $this
+     */
     public function setAddress2(?string $address2): self
     {
         $this->address2 = $address2;
@@ -145,11 +136,19 @@ class Client implements EntityDateInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }
 
+    /**
+     * @param string|null $postalCode
+     *
+     * @return $this
+     */
     public function setPostalCode(?string $postalCode): self
     {
         $this->postalCode = $postalCode;
@@ -157,11 +156,19 @@ class Client implements EntityDateInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCity(): ?string
     {
         return $this->city;
     }
 
+    /**
+     * @param string|null $city
+     *
+     * @return $this
+     */
     public function setCity(?string $city): self
     {
         $this->city = $city;
@@ -169,23 +176,19 @@ class Client implements EntityDateInterface
         return $this;
     }
 
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(?string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
+    /**
+     * @return string|null
+     */
     public function getPhoneNumber(): ?string
     {
         return $this->phoneNumber;
     }
 
+    /**
+     * @param string|null $phoneNumber
+     *
+     * @return $this
+     */
     public function setPhoneNumber(?string $phoneNumber): self
     {
         $this->phoneNumber = $phoneNumber;
@@ -193,11 +196,19 @@ class Client implements EntityDateInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPhoneNumber2(): ?string
     {
         return $this->phoneNumber2;
     }
 
+    /**
+     * @param string|null $phoneNumber2
+     *
+     * @return $this
+     */
     public function setPhoneNumber2(?string $phoneNumber2): self
     {
         $this->phoneNumber2 = $phoneNumber2;
@@ -205,11 +216,19 @@ class Client implements EntityDateInterface
         return $this;
     }
 
+    /**
+     * @return Comment|null
+     */
     public function getComment(): ?Comment
     {
         return $this->comment;
     }
 
+    /**
+     * @param Comment|null $comment
+     *
+     * @return $this
+     */
     public function setComment(?Comment $comment): self
     {
         $this->comment = $comment;
@@ -217,11 +236,19 @@ class Client implements EntityDateInterface
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getIsInDebt(): ?bool
     {
         return $this->isInDebt;
     }
 
+    /**
+     * @param bool|null $isInDebt
+     *
+     * @return $this
+     */
     public function setIsInDebt(?bool $isInDebt): self
     {
         $this->isInDebt = $isInDebt;
@@ -237,6 +264,11 @@ class Client implements EntityDateInterface
         return $this->animals;
     }
 
+    /**
+     * @param Animal $animal
+     *
+     * @return $this
+     */
     public function addAnimal(Animal $animal): self
     {
         if (!$this->animals->contains($animal)) {
@@ -247,15 +279,97 @@ class Client implements EntityDateInterface
         return $this;
     }
 
+    /**
+     * @param Animal $animal
+     *
+     * @return $this
+     */
     public function removeAnimal(Animal $animal): self
     {
         if ($this->animals->contains($animal)) {
             $this->animals->removeElement($animal);
-            // set the owning side to null (unless already changed)
+
             if ($animal->getClient() === $this) {
                 $animal->setClient(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getLastVisit(): ?DateTimeInterface
+    {
+        return $this->lastVisit;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreFlush()
+     *
+     * @return Client
+     */
+    public function setLastVisit(): self
+    {
+        $this->lastVisit = new DateTime('now');
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Clinic[]
+     */
+    public function getClinic(): Collection
+    {
+        return $this->clinic;
+    }
+
+    /**
+     * @param Clinic $clinic
+     *
+     * @return $this
+     */
+    public function addClinic(Clinic $clinic): self
+    {
+        if (!$this->clinic->contains($clinic)) {
+            $this->clinic[] = $clinic;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Clinic $clinic
+     *
+     * @return $this
+     */
+    public function removeClinic(Clinic $clinic): self
+    {
+        if ($this->clinic->contains($clinic)) {
+            $this->clinic->removeElement($clinic);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    /**
+     * @param bool $isVerified
+     *
+     * @return $this
+     */
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }

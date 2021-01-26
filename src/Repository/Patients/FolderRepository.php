@@ -4,7 +4,7 @@ namespace App\Repository\Patients;
 
 use App\Entity\Patients\Folder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>

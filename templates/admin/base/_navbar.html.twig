@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <a class="navbar-brand title-nav" href="{{ path('admin_index') }}">
+        <img class="logo" src="{{ asset('build/images/vetogiciel-logo.png') }}" title="Vetogiciel" alt="vetogiciel-logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <ul class="navbar-nav justify-content-around">
+            <li class="nav-item mx-3">
+                <a class="nav-link" href="{{ path('admin_accueil_index') }}">Accueil</a>
+            </li>
+            <li class="justify-content-end"><span class="border-nav"></span></li>
+
+            <li class="nav-item mx-3">
+                <a class="nav-link" href="#">Consultation</a>
+            </li>
+            <li class="justify-content-end"><span class="border-nav"></span></li>
+
+            <li class="nav-item mx-3">
+                <a class="nav-link" href="#">Hospitalisation</a>
+            </li>
+            <li class="justify-content-end"><span class="border-nav"></span></li>
+
+            <li class="nav-item mx-3">
+                <a class="nav-link" href="#">Chirurgie</a>
+            </li>
+            <li class="justify-content-end"><span class="border-nav"></span></li>
+
+            <li class="nav-item mx-3">
+                <a class="nav-link" href="#">Vétérinaire</a>
+            </li>
+            <li class="justify-content-end"><span class="border-nav"></span></li>
+
+            <li class="nav-item mx-3">
+                <a class="nav-link" href="{{ path('admin_manage') }}">Gestion</a>
+            </li>
+
+            {% if app.user %}
+                <li class="justify-content-end"><span class="border-nav"></span></li>
+
+                <li class="nav-item mx-3">
+                    <a class="nav-link" href="{{ path('security_logout') }}">Deconnexion</a>
+                </li>
+                <li class="justify-content-end"><span class="border-nav"></span></li>
+
+                <li class="nav-item mx-3">
+                    <a class="nav-link" href="{{ path('index') }}">Retour Site</a>
+                </li>
+            {% endif %}
+        </ul>
+
+    </div>
+</nav>

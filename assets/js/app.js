@@ -10,8 +10,14 @@ require('../scss/app.scss');
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 const $ = require('jquery');
+// create global $ and jQuery variables
+global.$ = global.jQuery = $;
+
 require('bootstrap');
 require('@fortawesome/fontawesome-free/css/all.min.css');
 require('@fortawesome/fontawesome-free/js/all.js');
+require('datatables.net-bs4');
+require('sweetalert');
 
 import legals from './cookiechoices';
+import tabs from './tabs.js';

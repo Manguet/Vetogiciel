@@ -11,6 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/", name="")
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class DefaultController extends AbstractController
 {

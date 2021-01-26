@@ -13,21 +13,43 @@
                 <a class="nav-link" href="{{ path('index') }}#clinic">La clinique vétérinaire</a>
             </li>
                 <li class="justify-content-end"><span class="border-nav"></span></li>
+
             <li class="nav-item mx-3">
                 <a class="nav-link" href="{{ path('index') }}#sector">Les services</a>
             </li>
                 <li class="justify-content-end"><span class="border-nav"></span></li>
+
             <li class="nav-item mx-3">
                 <a class="nav-link" href="{{ path('index') }}#informations">Infos Pratiques</a>
             </li>
                 <li class="justify-content-end"><span class="border-nav"></span></li>
+
             <li class="nav-item mx-3">
                 <a class="nav-link" href="{{ path('index') }}#blog">Blog santé</a>
             </li>
                 <li class="justify-content-end"><span class="border-nav"></span></li>
+
+            {% if app.user and app.user.isVerified %}
             <li class="nav-item mx-3">
                 <a class="nav-link" href="#">Prendre RDV</a>
             </li>
+                <li class="justify-content-end"><span class="border-nav"></span></li>
+            {% endif %}
+            {% if app.user is instanceof('\\App\\Entity\\Structure\\Veterinary') or app.user is instanceof ('\\App\\Entity\\Structure\\Employee') %}
+                <li class="nav-item mx-3">
+                    <a class="nav-link" href="{{ path('admin_index') }}">Gestion Clinique</a>
+                </li>
+                    <li class="justify-content-end"><span class="border-nav"></span></li>
+            {% endif %}
+            {% if app.user %}
+                <li class="nav-item mx-3">
+                    <a class="nav-link" href="{{ path('security_logout') }}">Déconnexion</a>
+                </li>
+            {% else %}
+                <li class="nav-item mx-3">
+                    <a class="nav-link" href="{{ path('security_login') }}">Connexion</a>
+                </li>
+            {% endif %}
         </ul>
 
     </div>
