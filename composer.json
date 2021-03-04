@@ -44,6 +44,7 @@
         "symfonycasts/verify-email-bundle": "^1.1",
         "tattali/calendar-bundle": "^1.2",
         "tetranz/select2entity-bundle": "^3.1",
+        "twig/cssinliner-extra": "^3.2",
         "twig/extra-bundle": "^3.2",
         "twig/inky-extra": "^3.2",
         "twig/twig": "^3.2"

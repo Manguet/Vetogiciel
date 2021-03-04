@@ -90,7 +90,7 @@ class RegistrationController extends AbstractController
                     ->from(new Address('benjamin.manguet@gmail.com', 'Vetogiciel'))
                     ->to($user->getEmail())
                     ->subject('Confirmation d\'adresse : Vetogiciel')
-                    ->htmlTemplate('mjml/confirmation_email.mjml.html.twig')
+                    ->htmlTemplate('email/confirmation_email.html.twig')
             );
 
             $this->flashBag->add('warning', 'Merci de confirmer votre adresse mail : ' . $user->getEmail() . ' afin d\'accéder aux fonctionnalités.');

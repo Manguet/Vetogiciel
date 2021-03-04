@@ -16,7 +16,7 @@ global.$ = global.jQuery = $;
 require('bootstrap');
 require('@fortawesome/fontawesome-free/css/all.min.css');
 require('@fortawesome/fontawesome-free/js/all.js');
-require('datatables.net-bs4');
+require('datatables.net-bs4')( window, $ );
 require('sweetalert');
 
 import legals from './cookiechoices';
