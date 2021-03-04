@@ -177,11 +177,15 @@ class AnimalType extends AbstractType
             ])
         ;
 
-        $builder->get('race')
-            ->addModelTransformer($this->racePropertyTransform);
+        if ($options['isNew']) {
 
-        $builder->get('species')
-            ->addModelTransformer($this->speciesPropertyTransform);
+            $builder->get('race')
+                ->addModelTransformer($this->racePropertyTransform);
+
+            $builder->get('species')
+                ->addModelTransformer($this->speciesPropertyTransform);
+
+        }
     }
 
     /**
@@ -192,8 +196,8 @@ class AnimalType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class'     => Animal::class,
-            'enablePassword' => null,
+            'data_class' => Animal::class,
+            'isNew'      => null,
         ]);
     }
 }

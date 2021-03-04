@@ -167,32 +167,39 @@ class ClientController extends AbstractController
             ->add('name', TextColumn::class, [
                 'label'     => 'Nom',
                 'orderable' => true,
-//                'render'    => function ($value, $client) {
-//                    return '<a href="/admin/user/show/' . $client->getId() . '">' . $value . '</a>';
-//                }
+                'render'    => function ($value, $animal) {
+                    return '<a href="/admin/animal/edit/' . $animal->getClient()->getId() . '/animal/' . $animal->getId() . '">' . $value . '</a>';
+                }
             ])
             ->add('age', TextColumn::class, [
                 'label'     => 'Age',
                 'orderable' => true,
-//                'render'    => function ($value, $client) {
-//                    return '<a href="/admin/user/show/' . $client->getId() . '">' . $value . '</a>';
-//                }
             ])
             ->add('species', TextColumn::class, [
                 'label'     => 'Espèce',
-                'orderable' => true,
-                'field'     => 'species.name'
-//                'render'    => function ($value, $client) {
-//                    return '<a href="/admin/user/show/' . $client->getId() . '">' . $value . '</a>';
-//                }
+                'orderable' => false,
+                'render'    => function ($value, $animal) {
+
+                    if (null !== $animal->getSpecies()) {
+
+                        return $animal->getSpecies()->getName();
+                    }
+
+                    return '';
+                }
             ])
             ->add('race', TextColumn::class, [
                 'label'     => 'Race',
-                'orderable' => true,
-                'field'     => 'race.name'
-//                'render'    => function ($value, $client) {
-//                    return '<a href="/admin/user/show/' . $client->getId() . '">' . $value . '</a>';
-//                }
+                'orderable' => false,
+                'render'    => function ($value, $animal) {
+
+                    if (null !== $animal->getRace()) {
+
+                        return $animal->getRace()->getName();
+                    }
+
+                    return '';
+                }
             ])
             ->add('delete', TextColumn::class, [
                 'label'   => 'Supprimer ?',
