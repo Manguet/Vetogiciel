@@ -21,3 +21,4 @@ require('sweetalert');
 
 import legals from './cookiechoices';
 import tabs from './tabs.js';
+import swal from "sweetalert";

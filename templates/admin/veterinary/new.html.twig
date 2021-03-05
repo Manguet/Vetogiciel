@@ -1,0 +1,32 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block morestylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <div class="accueil-content">
+        <div class="wrapper">
+            {% include('admin/manage/_general_nav.html.twig') %}
+            <div class="main_content">
+                <div class="info">
+                    <div class="container">
+                        <div class="mb-5">
+                            <a href="{{ path('admin_veterinary_index') }}">
+                                <button class="custom-button">
+                                    <i class="fas fa-backspace"></i> Retour
+                                </button>
+                            </a>
+                        </div>
+                        {{ include('admin/veterinary/include/_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block endjavascript %}
+    <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+{% endblock %}

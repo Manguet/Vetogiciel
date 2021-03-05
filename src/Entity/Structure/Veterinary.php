@@ -35,7 +35,7 @@ class Veterinary implements EntityDateInterface, UserEntityInterface, UserInterf
     private $color;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $number;
 
@@ -45,7 +45,7 @@ class Veterinary implements EntityDateInterface, UserEntityInterface, UserInterf
     private $sector;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $isVerified = false;
 
@@ -78,19 +78,19 @@ class Veterinary implements EntityDateInterface, UserEntityInterface, UserInterf
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getNumber(): ?int
+    public function getNumber(): ?string
     {
         return $this->number;
     }
 
     /**
-     * @param int|null $number
+     * @param string|null $number
      *
      * @return $this
      */
-    public function setNumber(?int $number): self
+    public function setNumber(?string $number): self
     {
         $this->number = $number;
 
@@ -134,19 +134,19 @@ class Veterinary implements EntityDateInterface, UserEntityInterface, UserInterf
     }
 
     /**
-     * @return bool
+     * @return null|bool
      */
-    public function isVerified(): bool
+    public function isVerified(): ?bool
     {
         return $this->isVerified;
     }
 
     /**
-     * @param bool $isVerified
+     * @param null|bool $isVerified
      *
      * @return $this
      */
-    public function setIsVerified(bool $isVerified): self
+    public function setIsVerified(?bool $isVerified): self
     {
         $this->isVerified = $isVerified;
 
