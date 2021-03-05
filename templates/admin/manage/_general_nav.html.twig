@@ -37,7 +37,7 @@
         </li>
 
         <li>
-            <a href="#">
+            <a href="{{ path('admin_employee_index') }}" class="{% if app.request.get('_route') starts with 'admin_employee_' %}actual-link{% endif %}">
                 <i class="fas fa-hospital-user"></i> Employés
             </a>
         </li>

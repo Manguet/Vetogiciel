@@ -49,23 +49,17 @@ class ClinicController extends AbstractController
             ->add('name', TextColumn::class, [
                 'label'     => 'Nom de la structure',
                 'orderable' => true,
-//                'render'    => function ($value, $clinic) {
-//                    return '<a href="/admin/clinic/show/' . $clinic->getId() . '">' . $value . '</a>';
-//                }
+                'render'    => function ($value, $clinic) {
+                    return '<a href="/admin/clinic/edit/' . $clinic->getId() . '">' . $value . '</a>';
+                }
             ])
             ->add('city', TextColumn::class, [
                 'label'     => 'Ville de la structure',
                 'orderable' => true,
-//                'render'    => function ($value, $clinic) {
-//                    return '<a href="/admin/clinic/show/' . $clinic->getId() . '">' . $value . '</a>';
-//                }
             ])
             ->add('type', TextColumn::class, [
                 'label'     => 'Type de structure',
                 'orderable' => true,
-//                'render'    => function ($value, $clinic) {
-//                    return '<a href="/admin/clinic/show/' . $clinic->getId() . '">' . $value . '</a>';
-//                }
             ])
             ->addOrderBy('name')
             ->createAdapter(ORMAdapter::class, [

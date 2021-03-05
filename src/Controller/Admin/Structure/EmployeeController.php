@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin\Structure;
 
-use App\Entity\Structure\Veterinary;
-use App\Form\Structure\VeterinaryFormType;
+use App\Entity\Structure\Employee;
+use App\Form\Structure\EmployeeType;
 use App\Service\User\PasswordEncoderServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
@@ -18,9 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
- * @Route("/admin/veterinary", name="admin_veterinary_")
+ * @Route("/admin/employee", name="admin_employee_")
  */
-class VeterinaryController extends AbstractController
+class EmployeeController extends AbstractController
 {
     /**
      * @var EntityManagerInterface
@@ -33,7 +33,7 @@ class VeterinaryController extends AbstractController
     private $encoderServices;
 
     /**
-     * ClinicController constructor.
+     * EmployeeController constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param PasswordEncoderServices $encoderServices
@@ -56,43 +56,27 @@ class VeterinaryController extends AbstractController
     {
         $table = $dataTableFactory->create()
             ->add('firstname', TextColumn::class, [
-                'label'     => 'Nom du vétérinaire',
+                'label'     => 'Nom de l\'employé',
                 'orderable' => true,
-                'render'    => function ($value, $veterinary) {
+                'render'    => function ($value, $employee) {
 
-                    $veterinaryName = 'Dr. ' . $value . ' ' . $veterinary->getLastname();
+                    $employeeName = $value . ' ' . $employee->getLastname();
 
-                    return '<a href="/admin/veterinary/edit/' . $veterinary->getId() . '">' . $veterinaryName . '</a>';
+                    return '<a href="/admin/employee/edit/' . $employee->getId() . '">' . $employeeName . '</a>';
                 }
             ])
             ->add('lastname', TextColumn::class, [
                 'visible'   => false,
             ])
-            ->add('number', TextColumn::class, [
-                'label'     => 'Numéro d\'ordre',
-                'orderable' => true,
-            ])
-            ->add('clinic', TextColumn::class, [
-                'label'     => 'Clinique',
-                'orderable' => false,
-                'render'    => function ($value, $veterinary) {
-
-                    if (null !== $veterinary->getClinic()) {
-                        return $veterinary->getClinic()->getName();
-                    }
-
-                    return '';
-                }
-            ])
             ->add('sector', TextColumn::class, [
                 'label'     => 'Secteur',
                 'orderable' => false,
-                'render'    => function ($value, $veterinary) {
+                'render'    => function ($value, $employee) {
 
-                    if (!$veterinary->getSector()->isEmpty()) {
+                    if (!$employee->getSector()->isEmpty()) {
 
                         $sectors = [];
-                        foreach ($veterinary->getSector() as $sector) {
+                        foreach ($employee->getSector() as $sector) {
                             $sectors[] = $sector->getName();
                         }
 
@@ -109,17 +93,30 @@ class VeterinaryController extends AbstractController
                     return '';
                 }
             ])
+            ->add('isManager', TextColumn::class, [
+                'label'     => 'Manager ?',
+                'orderable' => true,
+                'render'    => function ($value, $employee) {
+
+                    if ($value) {
+                        return '<i class="far fa-check-circle"></i>';
+                    }
+
+                    return '';
+                }
+
+            ])
             ->add('delete', TextColumn::class, [
                 'label'   => 'Supprimer ?',
-                'render'  => function($value, $veterinary) {
-                    return $this->renderView('admin/veterinary/include/_delete-button.html.twig', [
-                        'veterinary' => $veterinary,
+                'render'  => function($value, $employee) {
+                    return $this->renderView('admin/employee/include/_delete-button.html.twig', [
+                        'employee' => $employee,
                     ]);
                 }
             ])
-            ->addOrderBy('firstname')
+            ->addOrderBy('lastname')
             ->createAdapter(ORMAdapter::class, [
-                'entity' => Veterinary::class
+                'entity' => Employee::class
             ])
         ;
 
@@ -129,7 +126,7 @@ class VeterinaryController extends AbstractController
             return $table->getResponse();
         }
 
-        return $this->render('admin/veterinary/index.html.twig', [
+        return $this->render('admin/employee/index.html.twig', [
             'table' => $table,
         ]);
     }
@@ -140,11 +137,11 @@ class VeterinaryController extends AbstractController
      *
      * @return Response
      */
-    public function newVeterinary(Request $request): Response
+    public function newEmployee(Request $request): Response
     {
-        $veterinary = new Veterinary();
+        $employee = new Employee();
 
-        $form = $this->createForm(VeterinaryFormType::class, $veterinary, [
+        $form = $this->createForm(EmployeeType::class, $employee, [
             'enablePassword' => true,
             'isShow'         => false,
         ]);
@@ -154,15 +151,15 @@ class VeterinaryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             /** Manually encode password */
-            $this->encoderServices->encodePassword($form, $veterinary);
+            $this->encoderServices->encodePassword($form, $employee);
 
-            $this->entityManager->persist($veterinary);
+            $this->entityManager->persist($employee);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('admin_veterinary_index');
+            return $this->redirectToRoute('admin_employee_index');
         }
 
-        return $this->render('admin/veterinary/new.html.twig', [
+        return $this->render('admin/employee/new.html.twig', [
             'form'           => $form->createView(),
             'enablePassword' => true,
             'isShow'         => false,
@@ -173,13 +170,13 @@ class VeterinaryController extends AbstractController
      * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
      *
      * @param Request $request
-     * @param Veterinary $veterinary
+     * @param Employee $employee
      *
      * @return Response
      */
-    public function editVeterinary(Request $request, Veterinary $veterinary): Response
+    public function editVeterinary(Request $request, Employee $employee): Response
     {
-        $form = $this->createForm(VeterinaryFormType::class, $veterinary, [
+        $form = $this->createForm(EmployeeType::class, $employee, [
             'enablePassword' => false,
             'isShow'         => true,
         ]);
@@ -189,15 +186,15 @@ class VeterinaryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             /** Manually encode password */
-            $this->encoderServices->encodePassword($form, $veterinary);
+            $this->encoderServices->encodePassword($form, $employee);
 
-            $this->entityManager->persist($veterinary);
+            $this->entityManager->persist($employee);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('admin_veterinary_index');
+            return $this->redirectToRoute('admin_employee_index');
         }
 
-        return $this->render('admin/veterinary/new.html.twig', [
+        return $this->render('admin/employee/new.html.twig', [
             'form'           => $form->createView(),
             'enablePassword' => false,
             'isShow'         => true,
@@ -207,19 +204,19 @@ class VeterinaryController extends AbstractController
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
      *
-     * @param Veterinary $veterinary
+     * @param Employee $employee
      *
      * @return JsonResponse
      */
-    public function delete(Veterinary $veterinary): JsonResponse
+    public function delete(Employee $employee): JsonResponse
     {
-        if (!$veterinary instanceof Veterinary) {
-            return new JsonResponse('Veterinary Not Found', 404);
+        if (!$employee instanceof Employee) {
+            return new JsonResponse('Employee Not Found', 404);
         }
 
-        $this->entityManager->remove($veterinary);
+        $this->entityManager->remove($employee);
         $this->entityManager->flush();
 
-        return new JsonResponse('Veterinary deleted with success', 200);
+        return new JsonResponse('Employee deleted with success', 200);
     }
 }
