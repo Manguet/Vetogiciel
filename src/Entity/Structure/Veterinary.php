@@ -3,39 +3,31 @@
 namespace App\Entity\Structure;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\Structure\ClinicInterface;
+use App\Interfaces\User\UserEntityInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\Structure\ClinicTrait;
+use App\Traits\User\UserEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Structure\VeterinaryRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=VeterinaryRepository::class)
  * @ORM\HasLifecycleCallbacks
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class Veterinary implements EntityDateInterface
+class Veterinary implements EntityDateInterface, UserEntityInterface, UserInterface, ClinicInterface
 {
     use EntityDateTrait;
-
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=80, nullable=true)
-     */
-    private $firstname;
-
-    /**
-     * @ORM\Column(type="string", length=120)
-     */
-    private $lastname;
+    use UserEntityTrait;
+    use ClinicTrait;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
@@ -43,7 +35,7 @@ class Veterinary implements EntityDateInterface
     private $color;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $number;
 
@@ -52,45 +44,32 @@ class Veterinary implements EntityDateInterface
      */
     private $sector;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isVerified = false;
+
+    /**
+     * Veterinary constructor.
+     */
     public function __construct()
     {
         $this->sector = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getFirstname(): ?string
-    {
-        return $this->firstname;
-    }
-
-    public function setFirstname(?string $firstname): self
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
-
-    public function setLastname(string $lastname): self
-    {
-        $this->lastname = $lastname;
-
-        return $this;
-    }
-
+    /**
+     * @return string|null
+     */
     public function getColor(): ?string
     {
         return $this->color;
     }
 
+    /**
+     * @param string|null $color
+     *
+     * @return $this
+     */
     public function setColor(?string $color): self
     {
         $this->color = $color;
@@ -98,12 +77,20 @@ class Veterinary implements EntityDateInterface
         return $this;
     }
 
-    public function getNumber(): ?int
+    /**
+     * @return string|null
+     */
+    public function getNumber(): ?string
     {
         return $this->number;
     }
 
-    public function setNumber(?int $number): self
+    /**
+     * @param string|null $number
+     *
+     * @return $this
+     */
+    public function setNumber(?string $number): self
     {
         $this->number = $number;
 
@@ -118,6 +105,11 @@ class Veterinary implements EntityDateInterface
         return $this->sector;
     }
 
+    /**
+     * @param Sector $sector
+     *
+     * @return $this
+     */
     public function addSector(Sector $sector): self
     {
         if (!$this->sector->contains($sector)) {
@@ -127,11 +119,36 @@ class Veterinary implements EntityDateInterface
         return $this;
     }
 
+    /**
+     * @param Sector $sector
+     *
+     * @return $this
+     */
     public function removeSector(Sector $sector): self
     {
         if ($this->sector->contains($sector)) {
             $this->sector->removeElement($sector);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return null|bool
+     */
+    public function isVerified(): ?bool
+    {
+        return $this->isVerified;
+    }
+
+    /**
+     * @param null|bool $isVerified
+     *
+     * @return $this
+     */
+    public function setIsVerified(?bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }

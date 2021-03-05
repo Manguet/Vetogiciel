@@ -3,4 +3,8 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     exception_controller: null
-    form_themes: ['bootstrap_4_layout.html.twig']
+    form_themes: ['bootstrap_4_layout.html.twig', '@TetranzSelect2Entity/Form/fields.html.twig']
+
+    paths:
+        'assets/css': styles
+        '%kernel.project_dir%/assets/images': images

@@ -1,13 +1,31 @@
 security:
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\Patients\Client:
+            algorithm: auto
+            cost: 15
+        App\Entity\Structure\Employee:
+            algorithm: auto
+            cost: 15
+        App\Entity\Structure\Veterinary:
+            algorithm: auto
+            cost: 15
+
     providers:
-        in_memory: { memory: null }
+        database:
+            id: App\Security\Login\UserProvider
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             anonymous: lazy
+            guard:
+                authenticators:
+                    - App\Security\Login\LoginFormAuthenticator
+            logout:
+                path: security_logout
+                target: index
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

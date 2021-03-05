@@ -1,0 +1,73 @@
+<div>
+    {{ form_start(form) }}
+
+    <ul class="tabs">
+        <li class="tab-link current" data-tab="tab-1">Informations Générales</li>
+        <li class="tab-link" data-tab="tab-2">Informations praticien</li>
+    </ul>
+
+    <div id="tab-1" class="tab-content current">
+        <div>
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email) }}
+        </div>
+
+        {% if enablePassword %}
+            <div>
+                {{ form_label(form.password.first) }}
+                {{ form_widget(form.password.first) }}
+            </div>
+
+            <div>
+                {{ form_label(form.password.second) }}
+                {{ form_widget(form.password.second ) }}
+            </div>
+        {% endif %}
+
+        <div>
+            {{ form_label(form.firstname) }}
+            {{ form_widget(form.firstname) }}
+        </div>
+
+        <div>
+            {{ form_label(form.lastname) }}
+            {{ form_widget(form.lastname) }}
+        </div>
+    </div>
+
+    <div id="tab-2" class="tab-content">
+        <div>
+            {{ form_label(form.number) }}
+            {{ form_widget(form.number) }}
+        </div>
+
+        <div>
+            {{ form_label(form.color) }}
+            {{ form_widget(form.color) }}
+        </div>
+
+        <div>
+            {{ form_label(form.clinic) }}
+            {{ form_widget(form.clinic) }}
+        </div>
+
+        <div>
+            {{ form_label(form.sector) }}
+            {{ form_widget(form.sector) }}
+        </div>
+
+        {% if isShow %}
+            <div>
+                {{ form_label(form.isVerified) }}
+                {{ form_widget(form.isVerified) }}
+            </div>
+        {% endif %}
+
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center mb-5">
+        {{ form_widget(form.save) }}
+    </div>
+
+    {{ form_end(form) }}
+</div>

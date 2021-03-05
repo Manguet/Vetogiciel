@@ -30,6 +30,12 @@ class Species implements EntityDateInterface
      */
     private $name;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Race::class, inversedBy="species")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $race;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -43,6 +49,18 @@ class Species implements EntityDateInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getRace(): ?Race
+    {
+        return $this->race;
+    }
+
+    public function setRace(?Race $race): self
+    {
+        $this->race = $race;
 
         return $this;
     }

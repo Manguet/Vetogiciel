@@ -2,6 +2,7 @@
 
 namespace App\Entity\Structure;
 
+use App\Entity\Security\User;
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Traits\DateTime\EntityDateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -30,18 +31,24 @@ class Sector implements EntityDateInterface
     private $name;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Structure\Veterinary", mappedBy="sector")
      */
     private $veterinaries;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Structure\Employee", mappedBy="sector")
      */
-    private $description;
+    private $employees;
 
     public function __construct()
     {
         $this->veterinaries = new ArrayCollection();
+        $this->employees    = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -57,6 +64,18 @@ class Sector implements EntityDateInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
@@ -79,7 +98,7 @@ class Sector implements EntityDateInterface
         return $this;
     }
 
-    public function removeVeterinary(Veterinary $veterinary): self
+    public function removeUser(Veterinary $veterinary): self
     {
         if ($this->veterinaries->contains($veterinary)) {
             $this->veterinaries->removeElement($veterinary);
@@ -89,14 +108,30 @@ class Sector implements EntityDateInterface
         return $this;
     }
 
-    public function getDescription(): ?string
+    /**
+     * @return Collection|Employee[]
+     */
+    public function getEmployees(): Collection
     {
-        return $this->description;
+        return $this->employees;
     }
 
-    public function setDescription(?string $description): self
+    public function addEmployee(Employee $employee): self
     {
-        $this->description = $description;
+        if (!$this->employees->contains($employee)) {
+            $this->employees[] = $employee;
+            $employee->addSector($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmployee(Employee $employee): self
+    {
+        if ($this->employees->contains($employee)) {
+            $this->employees->removeElement($employee);
+            $employee->removeSector($this);
+        }
 
         return $this;
     }

@@ -9,10 +9,14 @@
             <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('build/images/favicons/favicon-32x32.png') }}">
             <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('build/images/favicons/favicon-16x16.png') }}">
             <link rel="manifest" href="{{ asset('build/images/favicons/site.webmanifest') }}">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
             {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+        {% block morestylesheets %}
         {% endblock %}
     </head>
     <body>
+
         {% block navbar %}
             {% include 'base/_navbar.html.twig' %}
         {% endblock %}
@@ -21,6 +25,9 @@
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+
+        {% block endjavascript %}
         {% endblock %}
     </body>
 </html>

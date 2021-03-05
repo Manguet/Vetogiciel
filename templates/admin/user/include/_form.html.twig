@@ -1,0 +1,75 @@
+<div>
+    {{ form_start(form) }}
+
+    <ul class="tabs">
+        <li class="tab-link current" data-tab="tab-1">Informations Générales</li>
+        <li class="tab-link" data-tab="tab-2">Coordonnées</li>
+    </ul>
+
+    <div id="tab-1" class="tab-content current">
+        <div>
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email) }}
+        </div>
+
+        {% if enablePassword %}
+            <div>
+                {{ form_label(form.password.first) }}
+                {{ form_widget(form.password.first) }}
+            </div>
+
+            <div>
+                {{ form_label(form.password.second) }}
+                {{ form_widget(form.password.second ) }}
+            </div>
+        {% endif %}
+
+        <div>
+            {{ form_label(form.firstname) }}
+            {{ form_widget(form.firstname) }}
+        </div>
+
+        <div>
+            {{ form_label(form.lastname) }}
+            {{ form_widget(form.lastname) }}
+        </div>
+    </div>
+
+    <div id="tab-2" class="tab-content">
+        <div>
+            {{ form_label(form.address) }}
+            {{ form_widget(form.address) }}
+        </div>
+
+        <div>
+            {{ form_label(form.address2) }}
+            {{ form_widget(form.address2) }}
+        </div>
+
+        <div>
+            {{ form_label(form.postalCode) }}
+            {{ form_widget(form.postalCode) }}
+        </div>
+
+        <div>
+            {{ form_label(form.city) }}
+            {{ form_widget(form.city) }}
+        </div>
+
+        <div>
+            {{ form_label(form.phoneNumber) }}
+            {{ form_widget(form.phoneNumber) }}
+        </div>
+
+        <div>
+            {{ form_label(form.phoneNumber2) }}
+            {{ form_widget(form.phoneNumber2) }}
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center mb-5">
+        {{ form_widget(form.save) }}
+    </div>
+
+    {{ form_end(form) }}
+</div>

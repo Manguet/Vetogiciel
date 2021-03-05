@@ -1,19 +1,23 @@
 {% extends 'base.html.twig' %}
 
+{% block morestylesheets %}
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
     <div id="clinic">
         {{ include('base/_carousel.html.twig') }}
     </div>
 
-    <div id="sector">
+    <div id="sector" data-aos="flip-right">
         {{ include('base/_sectors.html.twig') }}
     </div>
 
-    <div id="informations">
+    <div id="informations" data-aos="flip-left">
         {{ include('base/_informations.html.twig') }}
     </div>
 
-    <div id="blog">
+    <div id="blog" data-aos="flip-right">
         {{ include('base/_blog.html.twig') }}
     </div>
 
@@ -24,4 +28,11 @@
     <div>
         {{ include('base/_footer.html.twig') }}
     </div>
+{% endblock %}
+
+{% block endjavascript %}
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
 {% endblock %}
