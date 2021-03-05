@@ -19,7 +19,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $this->client->request('GET', '/security/login');
 
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        self::assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -31,7 +31,7 @@ class SecurityControllerTest extends WebTestCase
 
         $this->client->request('GET', '/security/login');
 
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        self::assertSame(302, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -43,7 +43,7 @@ class SecurityControllerTest extends WebTestCase
 
         $this->client->request('GET', '/security/login');
 
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        self::assertSame(302, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -55,6 +55,52 @@ class SecurityControllerTest extends WebTestCase
 
         $this->client->request('GET', '/security/login');
 
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        self::assertSame(302, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @return void
+     */
+    public function testLogoutWithoutUser(): void
+    {
+        $this->client->request('GET', '/security/logout');
+
+        self::assertEquals(302, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @return void
+     */
+    public function testLogoutWithVeterinary(): void
+    {
+        $this->logIn('veterinary');
+
+        $this->client->request('GET', '/security/logout');
+
+        self::assertSame(302, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @return void
+     */
+    public function testLogoutWithEmployee(): void
+    {
+        $this->logIn('employee');
+
+        $this->client->request('GET', '/security/logout');
+
+        self::assertSame(302, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @return void
+     */
+    public function testLogoutWithClient(): void
+    {
+        $this->logIn('client');
+
+        $this->client->request('GET', '/security/logout');
+
+        self::assertSame(302, $this->client->getResponse()->getStatusCode());
     }
 }

@@ -60,8 +60,8 @@ trait LoginTrait
         $user = $entityManager->getRepository($userType)
             ->findOneBy([]);
 
-        $firewallName    = 'secure_area';
-        $firewallContext = 'secured_area';
+        $firewallName    = 'main';
+        $firewallContext = 'main';
 
         $token = new UsernamePasswordToken($user, null, $firewallName, $user->getRoles());
         $session->set('_security_'.$firewallContext, serialize($token));

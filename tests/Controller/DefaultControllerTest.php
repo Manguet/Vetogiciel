@@ -19,7 +19,7 @@ class DefaultControllerTest extends WebTestCase
     {
         $this->client->request('GET', '/');
 
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        self::assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -31,7 +31,7 @@ class DefaultControllerTest extends WebTestCase
 
         $this->client->request('GET', '/');
 
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        self::assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -43,7 +43,7 @@ class DefaultControllerTest extends WebTestCase
 
         $this->client->request('GET', '/');
 
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        self::assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -55,6 +55,6 @@ class DefaultControllerTest extends WebTestCase
 
         $this->client->request('GET', '/');
 
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        self::assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 }

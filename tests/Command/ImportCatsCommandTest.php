@@ -28,7 +28,7 @@ class ImportCatsCommandTest extends KernelTestCase
 
         $output = $commandTester->getDisplay();
 
-        $this->assertStringContainsString(1, $output);
+        self::assertStringContainsString(1, $output);
     }
 
     /**
@@ -49,6 +49,6 @@ class ImportCatsCommandTest extends KernelTestCase
 
         $output = $commandTester->getDisplay();
 
-        $this->assertStringContainsString(1, $output);
+        self::assertStringContainsString(1, $output);
     }
 }

@@ -28,6 +28,6 @@ class ImportRacesCommandTest extends KernelTestCase
 
         $output = $commandTester->getDisplay();
 
-        $this->assertStringContainsString(1, $output);
+        self::assertStringContainsString(1, $output);
     }
 }
