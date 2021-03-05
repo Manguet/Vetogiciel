@@ -4,15 +4,20 @@ namespace App\Controller\Admin\Structure;
 
 use App\Entity\Structure\Veterinary;
 use App\Form\Structure\VeterinaryFormType;
+use App\Security\EmailVerifier;
 use App\Service\User\PasswordEncoderServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -33,15 +38,30 @@ class VeterinaryController extends AbstractController
     private $encoderServices;
 
     /**
+     * @var EmailVerifier
+     */
+    private $emailVerifier;
+
+    /**
+     * @var FlashBagInterface
+     */
+    private $flashBag;
+
+    /**
      * ClinicController constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param PasswordEncoderServices $encoderServices
+     * @param EmailVerifier $emailVerifier
+     * @param FlashBagInterface $flashBag
      */
-    public function __construct(EntityManagerInterface $entityManager, PasswordEncoderServices $encoderServices)
+    public function __construct(EntityManagerInterface $entityManager, PasswordEncoderServices $encoderServices,
+                                EmailVerifier $emailVerifier, FlashBagInterface $flashBag)
     {
         $this->entityManager   = $entityManager;
         $this->encoderServices = $encoderServices;
+        $this->emailVerifier   = $emailVerifier;
+        $this->flashBag        = $flashBag;
     }
 
     /**
@@ -139,6 +159,8 @@ class VeterinaryController extends AbstractController
      * @param Request $request
      *
      * @return Response
+     *
+     * @throws TransportExceptionInterface
      */
     public function newVeterinary(Request $request): Response
     {
@@ -158,6 +180,19 @@ class VeterinaryController extends AbstractController
 
             $this->entityManager->persist($veterinary);
             $this->entityManager->flush();
+
+            /**
+             * Generate a signed url and email it to the user
+             */
+            $this->emailVerifier->sendEmailConfirmation('app_register_verify_email', $veterinary,
+                (new TemplatedEmail())
+                    ->from(new Address('benjamin.manguet@gmail.com', 'Vetogiciel'))
+                    ->to($veterinary->getEmail())
+                    ->subject('Confirmation d\'adresse : Vetogiciel')
+                    ->htmlTemplate('email/confirmation_email.html.twig')
+            );
+
+            $this->flashBag->add('warning', 'Merci de faire confirmer l\'adresse mail : ' . $veterinary->getEmail() . ' afin d\'accéder aux fonctionnalités.');
 
             return $this->redirectToRoute('admin_veterinary_index');
         }

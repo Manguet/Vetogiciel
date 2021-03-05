@@ -4,15 +4,19 @@ namespace App\Controller\Admin\Structure;
 
 use App\Entity\Structure\Employee;
 use App\Form\Structure\EmployeeType;
+use App\Security\EmailVerifier;
 use App\Service\User\PasswordEncoderServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -33,15 +37,30 @@ class EmployeeController extends AbstractController
     private $encoderServices;
 
     /**
+     * @var FlashBagInterface
+     */
+    private $flashBag;
+
+    /**
+     * @var EmailVerifier
+     */
+    private $emailVerifier;
+
+    /**
      * EmployeeController constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param PasswordEncoderServices $encoderServices
+     * @param FlashBagInterface $flashBag
+     * @param EmailVerifier $emailVerifier
      */
-    public function __construct(EntityManagerInterface $entityManager, PasswordEncoderServices $encoderServices)
+    public function __construct(EntityManagerInterface $entityManager, PasswordEncoderServices $encoderServices,
+                                FlashBagInterface $flashBag, EmailVerifier $emailVerifier)
     {
         $this->entityManager   = $entityManager;
         $this->encoderServices = $encoderServices;
+        $this->flashBag        = $flashBag;
+        $this->emailVerifier   = $emailVerifier;
     }
 
     /**
@@ -155,6 +174,20 @@ class EmployeeController extends AbstractController
 
             $this->entityManager->persist($employee);
             $this->entityManager->flush();
+
+            /**
+             * Generate a signed url and email it to the user
+             */
+            $this->emailVerifier->sendEmailConfirmation('app_register_verify_email', $employee,
+                (new TemplatedEmail())
+                    ->from(new Address('benjamin.manguet@gmail.com', 'Vetogiciel'))
+                    ->to($employee->getEmail())
+                    ->subject('Confirmation d\'adresse : Vetogiciel')
+                    ->htmlTemplate('email/confirmation_email.html.twig')
+            );
+
+            $this->flashBag->add('warning', 'Merci de faire confirmer l\'adresse mail : ' . $employee->getEmail() . ' afin d\'accéder aux fonctionnalités.');
+
 
             return $this->redirectToRoute('admin_employee_index');
         }

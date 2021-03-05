@@ -20,10 +20,27 @@
         {% block navbar %}
         {% endblock %}
 
+        {% for label, messages in app.flashes %}
+            <div id="flashMessage" style="position: absolute; left: 250px; width: 78vw">
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
         {% block body %}{% endblock %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
+            <script>
+                $(document).ready(function(){
+                    setTimeout(function() {
+                        $('#flashMessage').fadeOut('fast');
+                    }, 5000);
+                });
+            </script>
         {% endblock %}
 
         {% block endjavascript %}
