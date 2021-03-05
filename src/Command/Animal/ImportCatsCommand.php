@@ -71,6 +71,7 @@ class ImportCatsCommand extends Command
      * @param OutputInterface $output
      *
      * @return int
+     *
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws RedirectionExceptionInterface

@@ -35,7 +35,7 @@ class Employee implements EntityDateInterface, UserEntityInterface, UserInterfac
     private $sector;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $isVerified = false;
 
@@ -104,19 +104,19 @@ class Employee implements EntityDateInterface, UserEntityInterface, UserInterfac
     }
 
     /**
-     * @return bool
+     * @return null|bool
      */
-    public function isVerified(): bool
+    public function isVerified(): ?bool
     {
         return $this->isVerified;
     }
 
     /**
-     * @param bool $isVerified
+     * @param null|bool $isVerified
      *
      * @return $this
      */
-    public function setIsVerified(bool $isVerified): self
+    public function setIsVerified(?bool $isVerified): self
     {
         $this->isVerified = $isVerified;
 
