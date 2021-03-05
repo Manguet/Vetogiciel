@@ -2,6 +2,9 @@
 
 namespace App\Entity\Patients;
 
+use App\Interfaces\DateTime\EntityDateInterface;
+use App\Traits\DateTime\EntityDateTrait;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Patients\AnimalRepository;
@@ -9,9 +12,14 @@ use App\Entity\Structure\WaitingRoom;
 
 /**
  * @ORM\Entity(repositoryClass=AnimalRepository::class)
+ * @ORM\HasLifecycleCallbacks
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Animal
+class Animal implements EntityDateInterface
 {
+    use EntityDateTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -35,7 +43,7 @@ class Animal
     private $color;
 
     /**
-     * @ORM\Column(type="string", length=15, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $transponder;
 
@@ -57,15 +65,15 @@ class Animal
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isAlive;
+    private $isAlive = true;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Patients\Race")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Patients\Race", cascade={"persist"})
      */
     private $race;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Patients\Species")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Patients\Species", cascade={"persist"})
      */
     private $species;
 
@@ -88,6 +96,16 @@ class Animal
      * @ORM\ManyToOne(targetEntity="App\Entity\Structure\WaitingRoom", inversedBy="animals")
      */
     private $waitingRoom;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $birthdate;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $idLocalization;
 
     public function getId(): ?int
     {
@@ -263,6 +281,30 @@ class Animal
     public function setWaitingRoom(?WaitingRoom $waitingRoom): self
     {
         $this->waitingRoom = $waitingRoom;
+
+        return $this;
+    }
+
+    public function getBirthdate()
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate($birthdate): self
+    {
+        $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
+    public function getIdLocalization(): ?string
+    {
+        return $this->idLocalization;
+    }
+
+    public function setIdLocalization(?string $idLocalization): self
+    {
+        $this->idLocalization = $idLocalization;
 
         return $this;
     }

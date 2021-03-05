@@ -1,0 +1,83 @@
+body {
+    margin: 50px;
+    padding: 20px;
+    border: 1px solid #000;
+    background-color: #EAEDED;
+    font-family: 'Crimson Text', serif;
+}
+
+h1 {
+    color: #000;
+    font-weight: normal;
+    font-family: 'Raleway', sans-serif;
+}
+.bottom {
+    background-color: #efefee;
+}
+.logo {
+    width: 100%;
+}
+.text-center {
+    text-align: center;
+}
+a {
+    text-decoration: none;
+    color: black;
+    text-underline: none;
+}
+a :hover {
+    background-color: #AED6F1;
+    cursor: pointer;
+}
+table.button table td {
+    background-color: #AED6F1;
+    border: 2px solid #AED6F1;
+}
+.center-div {
+    text-align: center;
+}
+
+/** BUTTON */
+.custom-button {
+    color: #FFF;
+    height: 60px;
+    cursor: pointer;
+    border: 4px solid #AED6F1;
+    box-shadow: 0px 0px 0px 1px #FFF inset;
+    background-color: #AED6F1;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    z-index: 2;
+}
+
+.custom-button :hover {
+     letter-spacing: 0.13rem;
+     color: #FFF;
+}
+
+
+.custom-button:after {
+    background: #FFF;
+    border: 0px solid #000;
+    content: "";
+    height: 155px;
+    left: -75px;
+    opacity: .8;
+    position: absolute;
+    top: -50px;
+    -webkit-transform: rotate(35deg);
+    transform: rotate(35deg);
+    width: 50px;
+    transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+    z-index: 1;
+}
+
+.custom-button:hover:after {
+    background: #1DB5FF;
+    border: 20px solid #FFF;
+    opacity: 0;
+    left: 120%;
+    -webkit-transform: rotate(40deg);
+    transform: rotate(40deg);
+}

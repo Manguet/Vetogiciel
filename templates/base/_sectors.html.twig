@@ -1,0 +1,33 @@
+{% if sectors is defined %}
+    <div class="container mt-5">
+        <div class="text-center">
+            <h2>
+                <span class="main-color">Nos</span> Services
+            </h2>
+
+            {% for sectorByThree in sectors %}
+                <div class="card-deck mt-5">
+
+                    {% for sector in sectorByThree %}
+                        <div class="card">
+                            <img class="card-img-top" src="{{ asset('build/images/carousel-1.jpg') }}" alt="{{ sector.name }}" title="image de {{ sector.name }}">
+                            <div class="card-body">
+                                <button class="custom-button card-title">
+                                    <a href="#">
+                                        {{ sector.name }}
+                                    </a>
+                                </button>
+                                {% if sector.description %}
+                                    <p class="card-text">
+                                        {{ sector.description|slice(0, 120) ~ '...' }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

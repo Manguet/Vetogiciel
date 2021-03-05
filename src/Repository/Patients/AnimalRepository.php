@@ -4,13 +4,10 @@ namespace App\Repository\Patients;
 
 use App\Entity\Patients\Animal;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Animal|null find($id, $lockMode = null, $lockVersion = null)
- * @method Animal|null findOneBy(array $criteria, array $orderBy = null)
- * @method Animal[]    findAll()
- * @method Animal[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class AnimalRepository extends ServiceEntityRepository
 {

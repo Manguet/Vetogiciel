@@ -1,0 +1,46 @@
+.index-admin {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  h1 {
+    text-transform: uppercase;
+  }
+
+  img {
+    height: 150px;
+  }
+}
+
+.container-admin {
+  margin: 100px 20px 20px 0px;
+
+  a {
+    color: $black;
+
+    &:hover {
+      color: $second-color;
+    }
+  }
+
+  .navbar {
+    background-color: $light-grey;
+    height: 82vh;
+  }
+
+  .border-nav-accueil {
+    border-top: 1px solid $grey-shadow;
+    padding: 5px;
+    margin: 0px;
+    width: 100%;
+  }
+
+  .logo-admin-accueil {
+    color: $second-color;
+    font-size: 1.2em;
+    margin: 10px;
+  }
+}

@@ -1,0 +1,234 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block morestylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/datatables.bootstrap.css') }}"/>
+{% endblock %}
+
+{% block body %}
+    <div class="accueil-content">
+        <div class="wrapper">
+            {% include('admin/manage/_general_nav.html.twig') %}
+            <div class="main_content">
+                <div class="info">
+                    <div class="container">
+                        <div class="d-flex align-content-around justify-content-between">
+                            <div>
+                                <a href="{{ path('admin_user_index') }}">
+                                    <button class="custom-button">
+                                        <i class="fas fa-backspace"></i> Retour
+                                    </button>
+                                </a>
+                            </div>
+
+                            <div class="d-flex">
+                                <div class="mr-5">
+                                    <a href="{{ path('admin_animal_new', { 'id' : client.id }) }}">
+                                        <button class="custom-button">
+                                            <i class="fas fa-dog"></i> Ajouter un animal
+                                        </button>
+                                    </a>
+                                </div>
+
+                                <div class="mr-5">
+                                    <a href="#">
+                                        <button class="custom-button">
+                                            <i class="fas fa-file-invoice-dollar"></i> Factures
+                                        </button>
+                                    </a>
+                                </div>
+                                <div class="mr-5">
+                                    <a href="#">
+                                        <button class="custom-button">
+                                            <i class="far fa-calendar-alt"></i> Donner un RDV
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-content-between justify-content-between">
+                            <a href="{{ path('admin_user_edit', { 'id' : client.id }) }}">
+                                <button class="custom-button">
+                                    <i class="fas fa-user-edit"></i> Modifier
+                                </button>
+                            </a>
+                            <div>
+                                {% if client.isInDebt %}
+                                    <div class="warning-client">
+                                        <i class="fas fa-exclamation-triangle"></i> Endetté
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <ul class="tabs">
+                            <li class="tab-link current" data-tab="tab-1">Informations Générales</li>
+                            <li class="tab-link" data-tab="tab-2">Coordonnées</li>
+                            <li class="tab-link" data-tab="tab-3">Commentaires</li>
+                            <li class="tab-link" data-tab="tab-4">Animaux</li>
+                            <li class="tab-link" data-tab="tab-5">Configuration</li>
+                        </ul>
+
+                        <div id="tab-1" class="tab-content current">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="text-show">
+                                        <span>Nom : </span> {{ client.lastname }}
+                                    </p>
+                                    <p class="text-show">
+                                        <span>Prénom : </span> {{ client.firstname }}
+                                    </p>
+                                    <p class="text-show">
+                                        <span>Email : </span> {{ client.email }}
+                                    </p>
+                                </div>
+
+
+
+                                <div>
+                                    <p class="text-show">
+                                        <span>Dernière visite : </span> {{ client.lastVisit|date('d/m/Y') }}
+                                    </p>
+                                    <p class="text-show">
+                                        <span>Dernier aliment acheté : </span> XXXXX
+                                    </p>
+                                    <p class="text-show">
+                                        <span>Aliment le plus acheté : </span> XXX
+                                    </p>
+                                    <p class="text-show">
+                                        <span>Dernier vétérinaire vu : </span> Docteur XXXX
+                                    </p>
+                                    <p class="text-show">
+                                        <span>Vétérinaire référent : </span> Docteur XXXX
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tab-2" class="tab-content">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="text-show">
+                                        <span>Adresse : </span>
+                                    </p>
+                                    <p class="text-show">
+                                        {% if client.address %}
+                                            {{ client.address }}
+                                        {% endif %}
+                                    </p>
+                                    <p class="text-show">
+                                        {% if client.address2 %}
+                                            {{ client.address2 }}
+                                        {% endif %}
+                                    </p>
+                                    <p class="text-show">
+                                        {% if client.postalCode and client.city %}
+                                            {{ client.postalCode }} {{ client.city }}
+                                        {% endif %}
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <p class="text-show">
+                                        {% if client.phoneNumber %}
+                                            <span>Téléphone principal : </span> {{ client.phoneNumber }}
+                                        {% endif %}
+                                    </p>
+                                    <p class="text-show">
+                                        {% if client.phoneNumber2 %}
+                                            <span>Téléphone secondaire : </span> {{ client.phoneNumber2 }}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tab-3" class="tab-content">
+                            <p class="text-show d-flex align-content-between justify-content-between">
+                                {% if client.comment %}
+                                    <span>{{ client.comment.title}} : </span>
+                                    <br>
+                                    {% if client.comment.description %}
+                                        {{ client.comment.description }}
+                                    {% endif %}
+                                    <a href="#">
+                                        <button class="custom-button">
+                                            <i class="far fa-comment-dots"></i> modifier le commentaire
+                                        </button>
+                                    </a>
+                                {% else %}
+                                    Aucun Commentaire
+                                    <a href="#">
+                                        <button class="custom-button">
+                                            <i class="far fa-comment"></i> Ajouter un commentaire
+                                        </button>
+                                    </a>
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <div id="tab-4" class="tab-content">
+                            <div id="my-tab">
+
+                            </div>
+                        </div>
+
+                        <div id="tab-5" class="tab-content">
+                            <p class="text-show">
+                                <span>Rôles : </span>
+                            </p>
+                            <ul>
+                            {% for role in client.roles %}
+                                <li>
+                                    {{ role }}
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block endjavascript %}
+    <script src="{{ asset('bundles/datatables/js/datatables.js') }}"></script>
+    <script>
+        $(function() {
+            $('#my-tab').initDataTables({{ datatable_settings(table) }}, {
+                searching: true,
+                dom:'lTfgtpi',
+                language: {
+                    "url": "https://cdn.datatables.net/plug-ins/1.10.21/i18n/French.json"
+                },
+                pageLength: 25
+            }).then(function (dt) {
+
+                /** Ajax delete */
+                $('#my-tab tbody').on('click', '.deleteAjax', function (e) {
+                    e.preventDefault();
+
+                    let url = $(this).attr('href');
+                    swal({
+                        title      : 'ATTENTION',
+                        text       : 'Voulez-vous vraiment supprimer cet animal ?',
+                        icon       : 'warning',
+                        buttons    : true,
+                        dangerMode : true,
+                    }).then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                type      : 'POST',
+                                url       : url,
+                                data_type : 'json',
+                                data      : {}
+                            }).done(function (data) {
+                                dt.ajax.reload();
+                            })
+                        }
+                    })
+                })
+            })
+        });
+    </script>
+{% endblock %}

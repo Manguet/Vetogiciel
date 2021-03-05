@@ -4,13 +4,10 @@ namespace App\Repository\Structure;
 
 use App\Entity\Structure\WaitingRoom;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method WaitingRoom|null find($id, $lockMode = null, $lockVersion = null)
- * @method WaitingRoom|null findOneBy(array $criteria, array $orderBy = null)
- * @method WaitingRoom[]    findAll()
- * @method WaitingRoom[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class WaitingRoomRepository extends ServiceEntityRepository
 {

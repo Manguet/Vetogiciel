@@ -2,15 +2,22 @@
 
 namespace App\Entity\Patients;
 
+use App\Interfaces\DateTime\EntityDateInterface;
+use App\Traits\DateTime\EntityDateTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Patients\SpeciesRepository;
 
 /**
  * @ORM\Entity(repositoryClass=SpeciesRepository::class)
+ * @ORM\HasLifecycleCallbacks
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Species
+class Species implements EntityDateInterface
 {
+    use EntityDateTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -22,6 +29,12 @@ class Species
      * @ORM\Column(type="string", length=255)
      */
     private $name;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Race::class, inversedBy="species")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $race;
 
     public function getId(): ?int
     {
@@ -36,6 +49,18 @@ class Species
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getRace(): ?Race
+    {
+        return $this->race;
+    }
+
+    public function setRace(?Race $race): self
+    {
+        $this->race = $race;
 
         return $this;
     }

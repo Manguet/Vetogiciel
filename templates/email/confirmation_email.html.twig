@@ -1,0 +1,51 @@
+{% apply inky_to_html|inline_css(source('@styles/email.css')) %}
+    <container>
+        <row class="header">
+            <div class="center-div">
+                <a href="{{ url('index') }}">
+                    <img src="{{ email.image('@images/vetogiciel-logo.png') }}" class="logo" alt="Vetogiciel Logo">
+                </a>
+            </div>
+        </row>
+        <row>
+            <div class="center-div">
+                <h1>
+                    Merci de confirmer votre adresse mail
+                </h1>
+            </div>
+        </row>
+        <row>
+            <columns>
+                <p>
+                    Afin de <strong>confirmer votre adresse mail</strong>, merci de cliquer sur le lien suivant :
+                </p>
+                <br>
+            </columns>
+        </row>
+        <row>
+            <div>
+                <div class="center-div">
+                    <button class="custom-button">
+                        <a href="{{ signedUrl|raw }}">
+                            Je confirme mon adresse
+                        </a>
+                    </button>
+                </div>
+
+                <br>
+                <p>
+                    Ce lien expire dans {{ expiresAt|date('g') }} heure{% if expiresAt|date('g') > 1 %}s{% endif %}
+                </p>
+            </div>
+        </row>
+        <row>
+            <div style="margin-top: 20px; text-align: end">
+                Cordialement.
+                <br>
+                <div>
+                    L'équipe <a href="{{ url('index') }}">Vétogiciel</a>
+                </div>
+            </div>
+        </row>
+    </container>
+{% endapply %}

@@ -1,0 +1,86 @@
+<div>
+    {{ form_start(form) }}
+
+    <ul class="tabs">
+        <li class="tab-link current" data-tab="tab-1">Informations Générales</li>
+        <li class="tab-link" data-tab="tab-2">Coordonnées</li>
+        <li class="tab-link" data-tab="tab-3">Informations légales</li>
+    </ul>
+
+    <div id="tab-1" class="tab-content current">
+        <div>
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+        </div>
+
+        <div>
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email) }}
+        </div>
+
+        <div>
+            {{ form_label(form.type) }}
+            {{ form_widget(form.type) }}
+        </div>
+    </div>
+
+    <div id="tab-2" class="tab-content">
+        <div>
+            {{ form_label(form.address) }}
+            {{ form_widget(form.address) }}
+        </div>
+
+        <div>
+            {{ form_label(form.address2) }}
+            {{ form_widget(form.address2) }}
+        </div>
+
+        <div>
+            {{ form_label(form.postalCode) }}
+            {{ form_widget(form.postalCode) }}
+        </div>
+
+        <div>
+            {{ form_label(form.city) }}
+            {{ form_widget(form.city) }}
+        </div>
+
+        <div>
+            {{ form_label(form.phone) }}
+            {{ form_widget(form.phone) }}
+        </div>
+
+        <div>
+            {{ form_label(form.phone2) }}
+            {{ form_widget(form.phone2) }}
+        </div>
+    </div>
+
+    <div id="tab-3" class="tab-content">
+        <div>
+            {{ form_label(form.fiscalDate) }}
+            {{ form_widget(form.fiscalDate) }}
+        </div>
+
+        <div>
+            {{ form_label(form.status) }}
+            {{ form_widget(form.status) }}
+        </div>
+
+        <div>
+            {{ form_label(form.siren) }}
+            {{ form_widget(form.siren) }}
+        </div>
+
+        <div>
+            {{ form_label(form.siret) }}
+            {{ form_widget(form.siret) }}
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center mb-5">
+        {{ form_widget(form.save) }}
+    </div>
+
+    {{ form_end(form) }}
+</div>

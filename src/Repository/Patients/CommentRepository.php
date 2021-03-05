@@ -4,13 +4,10 @@ namespace App\Repository\Patients;
 
 use App\Entity\Patients\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Comment|null find($id, $lockMode = null, $lockVersion = null)
- * @method Comment|null findOneBy(array $criteria, array $orderBy = null)
- * @method Comment[]    findAll()
- * @method Comment[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class CommentRepository extends ServiceEntityRepository
 {

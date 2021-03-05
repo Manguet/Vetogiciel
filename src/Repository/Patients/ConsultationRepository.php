@@ -4,13 +4,10 @@ namespace App\Repository\Patients;
 
 use App\Entity\Patients\Consultation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Consultation|null find($id, $lockMode = null, $lockVersion = null)
- * @method Consultation|null findOneBy(array $criteria, array $orderBy = null)
- * @method Consultation[]    findAll()
- * @method Consultation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class ConsultationRepository extends ServiceEntityRepository
 {

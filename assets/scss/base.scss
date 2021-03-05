@@ -1,0 +1,253 @@
+/** MAIN NAVBAR */
+
+.logo {
+  height: 60px;
+}
+
+/** Shadow on bottom nav bar */
+.navbar {
+  box-shadow: 0px 3px 5px $grey-shadow;
+  text-transform: uppercase;
+  z-index: 9;
+
+  /** Title in bold on nav bar if text */
+  .title-nav {
+    font-weight: bold;
+    margin-left: 50px;
+  }
+
+  /** First letter in upper text */
+  .uppertext {
+    font-size: 1.5em;
+  }
+
+  /** Creation of separators between nav bar item */
+  .border-nav {
+    border-right: 1px solid $grey-shadow;
+    padding: 5px;
+    margin: 0px;
+  }
+}
+
+/** Color on selected item in navbar in main color*/
+.navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {
+  color: $second-color;
+}
+
+/** Color on hover item in nav var in main color */
+.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+  color: $second-color !important;
+}
+
+/** Align text-center in nav bar */
+.navbar-nav {
+  float:none;
+  margin:0 auto;
+  display: block;
+  text-align: center;
+}
+
+.navbar-nav > li {
+  display: inline-block;
+  float:none;
+}
+
+
+/** text center in collapse */
+@media (max-width: 992px) {
+
+  .navbar-nav > li {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /** Display border in breakpoint */
+  .navbar {
+    .border-nav {
+      width: 0px;
+      height: 0px;
+      padding: 0px;
+      border: none;
+    }
+  }
+}
+
+/** MAIN CAROUSEL */
+
+/** Resize carousel */
+.carousel-slide {
+  width: 100%;
+}
+.carousel-inner {
+  width:100%;
+  height: 100vh !important;
+}
+
+/** Place text on carousel */
+.carousel-text {
+  position: absolute;
+  text-transform: uppercase;
+  font-weight: bold;
+  top: 45vh;
+  text-shadow: 0px 0px 4px $main-color;
+
+  .carousel-title {
+    font-size: 2em;
+    color: $second-color;
+  }
+}
+
+@media (max-width: 700px) {
+  .carousel-text {
+    display: none;
+  }
+}
+
+/** BUTTON */
+.custom-button {
+  color: $main-color;
+  height: 60px;
+  cursor: pointer;
+  border: 4px solid #AED6F1;
+  box-shadow:0px 0px 0px 1px $main-color inset;
+  background-color: $light-blue;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  z-index: 2;
+
+  &:hover {
+    letter-spacing: 0.13rem;
+    color: $main-color;
+  }
+}
+
+.custom-button:after {
+  background: $main-color;
+  border: 0px solid $black;
+  content: "";
+  height: 155px;
+  left: -75px;
+  opacity: .8;
+  position: absolute;
+  top: -50px;
+  -webkit-transform: rotate(35deg);
+  transform: rotate(35deg);
+  width: 50px;
+  transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+  z-index: 1;
+}
+
+.custom-button:hover:after {
+  background: $second-color;
+  border: 20px solid $main-color;
+  opacity: 0;
+  left: 120%;
+  -webkit-transform: rotate(40deg);
+  transform: rotate(40deg);
+}
+
+/** BUTTON DATATABLE */
+.datatable-button {
+  color: $main-color;
+  height: 33px;
+  cursor: pointer;
+  border: 4px solid #AED6F1;
+  box-shadow:0px 0px 0px 1px $main-color inset;
+  background-color: $light-blue;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  z-index: 2;
+
+  &:hover {
+    letter-spacing: 0.13rem;
+    color: $light-blue;
+    background-color: $main-color;
+  }
+}
+
+.datatable-button:after {
+  background: $main-color;
+  border: 0px solid $black;
+  content: "";
+  height: 155px;
+  left: -75px;
+  opacity: .8;
+  position: absolute;
+  top: -50px;
+  -webkit-transform: rotate(35deg);
+  transform: rotate(35deg);
+  width: 50px;
+  transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+  z-index: 1;
+}
+
+.datatable-button:hover:after {
+  background: $second-color;
+  border: 20px solid $main-color;
+  opacity: 0;
+  left: 120%;
+  -webkit-transform: rotate(40deg);
+  transform: rotate(40deg);
+}
+
+/** FOOTER */
+/** Main config */
+.footer {
+  height: 50px;
+  background-color: $main-color;
+  color: $grey-shadow;
+  text-transform: uppercase;
+  font-size: 0.7em;
+  border-top: 1px solid $grey-shadow;
+  border-bottom: 1px solid $grey-shadow;
+
+  /** Modify a comportment */
+  a {
+    text-decoration: none;
+    color: $grey-shadow;
+
+    &:hover {
+      color: $second-color;
+    }
+  }
+
+  /** Style on social's logo */
+  .logo-footer {
+    font-size: 1.5em;
+    margin-left: 10px;
+  }
+
+  .border-footer {
+    border-right: 1px solid $grey-shadow;
+    padding: 5px;
+    margin: 0px;
+    height: 20px;
+  }
+}
+
+/** CARDS */
+.card {
+  background-color: #F2F4F4;
+  box-shadow: 0px 0px 7px $grey-shadow;
+
+  .card-body {
+    color: $grey-shadow;
+    font-size: 0.7em;
+  }
+
+  .card-title {
+    color: $black;
+
+    a {
+      color: $main-color;
+      text-decoration: none;
+      font-size: 1.5em;
+    }
+
+    span {
+      font-size: 1.5em;
+    }
+  }
+}
