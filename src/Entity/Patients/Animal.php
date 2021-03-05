@@ -261,12 +261,11 @@ class Animal implements EntityDateInterface
         return $this->folder;
     }
 
-    public function setFolder(Folder $folder): self
+    public function setFolder(?Folder $folder): self
     {
         $this->folder = $folder;
 
-        // set the owning side of the relation if necessary
-        if ($folder->getAnimal() !== $this) {
+        if ($folder && $folder->getAnimal() !== $this) {
             $folder->setAnimal($this);
         }
 
