@@ -29,7 +29,6 @@ class AnimalFixtures extends Fixture implements DependentFixtureInterface
         'species'        => null,
         'comment'        => null,
         'client'         => null,
-        'folder'         => null,
         'waitingRoom'    => null,
         'birthdate'      => null,
         'idLocalization' => 'Gouttière jugulaire gauche',
@@ -49,9 +48,7 @@ class AnimalFixtures extends Fixture implements DependentFixtureInterface
         'isAlive'        => true,
         'race'           => null,
         'species'        => null,
-        'comment'        => null,
         'client'         => null,
-        'folder'         => null,
         'waitingRoom'    => null,
         'birthdate'      => null,
         'idLocalization' => 'Gouttière jugulaire gauche',
@@ -71,9 +68,7 @@ class AnimalFixtures extends Fixture implements DependentFixtureInterface
         'isAlive'        => false,
         'race'           => null,
         'species'        => null,
-        'comment'        => null,
         'client'         => null,
-        'folder'         => null,
         'waitingRoom'    => null,
         'birthdate'      => null,
         'idLocalization' => 'Gouttière jugulaire gauche',
@@ -118,8 +113,15 @@ class AnimalFixtures extends Fixture implements DependentFixtureInterface
                     $value = $today->modify('-' . $ANIMAL['age'] . ' year');
                 }
 
+                if (0 === strpos($setField, 'comment')) {
+
+                    $value = $this->getReference('comment_2');
+                }
+
                 $animal->{'set' . ucfirst($setField)}($value);
             }
+
+            $this->addReference('animal_' . $key, $animal);
 
             $manager->persist($animal);
         }
@@ -135,6 +137,7 @@ class AnimalFixtures extends Fixture implements DependentFixtureInterface
         return [
             RaceFixtures::class,
             SpeciesFixtures::class,
+            CommentFixtures::class,
         ];
     }
 }

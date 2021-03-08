@@ -2,6 +2,7 @@
 
 namespace App\Entity\Patients;
 
+use App\Entity\Structure\Bill;
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Traits\DateTime\EntityDateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -53,10 +54,16 @@ class Folder implements EntityDateInterface
      */
     private $consultations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Bill::class, mappedBy="folder")
+     */
+    private $bill;
+
     public function __construct()
     {
         $this->documents = new ArrayCollection();
         $this->consultations = new ArrayCollection();
+        $this->bill = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -156,6 +163,37 @@ class Folder implements EntityDateInterface
             // set the owning side to null (unless already changed)
             if ($consultation->getFolder() === $this) {
                 $consultation->setFolder(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Bill[]
+     */
+    public function getBill(): Collection
+    {
+        return $this->bill;
+    }
+
+    public function addBill(Bill $bill): self
+    {
+        if (!$this->bill->contains($bill)) {
+            $this->bill[] = $bill;
+            $bill->setFolder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBill(Bill $bill): self
+    {
+        if ($this->bill->contains($bill)) {
+            $this->bill->removeElement($bill);
+            // set the owning side to null (unless already changed)
+            if ($bill->getFolder() === $this) {
+                $bill->setFolder(null);
             }
         }
 
