@@ -57,13 +57,13 @@ class Folder implements EntityDateInterface
     /**
      * @ORM\OneToMany(targetEntity=Bill::class, mappedBy="folder")
      */
-    private $bill;
+    private $bills;
 
     public function __construct()
     {
-        $this->documents = new ArrayCollection();
+        $this->documents     = new ArrayCollection();
         $this->consultations = new ArrayCollection();
-        $this->bill = new ArrayCollection();
+        $this->bills         = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -172,15 +172,15 @@ class Folder implements EntityDateInterface
     /**
      * @return Collection|Bill[]
      */
-    public function getBill(): Collection
+    public function getBills(): Collection
     {
-        return $this->bill;
+        return $this->bills;
     }
 
     public function addBill(Bill $bill): self
     {
-        if (!$this->bill->contains($bill)) {
-            $this->bill[] = $bill;
+        if (!$this->bills->contains($bill)) {
+            $this->bills[] = $bill;
             $bill->setFolder($this);
         }
 
@@ -189,8 +189,8 @@ class Folder implements EntityDateInterface
 
     public function removeBill(Bill $bill): self
     {
-        if ($this->bill->contains($bill)) {
-            $this->bill->removeElement($bill);
+        if ($this->bills->contains($bill)) {
+            $this->bills->removeElement($bill);
             // set the owning side to null (unless already changed)
             if ($bill->getFolder() === $this) {
                 $bill->setFolder(null);

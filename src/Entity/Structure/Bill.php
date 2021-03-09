@@ -42,7 +42,7 @@ class Bill implements EntityDateInterface
     private $priceTTC;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Folder::class, inversedBy="bill")
+     * @ORM\ManyToOne(targetEntity=Folder::class, inversedBy="bills")
      */
     private $folder;
 
