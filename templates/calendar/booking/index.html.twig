@@ -27,8 +27,8 @@
                 <td>{{ booking.dateCreation ? booking.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ booking.dateUpdate ? booking.dateUpdate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('calendar_booking_show', {'id': booking.id}) }}">show</a>
-                    <a href="{{ path('calendar_booking_edit', {'id': booking.id}) }}">edit</a>
+                    <a href="{{ path('booking_show', {'id': booking.id}) }}">show</a>
+                    <a href="{{ path('booking_edit', {'id': booking.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -39,5 +39,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('calendar_booking_new') }}">Create new</a>
+    <a href="{{ path('booking_new') }}">Create new</a>
 {% endblock %}

@@ -4,7 +4,7 @@ namespace App\Controller\Calendar;
 
 use App\Entity\Calendar\Booking;
 use App\Form\Calendar\BookingType;
-use App\Repository\Calendar\BookingRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,20 +18,38 @@ use Symfony\Component\Routing\Annotation\Route;
 class BookingController extends AbstractController
 {
     /**
-     * @Route("/", name="index", methods={"GET"})
-     * @param BookingRepository $bookingRepository
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * BookingController constructor.
+     *
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @Route("", name="index", methods={"GET"})
      *
      * @return Response
      */
-    public function index(BookingRepository $bookingRepository): Response
+    public function index(): Response
     {
+        $bookings = $this->entityManager->getRepository(Booking::class)
+            ->findAll();
+
         return $this->render('calendar/booking/index.html.twig', [
-            'bookings' => $bookingRepository->findAll(),
+            'bookings' => $bookings,
         ]);
     }
 
     /**
      * @Route("/new", name="new", methods={"GET","POST"})
+     *
      * @param Request $request
      *
      * @return Response
@@ -57,7 +75,8 @@ class BookingController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET"})
+     * @Route("/show/{id}", name="show", methods={"GET"})
+     *
      * @param Booking $booking
      *
      * @return Response
@@ -71,6 +90,7 @@ class BookingController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
+     *
      * @param Request $request
      * @param Booking $booking
      *
@@ -95,6 +115,7 @@ class BookingController extends AbstractController
 
     /**
      * @Route("/{id}", name="delete", methods={"DELETE"})
+     *
      * @param Request $request
      * @param Booking $booking
      *

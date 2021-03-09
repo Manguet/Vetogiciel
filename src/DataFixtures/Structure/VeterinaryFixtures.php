@@ -32,7 +32,7 @@ class VeterinaryFixtures extends Fixture implements DependentFixtureInterface
      * First veterinary
      */
     public const VETERINARY_ONE = [
-        'email'        => 'stephane.burean@gmail.com',
+        'email'        => 'stephane.bureau@gmail.com',
         'roles'        => ['ROLE_USER'],
         'password'     => 'Bureau',
         'firstname'    => 'Stéphane',

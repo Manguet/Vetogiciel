@@ -2,6 +2,8 @@
 
 namespace App\Service\Dates;
 
+use App\Entity\Patients\Animal;
+use DateInterval;
 use DateTime;
 use DateTimeZone;
 use Exception;
@@ -35,5 +37,30 @@ class DateServices
         $timeZone = new DateTimeZone('Europe/Paris');
 
         return new DateTime('now', $timeZone);
+    }
+
+    /**
+     * @param Animal $animal
+     *
+     * @throws Exception
+     *
+     * @return void
+     */
+    public function calculateAges(Animal $animal): void
+    {
+        if (null !== $animal->getBirthdate()) {
+            $actualDate = $this->getCurrentDateObject();
+
+            $interval = $actualDate->diff($animal->getBirthdate())->y;
+            $animal->setAge($interval);
+
+        } elseif (null !== $animal->getAge()) {
+            $actualDate = $this->getCurrentDateObject();
+
+            $interval = new DateInterval('P' . $animal->getAge() . 'Y');
+            $date = $actualDate->sub($interval);
+
+            $animal->setBirthdate($date);
+        }
     }
 }

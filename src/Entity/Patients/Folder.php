@@ -45,17 +45,17 @@ class Folder implements EntityDateInterface
     private $animal;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Patients\Document", mappedBy="folder")
+     * @ORM\OneToMany(targetEntity="App\Entity\Patients\Document", mappedBy="folder", cascade={"persist", "remove"})
      */
     private $documents;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Patients\Consultation", mappedBy="folder")
+     * @ORM\OneToMany(targetEntity="App\Entity\Patients\Consultation", mappedBy="folder", cascade={"persist", "remove"})
      */
     private $consultations;
 
     /**
-     * @ORM\OneToMany(targetEntity=Bill::class, mappedBy="folder")
+     * @ORM\OneToMany(targetEntity=Bill::class, mappedBy="folder", cascade={"persist", "remove"})
      */
     private $bills;
 
