@@ -22,4 +22,5 @@ return [
     SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle::class => ['all' => true],
     Assoconnect\MJMLBundle\AssoconnectMJMLBundle::class => ['all' => true],
     NotFloran\MjmlBundle\MjmlBundle::class => ['all' => true],
+    Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
 ];

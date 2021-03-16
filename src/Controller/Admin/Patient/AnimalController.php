@@ -72,7 +72,7 @@ class AnimalController extends AbstractController
             }
 
             /** Calculate age or birthday */
-            $this->calculateAges($animal);
+            $this->dateServices->calculateAges($animal);
 
             $this->entityManager->persist($animal);
             $this->entityManager->flush();
@@ -86,31 +86,6 @@ class AnimalController extends AbstractController
             'client' => $client,
             'form'   => $form->createView(),
         ]);
-    }
-
-    /**
-     * @param Animal $animal
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    private function calculateAges(Animal $animal): void
-    {
-        if (null !== $animal->getBirthdate()) {
-            $actualDate = $this->dateServices->getCurrentDateObject();
-
-            $interval = $actualDate->diff($animal->getBirthdate())->y;
-            $animal->setAge($interval);
-
-        } elseif (null !== $animal->getAge()) {
-            $actualDate = $this->dateServices->getCurrentDateObject();
-
-            $interval = new DateInterval('P' . $animal->getAge() . 'Y');
-            $date = $actualDate->sub($interval);
-
-            $animal->setBirthdate($date);
-        }
     }
 
     /**
@@ -141,7 +116,7 @@ class AnimalController extends AbstractController
             }
 
             /** Calculate age or birthday */
-            $this->calculateAges($animal);
+            $this->dateServices->calculateAges($animal);
 
             $this->entityManager->persist($animal);
             $this->entityManager->flush();

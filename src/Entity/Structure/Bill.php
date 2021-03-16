@@ -2,6 +2,7 @@
 
 namespace App\Entity\Structure;
 
+use App\Entity\Patients\Folder;
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Traits\DateTime\EntityDateTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,6 +41,11 @@ class Bill implements EntityDateInterface
      */
     private $priceTTC;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Folder::class, inversedBy="bills")
+     */
+    private $folder;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,6 +83,18 @@ class Bill implements EntityDateInterface
     public function setPriceTTC(?float $priceTTC): self
     {
         $this->priceTTC = $priceTTC;
+
+        return $this;
+    }
+
+    public function getFolder(): ?Folder
+    {
+        return $this->folder;
+    }
+
+    public function setFolder(?Folder $folder): self
+    {
+        $this->folder = $folder;
 
         return $this;
     }
