@@ -1,0 +1,165 @@
+<?php
+
+namespace App\Controller\Admin\Content;
+
+use App\Entity\Contents\Article;
+use App\Form\Content\ArticleType;
+use Doctrine\ORM\EntityManagerInterface;
+use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
+use Omines\DataTablesBundle\Column\TextColumn;
+use Omines\DataTablesBundle\DataTableFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
+ *
+ * @Route("/admin/content", name="admin_content_")
+ */
+class ArticleController extends AbstractController
+{
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * ArticleController constructor.
+     *
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @Route("", name="index")
+     *
+     * @param Request $request
+     * @param DataTableFactory $dataTableFactory
+     *
+     * @return Response
+     */
+    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    {
+        $table = $dataTableFactory->create()
+            ->add('title', TextColumn::class, [
+                'label' => 'Titre de l\'artile',
+                'orderable' => true,
+                'render' => function ($value, $content) {
+                    return '<a href="/admin/content/edit/' . $content->getId() . '">' . $value . '</a>';
+                }
+            ])
+            ->add('isActivated', TextColumn::class, [
+                'label' => 'Article actif ?',
+                'orderable' => true,
+            ])
+            ->add('priority', TextColumn::class, [
+                'label' => 'Priorité d\'affichage',
+                'orderable' => true,
+            ])
+            ->add('delete', TextColumn::class, [
+                'label' => 'Supprimer ?',
+                'render' => function ($value, $article) {
+                    return $this->renderView('admin/content/include/_delete-button.html.twig', [
+                        'article' => $article,
+                    ]);
+                }
+            ])
+            ->addOrderBy('priority')
+            ->createAdapter(ORMAdapter::class, [
+                'entity' => Article::class
+            ]);
+
+        $table->handleRequest($request);
+
+        if ($table->isCallback()) {
+            return $table->getResponse();
+        }
+
+        return $this->render('admin/content/index.html.twig', [
+            'table' => $table,
+        ]);
+    }
+
+    /**
+     * @Route("/new", name="new", methods={"GET", "POST"})
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function newArticle(Request $request): Response
+    {
+        $article = new Article();
+
+        $form = $this->createForm(ArticleType::class, $article, [
+            'article' => null,
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->entityManager->persist($article);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('admin_content_index');
+        }
+
+        return $this->render('admin/content/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
+     *
+     * @param Article $article
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function edit(Article $article, Request $request): Response
+    {
+        $form = $this->createForm(ArticleType::class, $article, [
+            'article' => $article,
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('admin_content_index');
+        }
+
+        return $this->render('admin/content/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete", methods={"POST"})
+     *
+     * @param Article $article
+     *
+     * @return JsonResponse
+     */
+    public function delete(Article $article): JsonResponse
+    {
+        if (!$article instanceof Article) {
+            return new JsonResponse('Article Not Found', 404);
+        }
+
+        $this->entityManager->remove($article);
+        $this->entityManager->flush();
+
+        return new JsonResponse('Article deleted with success', 200);
+    }
+}
