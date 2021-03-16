@@ -2,8 +2,10 @@
 
 namespace App\Controller\Accueil;
 
+use App\Service\Authorizations\AdminAuthorizationServices;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -14,10 +16,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     /**
+     * @var AdminAuthorizationServices
+     */
+    private $adminAuthorizationServices;
+
+    /**
+     * DefaultController constructor.
+     *
+     * @param AdminAuthorizationServices $adminAuthorizationServices
+     */
+    public function __construct(AdminAuthorizationServices $adminAuthorizationServices)
+    {
+        $this->adminAuthorizationServices = $adminAuthorizationServices;
+    }
+
+    /**
      * @Route("", name="index")
      */
     public function index(): Response
     {
+        if (!$this->adminAuthorizationServices->testBasicAuthorizationByUser($this->getUser())) {
+
+            throw new AccessDeniedHttpException('Vous n\'avez pas l\'autorisation d\'accéder à cette page');
+        }
+
         return $this->render('accueil/index.html.twig');
     }
 }

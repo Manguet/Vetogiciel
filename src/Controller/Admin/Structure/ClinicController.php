@@ -36,7 +36,7 @@ class ClinicController extends AbstractController
     }
 
     /**
-     * @Route("/index", name="index")
+     * @Route("", name="index")
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
@@ -108,6 +108,7 @@ class ClinicController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
+     *
      * @param Clinic $clinic
      * @param Request $request
      *

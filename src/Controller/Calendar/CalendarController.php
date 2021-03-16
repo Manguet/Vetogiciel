@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Accueil;
+namespace App\Controller\Calendar;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

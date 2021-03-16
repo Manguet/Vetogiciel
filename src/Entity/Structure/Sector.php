@@ -2,7 +2,6 @@
 
 namespace App\Entity\Structure;
 
-use App\Entity\Security\User;
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Traits\DateTime\EntityDateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Structure\SectorRepository")
+ * @ORM\HasLifecycleCallbacks
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */

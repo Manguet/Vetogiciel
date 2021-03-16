@@ -2,6 +2,7 @@
 
 namespace App\Entity\Patients;
 
+use App\Entity\Structure\Bill;
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Traits\DateTime\EntityDateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -44,19 +45,25 @@ class Folder implements EntityDateInterface
     private $animal;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Patients\Document", mappedBy="folder")
+     * @ORM\OneToMany(targetEntity="App\Entity\Patients\Document", mappedBy="folder", cascade={"persist", "remove"})
      */
     private $documents;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Patients\Consultation", mappedBy="folder")
+     * @ORM\OneToMany(targetEntity="App\Entity\Patients\Consultation", mappedBy="folder", cascade={"persist", "remove"})
      */
     private $consultations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Bill::class, mappedBy="folder", cascade={"persist", "remove"})
+     */
+    private $bills;
+
     public function __construct()
     {
-        $this->documents = new ArrayCollection();
+        $this->documents     = new ArrayCollection();
         $this->consultations = new ArrayCollection();
+        $this->bills         = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -156,6 +163,37 @@ class Folder implements EntityDateInterface
             // set the owning side to null (unless already changed)
             if ($consultation->getFolder() === $this) {
                 $consultation->setFolder(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Bill[]
+     */
+    public function getBills(): Collection
+    {
+        return $this->bills;
+    }
+
+    public function addBill(Bill $bill): self
+    {
+        if (!$this->bills->contains($bill)) {
+            $this->bills[] = $bill;
+            $bill->setFolder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBill(Bill $bill): self
+    {
+        if ($this->bills->contains($bill)) {
+            $this->bills->removeElement($bill);
+            // set the owning side to null (unless already changed)
+            if ($bill->getFolder() === $this) {
+                $bill->setFolder(null);
             }
         }
 
