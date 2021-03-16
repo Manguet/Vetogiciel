@@ -2,7 +2,10 @@
 
 namespace App\Controller\Admin\Content;
 
+use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -12,5 +15,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ContentController extends AbstractController
 {
+    /**
+     * @Route("", name="index")
+     *
+     * @param Request $request
+     * @param DataTableFactory $dataTableFactory
+     *
+     * @return Response
+     */
+    public function index()
+    {
 
+    }
 }

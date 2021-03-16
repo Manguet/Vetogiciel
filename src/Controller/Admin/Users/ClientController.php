@@ -48,7 +48,7 @@ class ClientController extends AbstractController
     }
 
     /**
-     * @Route("/", name="index")
+     * @Route("", name="index")
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
