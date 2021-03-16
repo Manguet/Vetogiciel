@@ -13,7 +13,6 @@
                 <th>EndAt</th>
                 <th>Title</th>
                 <th>DateCreation</th>
-                <th>DateUpdate</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -25,7 +24,6 @@
                 <td>{{ booking.endAt ? booking.endAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ booking.title }}</td>
                 <td>{{ booking.dateCreation ? booking.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ booking.dateUpdate ? booking.dateUpdate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('booking_show', {'id': booking.id}) }}">show</a>
                     <a href="{{ path('booking_edit', {'id': booking.id}) }}">edit</a>

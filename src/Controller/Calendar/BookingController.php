@@ -89,7 +89,7 @@ class BookingController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="edit", methods={"GET","POST"})
      *
      * @param Request $request
      * @param Booking $booking
