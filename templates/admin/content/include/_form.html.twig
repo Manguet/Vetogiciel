@@ -16,9 +16,20 @@
             {{ form_label(form.description) }}
             {{ form_widget(form.description) }}
         </div>
+
+        <div>
+            {{ form_label(form.imageFile) }}
+            {{ form_widget(form.imageFile) }}
+        </div>
+
     </div>
 
     <div id="tab-2" class="tab-content">
+        <div>
+            {{ form_label(form.articleCategory) }}
+            {{ form_widget(form.articleCategory) }}
+        </div>
+
         <div>
             {{ form_label(form.isActivated) }}
             {{ form_widget(form.isActivated) }}

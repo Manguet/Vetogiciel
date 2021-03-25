@@ -26,3 +26,7 @@ yarn-error.log
 ###> assoconnect/mjml-bundle ###
 /templates/mjml/*.html.twig
 ###< assoconnect/mjml-bundle ###
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###

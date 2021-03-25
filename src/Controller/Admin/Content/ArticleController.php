@@ -3,7 +3,9 @@
 namespace App\Controller\Admin\Content;
 
 use App\Entity\Contents\Article;
+use App\Entity\Structure\Veterinary;
 use App\Form\Content\ArticleType;
+use App\Service\Priority\PriorityServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
@@ -27,13 +29,20 @@ class ArticleController extends AbstractController
     private $entityManager;
 
     /**
+     * @var PriorityServices
+     */
+    private $priorityServices;
+
+    /**
      * ArticleController constructor.
      *
      * @param EntityManagerInterface $entityManager
+     * @param PriorityServices $priorityServices
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, PriorityServices $priorityServices)
     {
-        $this->entityManager = $entityManager;
+        $this->entityManager    = $entityManager;
+        $this->priorityServices = $priorityServices;
     }
 
     /**
@@ -48,22 +57,39 @@ class ArticleController extends AbstractController
     {
         $table = $dataTableFactory->create()
             ->add('title', TextColumn::class, [
-                'label' => 'Titre de l\'artile',
+                'label'     => 'Titre de l\'article',
                 'orderable' => true,
-                'render' => function ($value, $content) {
+                'render'    => function ($value, $content) {
                     return '<a href="/admin/content/edit/' . $content->getId() . '">' . $value . '</a>';
                 }
             ])
+            ->add('articleCategory', TextColumn::class, [
+                'label'     => 'Catégorie',
+                'orderable' => false,
+                'render'    => function ($value, $content) {
+
+                    if ($content->getArticleCategory()) {
+                        return $content->getArticleCategory()->getTitle();
+                    }
+                    return '';
+                }
+            ])
             ->add('isActivated', TextColumn::class, [
-                'label' => 'Article actif ?',
+                'label'     => 'Article actif ?',
                 'orderable' => true,
+                'render'    => function ($value, $content) {
+                    if ($content->getIsActivated()) {
+                        return 'Actif';
+                    }
+                    return 'Désactivé';
+                }
             ])
             ->add('priority', TextColumn::class, [
-                'label' => 'Priorité d\'affichage',
+                'label'     => 'Priorité d\'affichage',
                 'orderable' => true,
             ])
             ->add('delete', TextColumn::class, [
-                'label' => 'Supprimer ?',
+                'label'  => 'Supprimer ?',
                 'render' => function ($value, $article) {
                     return $this->renderView('admin/content/include/_delete-button.html.twig', [
                         'article' => $article,
@@ -104,6 +130,15 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $priority = $this->priorityServices->setPriorityOnCreation($article);
+            $article->setPriority($priority);
+
+            $user = $this->getUser();
+
+            if ($user instanceof Veterinary) {
+                $article->setCreatedBy($user);
+            }
 
             $this->entityManager->persist($article);
             $this->entityManager->flush();
@@ -160,6 +195,73 @@ class ArticleController extends AbstractController
         $this->entityManager->remove($article);
         $this->entityManager->flush();
 
+        $articles = $this->entityManager->getRepository(Article::class)
+            ->findByArticlePriority();
+
+        $priority = 0;
+        foreach ($articles as $articleAfterUpdate) {
+            $articleAfterUpdate->setPriority($priority);
+            $priority++;
+        }
+
+        $this->entityManager->flush();
+
         return new JsonResponse('Article deleted with success', 200);
+    }
+
+    /**
+     * @Route("/priority", name="priority")
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function priority(Request $request): Response
+    {
+        if (($request->getMethod() === 'POST') && ($request->isXmlHttpRequest())) {
+            $movedArticles = $request->get('movedArticles');
+            $newArticles   = $request->get('newArticles');
+            $articles = $articlePositions = [];
+
+            $i = 0;
+            if (is_array($movedArticles) && is_array($newArticles)) {
+
+                foreach ($movedArticles as $movedArticle) {
+                    $articles[$movedArticle] = $newArticles[$i];
+                    $i++;
+                }
+
+                foreach ($articles as $oldPosition => $newPosition) {
+
+                    $article = $this->entityManager->getRepository(Article::class)
+                        ->findOneBy([
+                            'priority' => (int)$oldPosition,
+                        ])
+                    ;
+
+                    if ($article) {
+                        $articlePositions[$article->getId()] = $newPosition;
+                    }
+                }
+
+                foreach ($articlePositions as $id => $newPosition) {
+
+                    $article = $this->entityManager->getRepository(Article::class)
+                        ->find((int)$id)
+                    ;
+
+                    $article->setPriority($newPosition);
+                    $this->entityManager->persist($article);
+                }
+
+                $this->entityManager->flush();
+
+                return new JsonResponse('Priorité mise à jour', 200);
+            }
+            return new JsonResponse('Pas de modification', 200);
+
+        }
+
+        return new Response('error', 500);
     }
 }

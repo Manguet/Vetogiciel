@@ -2,6 +2,7 @@
 
 namespace App\Entity\Structure;
 
+use App\Entity\Contents\Article;
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Interfaces\User\UserEntityInterface;
 use App\Traits\DateTime\EntityDateTrait;
@@ -44,7 +45,7 @@ class Employee implements EntityDateInterface, UserEntityInterface, UserInterfac
      */
     public function __construct()
     {
-        $this->sector = new ArrayCollection();
+        $this->sector   = new ArrayCollection();
     }
 
     /**

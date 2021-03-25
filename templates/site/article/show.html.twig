@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="index-margin-top">
+        <div class="d-flex">
+
+            <div>
+                {{ include('site/article/lateral_menu.html.twig')}}
+            </div>
+
+            <div class="article-margin">
+
+                {{ include('site/article/include/article_head.html.twig') }}
+
+                {{ include('site/article/include/article_description.html.twig') }}
+
+                {{ include('site/article/include/article_author.html.twig') }}
+
+                {{ include('site/article/include/article_newsletter.html.twig') }}
+
+                {{ include('site/article/include/article_carousel.html.twig') }}
+
+                {{ include('site/article/include/article_comment_zone.html.twig') }}
+            </div>
+        </div>
+
+        <div>
+            {{ include('base/_footer.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block endjavascript %}
+    <script>
+        $('#recipeCarousel').carousel({
+            interval: 5000
+        })
+
+        $('.carousel .carousel-item').each(function(){
+            let minPerSlide = 3;
+            let next = $(this).next();
+            if (!next.length) {
+                next = $(this).siblings(':first');
+            }
+            next.children(':first-child').clone().appendTo($(this));
+
+            for (let i=0; i<minPerSlide; i++) {
+                next=next.next();
+                if (!next.length) {
+                    next = $(this).siblings(':first');
+                }
+
+                next.children(':first-child').clone().appendTo($(this));
+            }
+        });
+    </script>
+{% endblock %}

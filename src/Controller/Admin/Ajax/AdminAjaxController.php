@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin\Ajax;
 
+use App\Entity\Contents\ArticleCategory;
 use App\Entity\Patients\Race;
 use App\Entity\Patients\Species;
 use App\Entity\Structure\Clinic;
@@ -133,5 +134,30 @@ class AdminAjaxController extends AbstractController
         }
 
         return new JsonResponse($sectorResults);
+    }
+
+    /**
+     * @Route("article-category", name="article_category")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function autoCompleteArticleCategory(Request $request): JsonResponse
+    {
+        $query = $request->get('q');
+
+        $categories = $this->entityManager->getRepository(ArticleCategory::class)
+            ->findAllByTitleResults($query);
+
+        $categoryResults = [];
+        foreach ($categories as $category) {
+            $categoryResults[] = [
+                'id'   => $category->getId(),
+                'text' => $category->getTitle(),
+            ];
+        }
+
+        return new JsonResponse($categoryResults);
     }
 }

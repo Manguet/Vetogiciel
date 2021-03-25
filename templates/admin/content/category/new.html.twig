@@ -1,0 +1,23 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <div class="accueil-content">
+        <div class="wrapper">
+            {% include('admin/manage/_general_nav.html.twig') %}
+            <div class="main_content">
+                <div class="info">
+                    <div class="container">
+                        <div class="mb-5">
+                            <a href="{{ path('admin_article_category_index') }}">
+                                <button class="custom-button">
+                                    <i class="fas fa-backspace"></i> Retour
+                                </button>
+                            </a>
+                        </div>
+                        {{ include('admin/content/category/include/_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

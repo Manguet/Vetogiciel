@@ -4,6 +4,8 @@
     <ul class="tabs">
         <li class="tab-link current" data-tab="tab-1">Informations Générales</li>
         <li class="tab-link" data-tab="tab-2">Informations praticien</li>
+        <li class="tab-link" data-tab="tab-3">Photos</li>
+        <li class="tab-link" data-tab="tab-4">Présentation</li>
     </ul>
 
     <div id="tab-1" class="tab-content current">
@@ -56,6 +58,11 @@
             {{ form_widget(form.sector) }}
         </div>
 
+        <div>
+            {{ form_label(form.type) }}
+            {{ form_widget(form.type) }}
+        </div>
+
         {% if isShow %}
             <div>
                 {{ form_label(form.isVerified) }}
@@ -63,6 +70,25 @@
             </div>
         {% endif %}
 
+    </div>
+
+    <div id="tab-3" class="tab-content">
+        <div>
+            {{ form_label(form.photoFile) }}
+            {{ form_widget(form.photoFile) }}
+        </div>
+    </div>
+
+    <div id="tab-4" class="tab-content">
+        <div>
+            {{ form_label(form.presentation) }}
+            {{ form_widget(form.presentation) }}
+        </div>
+
+        <div>
+            {{ form_label(form.cvFile) }}
+            {{ form_widget(form.cvFile) }}
+        </div>
     </div>
 
     <div class="d-flex justify-content-center align-items-center mb-5">
