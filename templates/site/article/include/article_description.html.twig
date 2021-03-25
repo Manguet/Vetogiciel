@@ -1,0 +1,11 @@
+{% autoescape false %}
+    <div class="text-justify">
+        {{ article.description|raw }}
+        <div class="text-right">
+            {{ include('site/socialMedia/facebook.html.twig') }}
+            {{ include('site/socialMedia/linkdin.html.twig') }}
+            {{ include('site/socialMedia/print.html.twig') }}
+        </div>
+    </div>
+{% endautoescape  %}
+<br />

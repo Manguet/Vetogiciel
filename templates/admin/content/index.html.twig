@@ -1,0 +1,104 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block morestylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/datatables.bootstrap.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.24/rr-1.2.7/datatables.min.css"/>
+{% endblock %}
+
+{% block body %}
+    <div class="accueil-content">
+        <div class="wrapper">
+            {% include('admin/manage/_general_nav.html.twig') %}
+            <div class="main_content">
+                <div class="info">
+                    <div class="container">
+                        <div class="mt-5 d-flex justify-content-between">
+                            <a href="{{ path('admin_content_new') }}">
+                                <button class="custom-button mb-3">
+                                    <i class="far fa-newspaper"></i> Créer un article
+                                </button>
+                            </a>
+                            <a href="{{ path('admin_article_category_index') }}">
+                                <button class="custom-button">
+                                    <i class="fas fa-hashtag"></i> Categories d'articles
+                                </button>
+                            </a>
+                        </div>
+
+                        <div id="my-tab">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block endjavascript %}
+    <script src="{{ asset('bundles/datatables/js/datatables.js') }}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.24/rr-1.2.7/datatables.min.js"></script>
+    <script>
+        $(function() {
+            $('#my-tab').initDataTables({{ datatable_settings(table) }}, {
+                searching: true,
+                dom:'lTfgtpi',
+                language: {
+                    "url": "https://cdn.datatables.net/plug-ins/1.10.21/i18n/French.json"
+                },
+                pageLength: 25,
+                rowReorder: {
+                    update: true,
+                    dataSrc: 'priority',
+                }
+            }).then(function (dt) {
+
+                dt.on('row-reorder', function (e, diff, edit) {
+                    e.preventDefault();
+                    let movedArticles = [];
+                    let newArticles = [];
+                    $(diff).each(function (e) {
+                        movedArticles.push($(this).prop('oldData'));
+                        newArticles.push($(this).prop('newData'))
+                    });
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ path('admin_content_priority') }}',
+                        data_type: 'json',
+                        data: {movedArticles: movedArticles, newArticles: newArticles}
+                    }).done(function (data) {
+                        dt.ajax.reload();
+                    });
+                });
+
+
+                /** Ajax delete */
+                $('#my-tab tbody').on('click', '.deleteAjax', function (e) {
+                    e.preventDefault();
+
+                    let url = $(this).attr('href');
+                    swal({
+                        title      : 'ATTENTION',
+                        text       : 'Voulez-vous vraiment supprimer cet article ?',
+                        icon       : 'warning',
+                        buttons    : true,
+                        dangerMode : true,
+                    }).then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                type      : 'POST',
+                                url       : url,
+                                data_type : 'json',
+                                data      : {}
+                            }).done(function () {
+                                dt.ajax.reload();
+                            })
+                        }
+                    })
+                })
+
+            })
+        });
+    </script>
+{% endblock %}

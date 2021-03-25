@@ -2,11 +2,14 @@
 
 namespace App\Form\Structure;
 
+use App\DBAL\Types\Structures\VeterinaryEnum;
 use App\Entity\Structure\Clinic;
 use App\Entity\Structure\Sector;
 use App\Entity\Structure\Veterinary;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -16,12 +19,26 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 class VeterinaryFormType extends AbstractType
 {
+    /**
+     * @var VeterinaryEnum
+     */
+    private $veterinaryTypes;
+
+    /**
+     * @param VeterinaryEnum $veterinaryTypes
+     */
+    public function __construct(VeterinaryEnum $veterinaryTypes)
+    {
+        $this->veterinaryTypes = $veterinaryTypes->getValues();
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -119,7 +136,39 @@ class VeterinaryFormType extends AbstractType
                     'style' => 'width: 100%'
                 ],
             ])
-
+            ->add('photoFile', VichImageType::class, [
+                'label'       => 'Photo de profil',
+                'required'    => false,
+                'attr'        => [
+                    'lang'        => 'fr',
+                    'placeholder' => 'Télécharger une photo de profil',
+                ],
+            ])
+            ->add('type', ChoiceType::class, [
+                'label'    => 'Type de vétérinaire',
+                'required' => false,
+                'attr'     => [
+                    'placeholder' => 'Type de vétérinaire',
+                ],
+                'choices'  => $this->veterinaryTypes,
+                'multiple' => false,
+                'expanded' => false,
+            ])
+            ->add('presentation', CKEditorType::class, [
+                'label'       => 'Présentation générale',
+                'required'    => true,
+                'attr'        => [
+                    'placeholder' => 'Présentation générale',
+                ],
+            ])
+            ->add('cvFile', VichImageType::class, [
+                'label'       => 'CV du vétérinaire',
+                'required'    => false,
+                'attr'        => [
+                    'lang'        => 'fr',
+                    'placeholder' => 'CV du vétérinaire (format : png, jpeg, jpg, pdf)',
+                ],
+            ])
         ;
 
         if ($options['isShow']) {

@@ -1,0 +1,17 @@
+<div>
+    {{ form_start(form) }}
+
+    <div>
+        <div>
+            {{ form_label(form.title) }}
+            {{ form_widget(form.title) }}
+        </div>
+
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center mb-5">
+        {{ form_widget(form.save) }}
+    </div>
+
+    {{ form_end(form) }}
+</div>

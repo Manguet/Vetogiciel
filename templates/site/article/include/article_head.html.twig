@@ -1,0 +1,18 @@
+<div class="text-center">
+
+    <h1 class="main-color">{{ article.title }}</h1>
+
+    <p class="mb-5 undertitle">Publié le {{ article.dateCreation|date('d/m/Y') }}
+        {% if null != article.createdBy %}
+            par Dr.{{ article.createdBy.firstname }} {{ article.createdBy.lastname }}
+        {% endif %}
+    </p>
+
+    <div class="mb-5">
+        {% if article.imageFile %}
+            <img src="{{ vich_uploader_asset(article, 'imageFile')|imagine_filter('large') }}" alt="{{ article.title }}" title="image de {{ article.title }}">
+        {% else %}
+            <img src="{{ asset('build/images/carousel-1.jpg')|imagine_filter('large') }}" alt="{{ article.title }}" title="image de {{ article.title }}">
+        {% endif %}
+    </div>
+</div>

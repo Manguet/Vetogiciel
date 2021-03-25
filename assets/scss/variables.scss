@@ -9,3 +9,10 @@ $black: #000;
 
 $title-font: 'Raleway', sans-serif;
 $text-font: 'Crimson Text', serif;
+
+.custom-file-input:lang(en) ~ .custom-file-label::after {
+  content: "Browse";
+}
+.custom-file-input:lang(fr) ~ .custom-file-label::after {
+  content: "Parcourir";
+}

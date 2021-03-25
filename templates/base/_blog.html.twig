@@ -11,16 +11,27 @@
 
                 {% for article in articles %}
                     <div class="card">
-                        <img class="card-img-top" src="{{ asset('build/images/carousel-1.jpg') }}" alt="{{ article.title }}" title="image de {{ article.title }}">
+                        {% if article.imageFile %}
+                            <img src="{{ vich_uploader_asset(article, 'imageFile')|imagine_filter('thumb') }}" alt="{{ article.title }}" title="image de {{ article.title }}">
+                        {% else %}
+                            <img src="{{ asset('build/images/carousel-1.jpg')|imagine_filter('thumb') }}" alt="{{ article.title }}" title="image de {{ article.title }}">
+                        {% endif %}
                         <div class="card-body">
-                            <button class="custom-button card-title">
-                                <a href="#">
-                                    {{ article.title }}
+
+                            <button class="custom-button card-title" href="{{ path('article_show', {'id' : article.id}) }}"
+                                    onclick="window.location.href=$(this).attr('href')">
+
+                                <a href="{{ path('article_show', {'id' : article.id}) }}">
+                                    {% if article.title|length > 15 %}
+                                        {{ article.title|slice(0, 15) ~ ' ...' }}
+                                    {% else %}
+                                        {{ article.title }}
+                                    {% endif %}
                                 </a>
                             </button>
                             {% if article.description %}
                                 <p class="card-text">
-                                    {{ article.description|slice(0, 300) ~ '...' }}
+                                    {{ article.descriptionDecode|slice(0, 80) ~ ' ...' }}
                                 </p>
                             {% endif %}
                         </div>

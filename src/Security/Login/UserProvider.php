@@ -95,15 +95,15 @@ final class UserProvider implements UserProviderInterface
      */
     public function supportsClass($class): bool
     {
-        if ($class === Client::class) {
+        if ($class === Client::class || strpos($class, Client::class)) {
             return true;
         }
 
-        if ($class === Employee::class) {
+        if ($class === Employee::class || strpos($class, Employee::class)) {
             return true;
         }
 
-        if ($class === Veterinary::class) {
+        if ($class === Veterinary::class ||strpos($class, Veterinary::class)) {
             return true;
         }
 
