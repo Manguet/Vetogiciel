@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
- * @Route("/article", name="article_")
+ * @Route("articles/{category}", name="article_")
  */
 class ArticleController extends AbstractController
 {
@@ -57,10 +57,11 @@ class ArticleController extends AbstractController
      *
      * @param Request $request
      * @param Article|null $article
+     * @param string $category
      *
      * @return Response
      */
-    public function show(Request $request, ?Article $article): Response
+    public function show(Request $request, ?Article $article, string $category): Response
     {
         if (!$article) {
             throw $this->createNotFoundException('404');
@@ -117,7 +118,6 @@ class ArticleController extends AbstractController
 
         if (null !== $article && $this->getUser()) {
 
-
             $createdBy = $this->getUser()->getLastName() . ' ' . $this->getUser()->getFirstName();
 
             $canPost = $this->checkPostAvailableServices($createdBy, $article);
@@ -141,6 +141,7 @@ class ArticleController extends AbstractController
 
             return $this->redirectToRoute('article_show', [
                 'id'        => (int)$articleId,
+                'category'  => $article->getArticleCategory()->getId(),
                 '_fragment' => 'comment-zone',
             ]);
 

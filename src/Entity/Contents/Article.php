@@ -189,7 +189,7 @@ class Article implements EntityDateInterface
 
     public function setCreatedBy(?Veterinary $createdBy): self
     {
-        $this->CreatedBy = $createdBy;
+        $this->createdBy = $createdBy;
 
         return $this;
     }
@@ -228,7 +228,7 @@ class Article implements EntityDateInterface
     {
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
-            // set the owning side to null (unless already changed)
+
             if ($comment->getArticle() === $this) {
                 $comment->setArticle(null);
             }

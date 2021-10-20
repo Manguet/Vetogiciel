@@ -1,15 +1,17 @@
 <div class="article-content">
     <div class="wrapper">
         <div class="sidebar">
-            <h3 class="main-color text-center">Parcourir les catégories</h3>
+            <h3 class="main-color text-center mt-3">Parcourir les catégories</h3>
             <ul>
                 {% for category in categories %}
+                    {% if category.article|length > 0 %}
                     <li class="d-flex justify-content-between">
-                        <a href="{{ path('admin_content_index') }}" class="{% if app.request.get('_route') starts with 'admin_content_' %}actual-link{% endif %}">
+                        <a href="{{ path('articles_show', {'id' : category.id}) }}" class="{% if app.request.get('_route') starts with 'articles_' ~ category.id %}actual-link{% endif %}">
                             {{ category.title }}
                         </a>
                         <span class="main-color"><i class="fas fa-chevron-right"></i></span>
                     </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>

@@ -16,7 +16,7 @@
         "friendsofsymfony/ckeditor-bundle": "^2.3",
         "knplabs/knp-paginator-bundle": "^5.4",
         "league/csv": "^9.0",
-        "liip/imagine-bundle": "^2.5",
+        "liip/imagine-bundle": "^2.6",
         "notfloran/mjml-bundle": "^3.4",
         "omines/datatables-bundle": "^0.5.1",
         "php-http/curl-client": "^2.1",
@@ -51,7 +51,7 @@
         "twig/extra-bundle": "^3.2",
         "twig/inky-extra": "^3.2",
         "twig/twig": "^3.2",
-        "vich/uploader-bundle": "^1.16"
+        "vich/uploader-bundle": "^1.18"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
