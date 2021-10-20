@@ -1,8 +1,13 @@
 liip_imagine:
     driver: "gd"
 
-    filter_sets:
+    resolvers:
+        default:
+            web_path:
+                web_root: "%kernel.project_dir%/public"
+                cache_prefix: "images/cache"
 
+    filter_sets:
         thumb:
             quality: 100
             filters:

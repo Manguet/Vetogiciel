@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="index-margin-top mb-5">
+
+        <div class="d-flex">
+
+            <div>
+                {{ include('site/article/lateral_menu.html.twig')}}
+            </div>
+
+            <div class="article-margin">
+                <h1 class="text-center main-color">{{ category.title }}</h1>
+                <div>
+                    {% if category.article|length > 0 %}
+                        <div>
+                            <div class="card-deck mt-5">
+                                {% for article in category.article %}
+                                    {% if article.isActivated %}
+
+                                        <div class="card">
+                                            {% if article.imageFile %}
+                                                <img src="{{ vich_uploader_asset(article, 'imageFile')|imagine_filter('thumb') }}" alt="{{ article.title }}" title="image de {{ article.title }}">
+                                            {% else %}
+                                                <img src="{{ asset('build/images/carousel-1.jpg')|imagine_filter('thumb') }}" alt="{{ article.title }}" title="image de {{ article.title }}">
+                                            {% endif %}
+                                            <div class="card-body text-center">
+                                                <button class="custom-button card-title" href="{{ path('article_show', {'category' : article.articleCategory.id, 'id' : article.id}) }}"
+                                                        onclick="window.location.href=$(this).attr('href')">
+
+                                                    <a href="{{ path('article_show', {'category' : article.articleCategory.id, 'id' : article.id}) }}">
+                                                        {% if article.title|length > 15 %}
+                                                            {{ article.title|slice(0, 15) ~ ' ...' }}
+                                                        {% else %}
+                                                            {{ article.title }}
+                                                        {% endif %}
+                                                    </a>
+                                                </button>
+                                                {% if article.description %}
+                                                    <p class="card-text">
+                                                        {{ article.descriptionDecode|slice(0, 80) ~ ' ...' }}
+                                                    </p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="mt-5">
+        {{ include('base/_footer.html.twig') }}
+    </div>
+{% endblock %}

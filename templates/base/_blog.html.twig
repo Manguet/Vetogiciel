@@ -18,10 +18,10 @@
                         {% endif %}
                         <div class="card-body">
 
-                            <button class="custom-button card-title" href="{{ path('article_show', {'id' : article.id}) }}"
+                            <button class="custom-button card-title" href="{{ path('article_show', {'category': article.articleCategory.id, 'id' : article.id}) }}"
                                     onclick="window.location.href=$(this).attr('href')">
 
-                                <a href="{{ path('article_show', {'id' : article.id}) }}">
+                                <a href="{{ path('article_show', {'category': article.articleCategory.id, 'id' : article.id}) }}">
                                     {% if article.title|length > 15 %}
                                         {{ article.title|slice(0, 15) ~ ' ...' }}
                                     {% else %}
@@ -37,8 +37,11 @@
                         </div>
                     </div>
                 {% endfor %}
-
             </div>
+            <button class="custom-button card-title mt-5" href="{{ path('articles_index') }}"
+                    onclick="window.location.href=$(this).attr('href')">
+                Voir tous les articles
+            </button>
         </div>
     </div>
 {% endif %}

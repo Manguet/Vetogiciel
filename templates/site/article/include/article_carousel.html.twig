@@ -1,4 +1,4 @@
-{% if otherArticles is defined %}
+{% if otherArticles is defined and otherArticles|length > 0 %}
     <h3 class="main-color">Vous aimerez aussi ces articles</h3>
 
     <div class="container text-center my-3">
@@ -8,7 +8,7 @@
                     {% for key, otherArticle in otherArticles %}
                         <div class="carousel-item {% if loop.first %}active{% endif %}">
                             <div class="col-md-4 my-3">
-                                <a href="{{ path('article_show', { 'id' : otherArticle.id }) }}">
+                                <a href="{{ path('article_show', {'category' : otherArticle.articleCategory.id, 'id' : otherArticle.id }) }}">
                                     <div class="card card-body">
                                         {{ otherArticle.title }}
                                         {% if otherArticle.imageFile %}
@@ -33,8 +33,8 @@
             </div>
         </div>
     </div>
-{% endif %}
-<hr>
+    <hr>
 
-<br />
-<br />
+    <br />
+    <br />
+{% endif %}

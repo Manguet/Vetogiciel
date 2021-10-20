@@ -14,7 +14,7 @@
             {{ knp_pagination_render(comments) }}
         </div>
 
-        {{ form_start(form, {'action': path('article_comment', {'id' : article.id }), 'method': 'POST'}) }}
+        {{ form_start(form, {'action': path('article_comment', {'category' : article.articleCategory.id ,'id' : article.id }), 'method': 'POST'}) }}
         <div>
             {{ form_label(form.description) }}
             {{ form_widget(form.description) }}

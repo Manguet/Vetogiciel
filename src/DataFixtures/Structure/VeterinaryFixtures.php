@@ -42,6 +42,7 @@ class VeterinaryFixtures extends Fixture implements DependentFixtureInterface
         'number'       => '18465',
         'sector'       => '1',
         'isVerified'   => true,
+        'type'         => 'Spécialiste'
     ];
 
     /**
@@ -58,6 +59,7 @@ class VeterinaryFixtures extends Fixture implements DependentFixtureInterface
         'number'       => '10236',
         'sector'       => '0,2',
         'isVerified'   => true,
+        'type'         => 'Généraliste',
     ];
 
     /**
@@ -74,6 +76,7 @@ class VeterinaryFixtures extends Fixture implements DependentFixtureInterface
         'number'       => '24861',
         'sector'       => '0,1,2',
         'isVerified'   => false,
+        'type'         => 'Assistant'
     ];
 
     /**
