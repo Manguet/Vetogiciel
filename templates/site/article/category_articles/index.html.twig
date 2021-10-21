@@ -16,7 +16,7 @@
                         {% if category.article|length > 0 %}
                             <div>
                                 <h3 class="main-color mt-5">
-                                    <a href="{{ path('articles_show', { 'id' : category.id }) }}">
+                                    <a href="{{ path('articles_show', {'category' : category.titleUrl}) }}">
                                         <i class="fas fa-chevron-right"></i> {{ category.title }}
                                     </a>
                                 </h3>
@@ -32,10 +32,10 @@
                                                     <img src="{{ asset('build/images/carousel-1.jpg')|imagine_filter('thumb') }}" alt="{{ article.title }}" title="image de {{ article.title }}">
                                                 {% endif %}
                                                 <div class="card-body text-center">
-                                                    <button class="custom-button card-title" href="{{ path('article_show', {'category' : article.articleCategory.id, 'id' : article.id}) }}"
+                                                    <button class="custom-button card-title" href="{{ path('article_show', {'category' : article.articleCategory.titleUrl, 'article' : article.titleUrl}) }}"
                                                             onclick="window.location.href=$(this).attr('href')">
 
-                                                        <a href="{{ path('article_show', {'category' : article.articleCategory.id, 'id' : article.id}) }}">
+                                                        <a href="{{ path('article_show', {'category' : article.articleCategory.titleUrl, 'article' : article.titleUrl}) }}">
                                                             {% if article.title|length > 15 %}
                                                                 {{ article.title|slice(0, 15) ~ ' ...' }}
                                                             {% else %}

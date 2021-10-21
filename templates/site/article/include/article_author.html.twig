@@ -3,17 +3,13 @@
 
         <div class="d-flex justify-content-between">
             <div>
-                {% if article.createdBy != null %}
-                    <img src="{{ vich_uploader_asset(article.createdBy, 'photoFile')|imagine_filter('mini_thumb') }}" alt="Dr.{{ article.createdBy.lastName }}" title="photo du Dr.{{ article.createdBy.lastName }}">
-                {% else %}
-                    <img src="{{ asset('build/images/carousel-1.jpg')|imagine_filter('mini_thumb') }}" alt="Vétérinaire" title="image de de base">
-                {% endif %}
+                <img src="{{ vich_uploader_asset(article.createdBy, 'photoFile')|imagine_filter('mini_thumb') }}" alt="Dr.{{ article.createdBy.lastName }}" title="photo du Dr.{{ article.createdBy.lastName }}">
 
                 Dr.{{ article.createdBy.firstName }} {{ article.createdBy.lastName }} <span class="undercase">({{ article.createdBy.type }})</span>
 
             </div>
 
-            <a href="#">
+            <a href="{{ path('presentation_show', {'fullName': article.createdBy.fullNameSlugiffied}) }}">
                 <button class="custom-button">
                     Voir le CV Complet
                 </button>

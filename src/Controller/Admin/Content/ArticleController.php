@@ -5,6 +5,7 @@ namespace App\Controller\Admin\Content;
 use App\Entity\Contents\Article;
 use App\Entity\Structure\Veterinary;
 use App\Form\Content\ArticleType;
+use App\Interfaces\Slugger\SluggerInterface;
 use App\Service\Priority\PriorityServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
@@ -34,15 +35,21 @@ class ArticleController extends AbstractController
     private $priorityServices;
 
     /**
-     * ArticleController constructor.
-     *
+     * @var SluggerInterface
+     */
+    private $slugger;
+
+    /**
      * @param EntityManagerInterface $entityManager
      * @param PriorityServices $priorityServices
+     * @param SluggerInterface $slugger
      */
-    public function __construct(EntityManagerInterface $entityManager, PriorityServices $priorityServices)
+    public function __construct(EntityManagerInterface $entityManager, PriorityServices $priorityServices,
+                                SluggerInterface $slugger)
     {
         $this->entityManager    = $entityManager;
         $this->priorityServices = $priorityServices;
+        $this->slugger          = $slugger;
     }
 
     /**
@@ -139,6 +146,12 @@ class ArticleController extends AbstractController
             if ($user instanceof Veterinary) {
                 $article->setCreatedBy($user);
             }
+
+            $article->setTitleUrl(
+                $this->slugger->generateSlugUrl(
+                    $article->getTitle(), Article::class
+                )
+            );
 
             $this->entityManager->persist($article);
             $this->entityManager->flush();

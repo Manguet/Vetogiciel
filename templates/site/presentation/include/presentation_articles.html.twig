@@ -1,0 +1,37 @@
+<h3 class="main-color text-center">Ses articles</h3>
+
+<div class="container text-center my-3">
+    <div class="row mx-auto my-auto">
+        <div id="recipeCarousel" class="carousel slide w-100" data-ride="carousel">
+            <div class="carousel-inner" role="listbox">
+                {% for key, otherArticle in worker.articles %}
+                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                        <div class="col-md-4 my-3">
+                            <a href="{{ path('article_show', {'category' : otherArticle.articleCategory.titleUrl, 'article' : otherArticle.id }) }}">
+                                <div class="card card-body">
+                                    {{ otherArticle.title }}
+                                    {% if otherArticle.imageFile %}
+                                        <img class="img-fluid" src="{{ vich_uploader_asset(otherArticle, 'imageFile')|imagine_filter('large') }}" alt="{{ otherArticle.title }}" title="image de {{ otherArticle.title }}">
+                                    {% else %}
+                                        <img class="img-fluid" src="{{ asset('build/images/carousel-1.jpg')|imagine_filter('large') }}" alt="{{ otherArticle.title }}" title="image de {{ otherArticle.title }}">
+                                    {% endif %}
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <a class="carousel-control-prev w-auto" href="#recipeCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon bg-dark border border-dark rounded-circle" aria-hidden="true"></span>
+                <span class="sr-only">Précédent</span>
+            </a>
+            <a class="carousel-control-next w-auto" href="#recipeCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon bg-dark border border-dark rounded-circle" aria-hidden="true"></span>
+                <span class="sr-only">Suivant</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<br />
+<br />

@@ -4,6 +4,7 @@ namespace App\Form\Structure;
 
 use App\Entity\Structure\Employee;
 use App\Entity\Structure\Sector;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -13,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
@@ -89,6 +91,29 @@ class EmployeeType extends AbstractType
                 'text_property' => 'name',
                 'attr' => [
                     'style' => 'width: 100%'
+                ],
+            ])
+            ->add('photoFile', VichImageType::class, [
+                'label'       => 'Photo de profil',
+                'required'    => false,
+                'attr'        => [
+                    'lang'        => 'fr',
+                    'placeholder' => 'Télécharger une photo de profil',
+                ],
+            ])
+            ->add('presentation', CKEditorType::class, [
+                'label'       => 'Présentation générale',
+                'required'    => true,
+                'attr'        => [
+                    'placeholder' => 'Présentation générale',
+                ],
+            ])
+            ->add('cvFile', VichImageType::class, [
+                'label'       => 'CV de l\'employée',
+                'required'    => false,
+                'attr'        => [
+                    'lang'        => 'fr',
+                    'placeholder' => 'CV de l\'employée (format : png, jpeg, jpg, pdf)',
                 ],
             ])
         ;

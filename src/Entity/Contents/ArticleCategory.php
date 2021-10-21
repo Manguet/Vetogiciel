@@ -33,6 +33,11 @@ class ArticleCategory
      */
     private $title;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $titleUrl;
+
     public function __construct()
     {
         $this->article = new ArrayCollection();
@@ -82,6 +87,18 @@ class ArticleCategory
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getTitleUrl(): ?string
+    {
+        return $this->titleUrl;
+    }
+
+    public function setTitleUrl(string $titleUrl): self
+    {
+        $this->titleUrl = $titleUrl;
 
         return $this;
     }

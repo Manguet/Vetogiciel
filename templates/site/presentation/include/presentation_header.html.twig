@@ -1,0 +1,44 @@
+<div class="d-flex justify-content-around align-items-center">
+    <div>
+        <h1 class="main-color text-center">
+            {% if isVeterinary %}Dr. {% endif %}{{ worker.firstname }} {{ worker.lastname }}
+            {% if isVeterinary and worker.type is not null %}
+                <span class="undertitle title-undersize">({{ worker.type }})</span>
+            {% endif %}
+        </h1>
+        {% if worker.sector is not null %}
+            <h2 class="undertitle">
+                {% for sector in worker.sector %}
+                    {{ sector.name }} {% if not loop.last %} / {% endif %}
+                {% endfor %}
+            </h2>
+        {% endif %}
+        <div class="d-flex">
+        {% if not isVeterinary and worker.isManager %}
+            <div class="main-icon"
+                 data-toggle="tooltip"
+                 data-placement="top"
+                 title="Manager"
+            >
+                <i class="fas fa-user-nurse"></i>
+            </div>
+        {% endif %}
+        {% for sector in worker.sector %}
+            <div class="main-icon ml-2"
+                 data-toggle="tooltip"
+                 data-placement="top"
+                 title="{{ sector.name }}"
+            >
+                <i class="{{ sector.icon }}"></i>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+    {% if worker.photoFile %}
+        <img src="{{ vich_uploader_asset(worker, 'photoFile')|imagine_filter('thumb') }}" alt="{{ worker.lastname }}" title="portrait de {{ worker.lastname }}">
+    {% else %}
+        <img src="{{ asset('build/images/carousel-1.jpg')|imagine_filter('thumb') }}" alt="{{ worker.lastname }}" title="image de {{ worker.lastname }}">
+    {% endif %}
+</div>
+<hr>

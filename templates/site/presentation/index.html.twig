@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="index-margin-top presentation-margin">
+    <h1 class="main-color text-center">Notre Equipe</h1>
+
+    {% if veterinarians is not null %}
+        <h2 class="main-color">
+            <i class="fas fa-chevron-right"></i> Les Vétérinaires
+        </h2>
+
+        {% for veterinarian in veterinarians %}
+            {% if loop.index is divisible by(4) or loop.index == 1 %}
+                <div class="card-deck d-flex justify-content-center mt-5">
+            {% endif %}
+            <div class="card col-3">
+                <div class="card-body">
+                    <h3 class="card-title">
+                        Dr. {{ veterinarian.firstname }} {{ veterinarian.lastname }}
+                    </h3>
+                    {% if veterinarian.photo is not null %}
+                        <div class="text-center">
+                            <img src="{{ vich_uploader_asset(veterinarian, 'photoFile')|imagine_filter('thumb') }}" alt="Dr.{{ veterinarian.lastName }}" title="photo du Dr.{{ veterinarian.lastName }}">
+                        </div>
+                    {% endif %}
+                    <div class="text-center mt-2">
+                        <a href="{{ path('presentation_show', {'fullName' : veterinarian.fullNameSlugiffied }) }}">
+                            <button class="custom-button">
+                                Voir le CV
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% if loop.index is divisible by(4) or loop.last %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if employees is not null %}
+        <h2 class="main-color">
+            <i class="fas fa-chevron-right"></i> Les Employées
+        </h2>
+
+        {% for employee in employees %}
+            {% if loop.index is divisible by(4) or loop.index == 1 %}
+                <div class="card-deck d-flex justify-content-center mt-5">
+            {% endif %}
+            <div class="card col-3">
+                <div class="card-body">
+                    <h3 class="card-title">
+                        {{ employee.firstname }} {{ employee.lastname }}
+                    </h3>
+                    {% if employee.photo is not null %}
+                        <div class="text-center">
+                            <img src="{{ vich_uploader_asset(employee, 'photoFile')|imagine_filter('thumb') }}" alt="{{ employee.lastName }}" title="photo de {{ employee.lastName }}">
+                        </div>
+                    {% else %}
+                        <div class="text-center">
+                            <img src="{{ asset('build/images/carousel-1.jpg')|imagine_filter('thumb') }}" alt="{{ employee.lastname }}" title="photo de {{ employee.lastname }}">
+                        </div>
+                    {% endif %}
+                    <div class="text-center mt-2">
+                        <a href="{{ path('presentation_show', {'fullName' : employee.fullNameSlugiffied }) }}">
+                            <button class="custom-button">
+                                Voir le CV
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% if loop.index is divisible by(4) or loop.last %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <br>
+    <br>
+    <br>
+
+    <div>
+        {{ include('base/_footer.html.twig') }}
+    </div>
+</div>
+{% endblock %}

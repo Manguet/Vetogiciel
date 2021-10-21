@@ -68,19 +68,15 @@ class Commentary implements EntityDateInterface
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCreatedBy()
     {
         return $this->createdBy;
     }
 
-    /**
-     * @param mixed $createdBy
-     */
-    public function setCreatedBy($createdBy): void
+    public function setCreatedBy($createdBy): self
     {
         $this->createdBy = $createdBy;
+
+        return $this;
     }
 }

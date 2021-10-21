@@ -1,0 +1,15 @@
+{% if worker.presentation is not null %}
+    <h2 class="main-color text-center">Présentation</h2>
+    <div>
+        {{ worker.presentation|raw }}
+    </div>
+    {% if worker.cv %}
+        <div class="text-center">
+            <a href="{{ path('presentation_cv', {'worker': worker.id, 'isVeterinary' : isVeterinary}) }}">
+                <button class="custom-button">
+                    Télécharger le CV
+                </button>
+            </a>
+        </div>
+    {% endif %}
+{% endif %}

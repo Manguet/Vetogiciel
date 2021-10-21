@@ -1,0 +1,32 @@
+<div class="container mt-5">
+    <div class="text-center">
+        <hr class="mt-5">
+        <h2 class="mt-5">
+            L'<span class="main-color">Equipe</span>
+        </h2>
+        <h4>Pour mieux nous connaitre</h4>
+
+        {% for veterinarian in veterinarians %}
+            {% if loop.index is divisible by(4) or loop.index == 1 %}
+                <div class="card-deck d-flex justify-content-center mt-5">
+            {% endif %}
+                <div class="card col-3">
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            Dr. {{ veterinarian.firstname }} {{ veterinarian.lastname }}
+                        </h3>
+                        {% if veterinarian.photo is not null %}
+                            <img src="{{ vich_uploader_asset(veterinarian, 'photoFile')|imagine_filter('thumb') }}" alt="Dr.{{ veterinarian.lastName }}" title="photo du Dr.{{ veterinarian.lastName }}">
+                        {% endif %}
+                    </div>
+                </div>
+            {% if loop.index is divisible by(4) or loop.last %}
+                </div>
+            {% endif %}
+        {% endfor %}
+        <button class="custom-button card-title mt-5" href="{{ path('presentation_index') }}"
+                onclick="window.location.href=$(this).attr('href')">
+            Voir toute l'équipe
+        </button>
+    </div>
+</div>

@@ -5,6 +5,7 @@ namespace App\Controller\Site\Articles;
 use App\Entity\Contents\ArticleCategory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -44,16 +45,19 @@ class CategoryArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show")
+     * @Route("/{category}", name="show")
      *
-     * @param null|ArticleCategory $articleCategory
+     * @param Request $request
      *
      * @return Response
      */
-    public function show(?ArticleCategory $articleCategory): Response
+    public function show(Request $request): Response
     {
-        if (null === $articleCategory) {
-            throw $this->createNotFoundException('404');
+        $articleCategory = $this->entityManager->getRepository(ArticleCategory::class)
+            ->findOneBy(['titleUrl' => $request->attributes->get('category')]);
+
+        if (!$articleCategory) {
+            $this->createNotFoundException('404');
         }
 
         $categories = $this->entityManager->getRepository(ArticleCategory::class)

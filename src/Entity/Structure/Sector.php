@@ -45,6 +45,11 @@ class Sector implements EntityDateInterface
      */
     private $employees;
 
+    /**
+     * @ORM\Column(type="string", length=120, nullable=true)
+     */
+    private $icon;
+
     public function __construct()
     {
         $this->veterinaries = new ArrayCollection();
@@ -88,9 +93,9 @@ class Sector implements EntityDateInterface
         return $this->veterinaries;
     }
 
-    public function addVeterinary(Veterinary $veterinary): self
+    public function addVeterinary(?Veterinary $veterinary): self
     {
-        if (!$this->veterinaries->contains($veterinary)) {
+        if ($veterinary && !$this->veterinaries->contains($veterinary)) {
             $this->veterinaries[] = $veterinary;
             $veterinary->addSector($this);
         }
@@ -98,7 +103,7 @@ class Sector implements EntityDateInterface
         return $this;
     }
 
-    public function removeUser(Veterinary $veterinary): self
+    public function removeVeterinary(Veterinary $veterinary): self
     {
         if ($this->veterinaries->contains($veterinary)) {
             $this->veterinaries->removeElement($veterinary);
@@ -116,9 +121,9 @@ class Sector implements EntityDateInterface
         return $this->employees;
     }
 
-    public function addEmployee(Employee $employee): self
+    public function addEmployee(?Employee $employee): self
     {
-        if (!$this->employees->contains($employee)) {
+        if ($employee && !$this->employees->contains($employee)) {
             $this->employees[] = $employee;
             $employee->addSector($this);
         }
@@ -132,6 +137,18 @@ class Sector implements EntityDateInterface
             $this->employees->removeElement($employee);
             $employee->removeSector($this);
         }
+
+        return $this;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?string $icon): self
+    {
+        $this->icon = $icon;
 
         return $this;
     }

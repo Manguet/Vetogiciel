@@ -53,26 +53,27 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show")
+     * @Route("/{article}", name="show")
      *
      * @param Request $request
-     * @param Article|null $article
-     * @param string $category
      *
      * @return Response
      */
-    public function show(Request $request, ?Article $article, string $category): Response
+    public function show(Request $request): Response
     {
+        $article = $this->entityManager->getRepository(Article::class)
+            ->findOneBy(['titleUrl' => $request->attributes->get('article')]);
+
         if (!$article) {
             throw $this->createNotFoundException('404');
         }
 
-        $category = $article->getArticleCategory();
+        $categoryArticle = $article->getArticleCategory();
 
-        if ($category) {
+        if ($categoryArticle) {
 
             $articles = $this->entityManager->getRepository(Article::class)
-                ->findOthersByCategory($category, $article->getId());
+                ->findOthersByCategory($categoryArticle, $article->getId());
         }
 
         $categories = $this->entityManager->getRepository(ArticleCategory::class)
@@ -131,17 +132,18 @@ class ArticleController extends AbstractController
             $comment = $request->request->get('comment');
 
             $commentary = new Commentary();
-            $commentary->setCreatedBy($createdBy);
-            $commentary->setDescription($comment['description']);
-
-            $commentary->setArticle($article);
+            $commentary
+                ->setCreatedBy($createdBy)
+                ->setDescription($comment['description'])
+                ->setArticle($article)
+            ;
 
             $this->entityManager->persist($commentary);
             $this->entityManager->flush();
 
             return $this->redirectToRoute('article_show', [
                 'id'        => (int)$articleId,
-                'category'  => $article->getArticleCategory()->getId(),
+                'category'  => $article->getArticleCategory()->getTitleUrl(),
                 '_fragment' => 'comment-zone',
             ]);
 

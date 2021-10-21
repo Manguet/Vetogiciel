@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Structure;
 
 use App\Entity\Structure\Employee;
 use App\Form\Structure\EmployeeType;
+use App\Interfaces\Slugger\SluggerInterface;
 use App\Security\EmailVerifier;
 use App\Service\User\PasswordEncoderServices;
 use Doctrine\ORM\EntityManagerInterface;
@@ -48,20 +49,28 @@ class EmployeeController extends AbstractController
     private $emailVerifier;
 
     /**
+     * @var SluggerInterface
+     */
+    private $slugger;
+
+    /**
      * EmployeeController constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param PasswordEncoderServices $encoderServices
      * @param FlashBagInterface $flashBag
      * @param EmailVerifier $emailVerifier
+     * @param SluggerInterface $slugger
      */
     public function __construct(EntityManagerInterface $entityManager, PasswordEncoderServices $encoderServices,
-                                FlashBagInterface $flashBag, EmailVerifier $emailVerifier)
+                                FlashBagInterface $flashBag, EmailVerifier $emailVerifier,
+                                SluggerInterface $slugger)
     {
         $this->entityManager   = $entityManager;
         $this->encoderServices = $encoderServices;
         $this->flashBag        = $flashBag;
         $this->emailVerifier   = $emailVerifier;
+        $this->slugger         = $slugger;
     }
 
     /**
@@ -175,6 +184,13 @@ class EmployeeController extends AbstractController
             /** Manually encode password */
             $this->encoderServices->encodePassword($form, $employee);
 
+            $employee->setFullNameSlugiffied(
+                $this->slugger->generateSlugUrl(
+                    $employee->getFirstname() . '-' . $employee->getLastname(),
+                    Employee::class
+                )
+            );
+
             $this->entityManager->persist($employee);
             $this->entityManager->flush();
 
@@ -210,7 +226,7 @@ class EmployeeController extends AbstractController
      *
      * @return Response
      */
-    public function editVeterinary(Request $request, Employee $employee): Response
+    public function editEmployee(Request $request, Employee $employee): Response
     {
         $form = $this->createForm(EmployeeType::class, $employee, [
             'enablePassword' => false,

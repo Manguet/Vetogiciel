@@ -37,4 +37,26 @@ class VeterinaryRepository extends ServiceEntityRepository
         $this->_em->persist($user);
         $this->_em->flush();
     }
+
+    /**
+     * Get all Sectors ordered by name
+     * @param null $q
+     *
+     * @return int|mixed|string
+     */
+    public function findAllByNameResults($q = null)
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->orderBy('s.name', 'ASC');
+
+        if ($q) {
+            $qb
+                ->orWhere('s.lastname LIKE :q')
+                ->orWhere('s.firstname LIKE :s')
+                ->orWhere('s.email LIKE :s')
+                ->setParameter('q', '%' . $q . '%');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }
