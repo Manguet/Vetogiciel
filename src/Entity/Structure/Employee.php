@@ -4,8 +4,12 @@ namespace App\Entity\Structure;
 
 use App\Entity\Contents\Article;
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\Structure\PhotoInterface;
+use App\Interfaces\Structure\PresentationInterface;
 use App\Interfaces\User\UserEntityInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\Structure\PhotoTrait;
+use App\Traits\Structure\PresentationTrait;
 use App\Traits\User\UserEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,17 +17,21 @@ use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Structure\EmployeeRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=EmployeeRepository::class)
  * @ORM\HasLifecycleCallbacks
+ * @Vich\Uploadable()
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Employee implements EntityDateInterface, UserEntityInterface, UserInterface
+class Employee implements EntityDateInterface, UserEntityInterface, UserInterface, PresentationInterface, PhotoInterface
 {
     use EntityDateTrait;
     use UserEntityTrait;
+    use PhotoTrait;
+    use PresentationTrait;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)

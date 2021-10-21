@@ -53,4 +53,8 @@ interface UserEntityInterface
     public function getLastname(): ?string;
 
     public function setLastname(string $lastname): self;
+
+    public function getFullNameSlugiffied(): ?string;
+
+    public function setFullNameSlugiffied(string $fullNameSlugiffied): self;
 }

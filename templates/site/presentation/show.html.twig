@@ -1,1 +1,48 @@
-PRESENTATION VETO OU EMPLOYEE
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="index-margin-top presentation-margin">
+        {{ include('site/presentation/include/presentation_header.html.twig') }}
+
+        {{ include('site/presentation/include/presentation_presentation.html.twig') }}
+        {% if isVeterinary and worker.articles is not null %}
+            <hr>
+            {{ include('site/presentation/include/presentation_articles.html.twig') }}
+        {% endif %}
+
+
+        <div>
+            {{ include('base/_footer.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block endjavascript %}
+    <script>
+        $('#recipeCarousel').carousel({
+            interval: 5000
+        })
+
+        $('.carousel .carousel-item').each(function(){
+            let minPerSlide = 3;
+            let next = $(this).next();
+            if (!next.length) {
+                next = $(this).siblings(':first');
+            }
+            next.children(':first-child').clone().appendTo($(this));
+
+            for (let i=0; i<minPerSlide; i++) {
+                next=next.next();
+                if (!next.length) {
+                    next = $(this).siblings(':first');
+                }
+
+                next.children(':first-child').clone().appendTo($(this));
+            }
+        });
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+{% endblock %}

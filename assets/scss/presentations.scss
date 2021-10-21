@@ -1,0 +1,90 @@
+.presentation-margin {
+
+  margin-left: 10vw;
+  margin-right: 10vw;
+
+  .undertitle {
+    font-style: italic;
+    color: $grey-shadow;
+  }
+
+  .title-undersize {
+    font-size: 0.7em;
+  }
+
+  .field-veterinary {
+    border: 5px solid $light-blue;
+    box-shadow:0px 0px 0px 1px $main-color inset;
+    padding: 10px;
+    background-color: $light-blue;
+    margin-left: 10vw;
+    margin-right: 10vw;
+  }
+
+  .undercase {
+    font-style: italic;
+    font-size: 0.8em;
+  }
+
+  .sub-text {
+    margin-left: 60px;
+  }
+
+  @media (max-width: 768px) {
+    .carousel-inner .carousel-item > div {
+      display: none;
+    }
+    .carousel-inner .carousel-item > div:first-child {
+      display: block;
+    }
+  }
+  .carousel-inner {
+    height: auto !important;
+
+    div.card.card-body
+    {
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  .carousel-inner .carousel-item.active,
+  .carousel-inner .carousel-item-next,
+  .carousel-inner .carousel-item-prev {
+    display: flex;
+  }
+
+  /* display 3 */
+  @media (min-width: 768px) {
+
+    .carousel-inner .carousel-item-right.active,
+    .carousel-inner .carousel-item-next {
+      transform: translateX(33.333%);
+    }
+
+    .carousel-inner .carousel-item-left.active,
+    .carousel-inner .carousel-item-prev {
+      transform: translateX(-33.333%);
+    }
+  }
+
+  .carousel-inner .carousel-item-right,
+  .carousel-inner .carousel-item-left{
+    transform: translateX(0);
+  }
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      color: $light-blue;
+    }
+  }
+
+  .main-icon {
+    font-size: 3em;
+    color: $second-color;
+    width: 18%;
+  }
+}

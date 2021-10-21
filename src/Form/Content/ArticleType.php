@@ -57,7 +57,7 @@ class ArticleType extends AbstractType
             ])
             ->add('articleCategory', Select2EntityType::class, [
                 'label'         => 'Rattacher à une catégory',
-                'required'      => false,
+                'required'      => true,
                 'placeholder'   => 'Rattacher à une catégory',
                 'class'         => ArticleCategory::class,
                 'multiple'      => false,

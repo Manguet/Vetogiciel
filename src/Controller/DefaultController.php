@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Contents\Article;
 use App\Entity\Structure\Sector;
+use App\Entity\Structure\Veterinary;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,11 +34,18 @@ class DefaultController extends AbstractController
     {
         $sectors = $this->getSectorsByFour();
 
-        $articles = $this->entityManager->getRepository(Article::class)->findByMax(4);
+        $articles = $this->entityManager->getRepository(Article::class)
+            ->findByMax(4);
+
+        $veterinarians = $this->entityManager->getRepository(Veterinary::class)
+            ->findBy([
+                 'isVerified' => true,
+            ]);
 
         return $this->render('index.html.twig', [
-            'sectors'  => $sectors,
-            'articles' => $articles,
+            'sectors'       => $sectors,
+            'articles'      => $articles,
+            'veterinarians' => $veterinarians,
         ]);
     }
 

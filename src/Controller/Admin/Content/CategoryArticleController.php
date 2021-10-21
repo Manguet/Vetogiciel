@@ -5,6 +5,7 @@ namespace App\Controller\Admin\Content;
 use App\Entity\Contents\Article;
 use App\Entity\Contents\ArticleCategory;
 use App\Form\Content\ArticleCategoryType;
+use App\Interfaces\Slugger\SluggerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
@@ -28,13 +29,20 @@ class CategoryArticleController extends AbstractController
     private $entityManager;
 
     /**
+     * @var SluggerInterface
+     */
+    private $slugger;
+
+    /**
      * CategoryArticleController constructor.
      *
      * @param EntityManagerInterface $entityManager
+     * @param SluggerInterface $slugger
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, SluggerInterface $slugger)
     {
         $this->entityManager = $entityManager;
+        $this->slugger       = $slugger;
     }
 
     /**
@@ -95,6 +103,12 @@ class CategoryArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $category->setTitleUrl(
+                $this->slugger->generateSlugUrl(
+                    $category->getTitle(), ArticleCategory::class
+                )
+            );
 
             $this->entityManager->persist($category);
             $this->entityManager->flush();

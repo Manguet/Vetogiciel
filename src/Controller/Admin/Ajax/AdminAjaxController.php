@@ -6,7 +6,9 @@ use App\Entity\Contents\ArticleCategory;
 use App\Entity\Patients\Race;
 use App\Entity\Patients\Species;
 use App\Entity\Structure\Clinic;
+use App\Entity\Structure\Employee;
 use App\Entity\Structure\Sector;
+use App\Entity\Structure\Veterinary;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -159,5 +161,55 @@ class AdminAjaxController extends AbstractController
         }
 
         return new JsonResponse($categoryResults);
+    }
+
+    /**
+     * @Route("veterinary", name="veterinary")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function autoCompleteVeterinary(Request $request): JsonResponse
+    {
+        $query = $request->get('q');
+
+        $veterinaries = $this->entityManager->getRepository(Veterinary::class)
+            ->findAllByNameResults($query);
+
+        $veterinaryResults = [];
+        foreach ($veterinaries as $veterinary) {
+            $veterinaryResults[] = [
+                'id'   => $veterinary->getId(),
+                'text' => $veterinary->getLastName() . ' ' . $veterinary->getFirstName(),
+            ];
+        }
+
+        return new JsonResponse($veterinaryResults);
+    }
+
+    /**
+     * @Route("employee", name="employee")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function autoCompleteEmployee(Request $request): JsonResponse
+    {
+        $query = $request->get('q');
+
+        $employees = $this->entityManager->getRepository(Employee::class)
+            ->findAllByNameResults($query);
+
+        $employeeResults = [];
+        foreach ($employees as $employee) {
+            $employeeResults[] = [
+                'id'   => $employee->getId(),
+                'text' => $employee->getLastName() . ' ' . $employee->getFirstName(),
+            ];
+        }
+
+        return new JsonResponse($employeeResults);
     }
 }

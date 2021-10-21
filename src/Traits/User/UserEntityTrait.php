@@ -44,6 +44,11 @@ trait UserEntityTrait
      */
     protected $lastname;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $fullNameSlugiffied;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -143,6 +148,18 @@ trait UserEntityTrait
     public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getFullNameSlugiffied(): ?string
+    {
+        return $this->fullNameSlugiffied;
+    }
+
+    public function setFullNameSlugiffied(?string $fullNameSlugiffied): self
+    {
+        $this->fullNameSlugiffied = $fullNameSlugiffied;
 
         return $this;
     }

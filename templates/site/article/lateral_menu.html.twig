@@ -6,7 +6,7 @@
                 {% for category in categories %}
                     {% if category.article|length > 0 %}
                     <li class="d-flex justify-content-between">
-                        <a href="{{ path('articles_show', {'id' : category.id}) }}" class="{% if app.request.get('_route') starts with 'articles_' ~ category.id %}actual-link{% endif %}">
+                        <a href="{{ path('articles_show', {'category' : category.titleUrl}) }}" class="{% if app.request.get('_route') starts with 'articles_' ~ category.titleUrl %}actual-link{% endif %}">
                             {{ category.title }}
                         </a>
                         <span class="main-color"><i class="fas fa-chevron-right"></i></span>

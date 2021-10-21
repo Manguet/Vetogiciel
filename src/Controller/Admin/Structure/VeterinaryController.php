@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Structure;
 
 use App\Entity\Structure\Veterinary;
 use App\Form\Structure\VeterinaryFormType;
+use App\Interfaces\Slugger\SluggerInterface;
 use App\Security\EmailVerifier;
 use App\Service\User\PasswordEncoderServices;
 use Doctrine\ORM\EntityManagerInterface;
@@ -48,20 +49,26 @@ class VeterinaryController extends AbstractController
     private $flashBag;
 
     /**
-     * ClinicController constructor.
-     *
+     * @var SluggerInterface
+     */
+    private $slugger;
+
+    /**
      * @param EntityManagerInterface $entityManager
      * @param PasswordEncoderServices $encoderServices
      * @param EmailVerifier $emailVerifier
      * @param FlashBagInterface $flashBag
+     * @param SluggerInterface $slugger
      */
     public function __construct(EntityManagerInterface $entityManager, PasswordEncoderServices $encoderServices,
-                                EmailVerifier $emailVerifier, FlashBagInterface $flashBag)
+                                EmailVerifier $emailVerifier, FlashBagInterface $flashBag,
+                                SluggerInterface $slugger)
     {
         $this->entityManager   = $entityManager;
         $this->encoderServices = $encoderServices;
         $this->emailVerifier   = $emailVerifier;
         $this->flashBag        = $flashBag;
+        $this->slugger         = $slugger;
     }
 
     /**
@@ -177,6 +184,13 @@ class VeterinaryController extends AbstractController
 
             /** Manually encode password */
             $this->encoderServices->encodePassword($form, $veterinary);
+
+            $veterinary->setFullNameSlugiffied(
+                $this->slugger->generateSlugUrl(
+                    $veterinary->getFirstname() . '-' . $veterinary->getLastname(),
+                    Veterinary::class
+                )
+            );
 
             $this->entityManager->persist($veterinary);
             $this->entityManager->flush();
