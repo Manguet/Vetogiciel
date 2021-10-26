@@ -25,13 +25,15 @@
                 </div>
             {% endfor %}
         {% endfor %}
-        <h3 class="carousel-title">Clinique Vétérinaire Lorem Ipsum</h3>
+        <h3 class="carousel-title">{{ twigClinic.getActualClinic.name }}</h3>
         <p>Nous prenons soin d'eux</p>
-        <button class="custom-button">
-            <span>
-                Visiter notre clinique
-            </span>
-        </button>
+        <a href="{{ path('clinic_show', { 'clinic' : twigClinic.getActualClinic.nameSlugiffied }) }}">
+            <button class="custom-button">
+                <span>
+                    Visiter notre clinique
+                </span>
+            </button>
+        </a>
     </div>
 
     <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">

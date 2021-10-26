@@ -1,7 +1,26 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-    <a class="navbar-brand title-nav" href="{{ path('index') }}">
-        <img class="logo" src="{{ asset('build/images/vetogiciel-logo.png') }}" title="Vetogiciel" alt="vetogiciel-logo">
-    </a>
+    <div class="d-flex flex-column">
+        <div class="dropdown">
+            <button class="d-flex justify-content-center align-items-center"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+            >
+                <img class="logo" src="{{ asset('build/images/vetogiciel-logo.png') }}" title="Vetogiciel" alt="vetogiciel-logo">
+                <i class="fas fa-sort-down main-color"></i>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% for clinic in clinics %}
+                    <a class="dropdown-item" href="{{ path('clinic_change', { 'clinic' : clinic.id }) }}">{{ clinic.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="text-center text-capitalize main-color">
+            {{ selectedClinic.name }}
+        </div>
+    </div>
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>

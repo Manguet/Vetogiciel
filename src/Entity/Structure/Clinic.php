@@ -3,8 +3,10 @@
 namespace App\Entity\Structure;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\Priority\PriorityInterface;
 use App\Repository\Structure\ClinicRepository;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\Priority\PriorityTrait;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,9 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Clinic implements EntityDateInterface
+class Clinic implements EntityDateInterface, PriorityInterface
 {
     use EntityDateTrait;
+    use PriorityTrait;
 
     /**
      * @ORM\Id
@@ -29,6 +32,11 @@ class Clinic implements EntityDateInterface
      * @ORM\Column(type="string", length=255)
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $nameSlugiffied;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -103,6 +111,18 @@ class Clinic implements EntityDateInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getNameSlugiffied(): ?string
+    {
+        return $this->nameSlugiffied;
+    }
+
+    public function setNameSlugiffied(?string $nameSlugiffied): self
+    {
+        $this->nameSlugiffied = $nameSlugiffied;
 
         return $this;
     }

@@ -13,12 +13,14 @@
                             <i class="fas fa-map-marker-alt"></i>
                         </span>
                         <br>
-                        Clinique Vétérinaire Lorem Ipsum
+                        {{ twigClinic.getActualClinic.name }}
                     </h3>
                     <p class="card-text">
-                        44, rue de la Garenne
+                        {{ twigClinic.getActualClinic.address }}
                         <br>
-                        33600 Pessac
+                        {{ twigClinic.getActualClinic.address2 }}
+                        <br>
+                        {{ twigClinic.getActualClinic.postalCode }} {{ twigClinic.getActualClinic.city }}
                         <br>
                         <br>
                     </p>
@@ -45,7 +47,7 @@
                         Du lundi au vendredi et les week-end
                         <br>
                         <br>
-                        XX.XX.XX.XX.XX
+                        {{ twigClinic.getActualClinic.phone2 }}
                     </h5>
                 </div>
             </div>
@@ -61,7 +63,7 @@
                     <p class="card-text">
                         Uniquement sur RDV :
                         <br>
-                        XX.XX.XX.XX.XX
+                        {{ twigClinic.getActualClinic.phone }}
                     </p>
                     <button class="custom-button">
                         Prendre RDV

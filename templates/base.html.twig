@@ -18,7 +18,9 @@
     <body>
 
         {% block navbar %}
-            {% include 'base/_navbar.html.twig' %}
+            {{ render(controller(
+                'App\\Controller\\DefaultController::headerAction'
+            )) }}
         {% endblock %}
 
         {% block body %}{% endblock %}

@@ -4,11 +4,14 @@ namespace App\Controller\Admin\Structure;
 
 use App\Entity\Structure\Clinic;
 use App\Form\Structure\ClinicType;
+use App\Interfaces\Slugger\SluggerInterface;
+use App\Service\Priority\PriorityServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,13 +29,28 @@ class ClinicController extends AbstractController
     private $entityManager;
 
     /**
+     * @var PriorityServices
+     */
+    private $priorityServices;
+
+    /**
+     * @var SluggerInterface
+     */
+    private $slugger;
+
+    /**
      * ClinicController constructor.
      *
      * @param EntityManagerInterface $entityManager
+     * @param PriorityServices $priorityServices
+     * @param SluggerInterface $slugger
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, PriorityServices $priorityServices,
+                                SluggerInterface $slugger)
     {
-        $this->entityManager = $entityManager;
+        $this->entityManager    = $entityManager;
+        $this->priorityServices = $priorityServices;
+        $this->slugger          = $slugger;
     }
 
     /**
@@ -61,7 +79,11 @@ class ClinicController extends AbstractController
                 'label'     => 'Type de structure',
                 'orderable' => true,
             ])
-            ->addOrderBy('name')
+            ->add('priority', TextColumn::class, [
+                'label'     => 'Priorité d\'affichage',
+                'orderable' => true,
+            ])
+            ->addOrderBy('priority')
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Clinic::class
             ])
@@ -94,6 +116,15 @@ class ClinicController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $priority = $this->priorityServices->setPriorityOnCreation($clinic);
+            $clinic
+                ->setPriority($priority)
+                ->setNameSlugiffied($this->slugger->generateSlugUrl(
+                    $clinic->getName(),
+                    Clinic::class
+                ))
+            ;
 
             $this->entityManager->persist($clinic);
             $this->entityManager->flush();
@@ -130,5 +161,61 @@ class ClinicController extends AbstractController
         return $this->render('admin/clinic/new.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/priority", name="priority")
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function priority(Request $request): Response
+    {
+        if (($request->getMethod() === 'POST') && ($request->isXmlHttpRequest())) {
+            $movedClinics = $request->get('movedClinics');
+            $newClinics   = $request->get('newClinics');
+            $clinics      = $clinicPositions = [];
+
+            $i = 0;
+            if (is_array($movedClinics) && is_array($newClinics)) {
+
+                foreach ($movedClinics as $movedClinic) {
+                    $clinics[$movedClinic] = $newClinics[$i];
+                    $i++;
+                }
+
+                foreach ($clinics as $oldPosition => $newPosition) {
+
+                    $clinic = $this->entityManager->getRepository(Clinic::class)
+                        ->findOneBy([
+                            'priority' => (int)$oldPosition,
+                        ])
+                    ;
+
+                    if ($clinic) {
+                        $clinicPositions[$clinic->getId()] = $newPosition;
+                    }
+                }
+
+                foreach ($clinicPositions as $id => $newPosition) {
+
+                    $clinic = $this->entityManager->getRepository(Clinic::class)
+                        ->find((int)$id)
+                    ;
+
+                    $clinic->setPriority($newPosition);
+                    $this->entityManager->persist($clinic);
+                }
+
+                $this->entityManager->flush();
+
+                return new JsonResponse('Priorité mise à jour', 200);
+            }
+            return new JsonResponse('Pas de modification', 200);
+
+        }
+
+        return new Response('error', 500);
     }
 }

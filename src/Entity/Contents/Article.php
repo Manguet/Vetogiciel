@@ -4,7 +4,9 @@ namespace App\Entity\Contents;
 
 use App\Entity\Structure\Veterinary;
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\Priority\PriorityInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\Priority\PriorityTrait;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,9 +22,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Article implements EntityDateInterface
+class Article implements EntityDateInterface, PriorityInterface
 {
     use EntityDateTrait;
+    use PriorityTrait;
 
     /**
      * @ORM\Id()
@@ -50,11 +53,6 @@ class Article implements EntityDateInterface
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isActivated;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $priority;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -143,18 +141,6 @@ class Article implements EntityDateInterface
     public function setIsActivated(?bool $isActivated): self
     {
         $this->isActivated = $isActivated;
-
-        return $this;
-    }
-
-    public function getPriority(): ?int
-    {
-        return $this->priority;
-    }
-
-    public function setPriority(?int $priority): self
-    {
-        $this->priority = $priority;
 
         return $this;
     }
