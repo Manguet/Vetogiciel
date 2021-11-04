@@ -13,15 +13,33 @@
                             <i class="fas fa-map-marker-alt"></i>
                         </span>
                         <br>
-                        Clinique Vétérinaire Lorem Ipsum
+                        {% if twigClinic.getActualClinic %}
+                            {{ twigClinic.getActualClinic.name }}
+                        {% else %}
+                            Vetogiciel
+                        {% endif %}
                     </h3>
-                    <p class="card-text">
-                        44, rue de la Garenne
-                        <br>
-                        33600 Pessac
-                        <br>
-                        <br>
-                    </p>
+                    {% if twigClinic.getActualClinic %}
+                        <p class="card-text">
+                            {{ twigClinic.getActualClinic.address }}
+                            <br>
+                            {{ twigClinic.getActualClinic.address2 }}
+                            <br>
+                            {{ twigClinic.getActualClinic.postalCode }} {{ twigClinic.getActualClinic.city }}
+                            <br>
+                            <br>
+                        </p>
+                    {% else %}
+                        <p class="card-text">
+                            144 Avenue de la Salle de Breillan
+                            <br>
+                            Lot 5
+                            <br>
+                            33290 Blanquefort
+                            <br>
+                            <br>
+                        </p>
+                    {% endif %}
                     <button class="custom-button">
                         Voir la plan d'acces
                     </button>
@@ -45,7 +63,11 @@
                         Du lundi au vendredi et les week-end
                         <br>
                         <br>
-                        XX.XX.XX.XX.XX
+                        {% if twigClinic.getActualClinic %}
+                            {{ twigClinic.getActualClinic.phone2 }}
+                        {% else %}
+                            XX.XX.XX.XX.XX
+                        {% endif %}
                     </h5>
                 </div>
             </div>
@@ -61,7 +83,11 @@
                     <p class="card-text">
                         Uniquement sur RDV :
                         <br>
-                        XX.XX.XX.XX.XX
+                        {% if twigClinic.getActualClinic %}
+                            {{ twigClinic.getActualClinic.phone }}
+                        {% else %}
+                            XX.XX.XX.XX.XX
+                        {% endif %}
                     </p>
                     <button class="custom-button">
                         Prendre RDV

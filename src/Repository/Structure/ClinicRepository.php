@@ -35,4 +35,16 @@ class ClinicRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * @return int|mixed|string
+     */
+    public function findClinicsByPriority()
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.priority', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

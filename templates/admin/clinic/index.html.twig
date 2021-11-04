@@ -2,6 +2,7 @@
 
 {% block morestylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/datatables.bootstrap.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.24/rr-1.2.7/datatables.min.css"/>
 {% endblock %}
 
 {% block body %}
@@ -36,7 +37,7 @@
 
 {% block endjavascript %}
     <script src="{{ asset('bundles/datatables/js/datatables.js') }}"></script>
-    <script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.24/rr-1.2.7/datatables.min.js"></script>    <script>
         $(function() {
             $('#my-tab').initDataTables({{ datatable_settings(table) }}, {
                 searching: true,
@@ -44,7 +45,58 @@
                 language: {
                     "url": "https://cdn.datatables.net/plug-ins/1.10.21/i18n/French.json"
                 },
-                pageLength: 25
+                pageLength: 25,
+                rowReorder: {
+                    update: true,
+                    dataSrc: 'priority',
+                }
+            }).then(function (dt) {
+
+                dt.on('row-reorder', function (e, diff, edit) {
+                    e.preventDefault();
+                    let movedClinics = [];
+                    let newClinics   = [];
+                    $(diff).each(function (e) {
+                        movedClinics.push($(this).prop('oldData'));
+                        newClinics.push($(this).prop('newData'))
+                    });
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ path('admin_clinic_priority') }}',
+                        data_type: 'json',
+                        data: {movedClinics: movedClinics, newClinics: newClinics}
+                    }).done(function (data) {
+                        dt.ajax.reload();
+                    });
+                });
+
+
+                /** Ajax delete */
+                $('#my-tab tbody').on('click', '.deleteAjax', function (e) {
+                    e.preventDefault();
+
+                    let url = $(this).attr('href');
+                    swal({
+                        title      : 'ATTENTION',
+                        text       : 'Voulez-vous vraiment supprimer cette clinique ?',
+                        icon       : 'warning',
+                        buttons    : true,
+                        dangerMode : true,
+                    }).then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                type      : 'POST',
+                                url       : url,
+                                data_type : 'json',
+                                data      : {}
+                            }).done(function () {
+                                dt.ajax.reload();
+                            })
+                        }
+                    })
+                })
+
             })
         });
     </script>

@@ -2,6 +2,16 @@
 
 .logo {
   height: 60px;
+  width: 220px;
+}
+
+#dropdownMenuButton {
+  border: none;
+  background-color: #F8F9FA;
+
+  &:hover {
+    border: none;
+  }
 }
 
 /** Shadow on bottom nav bar */

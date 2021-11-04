@@ -7,7 +7,7 @@
                 {% for key, otherArticle in worker.articles %}
                     <div class="carousel-item {% if loop.first %}active{% endif %}">
                         <div class="col-md-4 my-3">
-                            <a href="{{ path('article_show', {'category' : otherArticle.articleCategory.titleUrl, 'article' : otherArticle.id }) }}">
+                            <a href="{{ path('article_show', {'category' : otherArticle.articleCategory.titleUrl, 'article' : otherArticle.titleUrl }) }}">
                                 <div class="card card-body">
                                     {{ otherArticle.title }}
                                     {% if otherArticle.imageFile %}
