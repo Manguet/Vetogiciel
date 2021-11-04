@@ -25,15 +25,25 @@
                 </div>
             {% endfor %}
         {% endfor %}
-        <h3 class="carousel-title">{{ twigClinic.getActualClinic.name }}</h3>
+
+        <h3 class="carousel-title">
+            {% if twigClinic.getActualClinic %}
+                {{ twigClinic.getActualClinic.name }}
+            {% else %}
+                Vetogiciel
+            {% endif %}
+        </h3>
+
         <p>Nous prenons soin d'eux</p>
-        <a href="{{ path('clinic_show', { 'clinic' : twigClinic.getActualClinic.nameSlugiffied }) }}">
-            <button class="custom-button">
-                <span>
-                    Visiter notre clinique
-                </span>
-            </button>
-        </a>
+        {% if twigClinic.getActualClinic %}
+            <a href="{{ path('clinic_show', { 'clinic' : twigClinic.getActualClinic.nameSlugiffied }) }}">
+                <button class="custom-button">
+                    <span>
+                        Visiter notre clinique
+                    </span>
+                </button>
+            </a>
+        {% endif %}
     </div>
 
     <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">

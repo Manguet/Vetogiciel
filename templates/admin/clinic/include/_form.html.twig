@@ -5,6 +5,7 @@
         <li class="tab-link current" data-tab="tab-1">Informations Générales</li>
         <li class="tab-link" data-tab="tab-2">Coordonnées</li>
         <li class="tab-link" data-tab="tab-3">Informations légales</li>
+        <li class="tab-link" data-tab="tab-4">Logo</li>
     </ul>
 
     <div id="tab-1" class="tab-content current">
@@ -75,6 +76,13 @@
         <div>
             {{ form_label(form.siret) }}
             {{ form_widget(form.siret) }}
+        </div>
+    </div>
+
+    <div id="tab-4" class="tab-content">
+        <div>
+            {{ form_label(form.photoFile) }}
+            {{ form_widget(form.photoFile) }}
         </div>
     </div>
 

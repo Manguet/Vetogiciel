@@ -1,12 +1,20 @@
 <div class="footer d-flex justify-content-around align-items-center fixed-bottom">
     <div>
-        <span class="uppertext">Urgences de nuit : </span> {{ twigClinic.getActualClinic.phone2 }}
+        {% if twigClinic.getActualClinic %}
+            <span class="uppertext">Urgences de nuit : </span> {{ twigClinic.getActualClinic.phone2 }}
+        {% else %}
+            <span class="uppertext">Urgences de nuit : </span> XX.XX.XX.XX.XX
+        {% endif %}
     </div>
 
     <span class="border-footer"></span>
 
     <div>
-        <span class="uppertext">Contact : </span> {{ twigClinic.getActualClinic.phone }}
+        {% if twigClinic.getActualClinic %}
+            <span class="uppertext">Contact : </span> {{ twigClinic.getActualClinic.phone }}
+        {% else %}
+            <span class="uppertext">Contact : </span> XX.XX.XX.XX.XX
+        {% endif %}
     </div>
 
     <span class="border-footer"></span>

@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
@@ -138,6 +139,14 @@ class ClinicType extends AbstractType
                 'choices'  => $this->structureTypes,
                 'multiple' => false,
                 'expanded' => false,
+            ])
+            ->add('photoFile', VichImageType::class, [
+                'label'       => 'Logo de la clinique',
+                'required'    => false,
+                'attr'        => [
+                    'lang'        => 'fr',
+                    'placeholder' => 'Télécharger un logo',
+                ],
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Valider',

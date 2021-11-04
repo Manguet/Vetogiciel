@@ -1,13 +1,17 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="d-flex flex-column">
-        <div class="dropdown">
+        <div class="dropdown d-flex justify-content-center align-items-center">
             <button class="d-flex justify-content-center align-items-center"
                     id="dropdownMenuButton"
                     data-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false"
             >
-                <img class="logo" src="{{ asset('build/images/vetogiciel-logo.png') }}" title="Vetogiciel" alt="vetogiciel-logo">
+                {% if selectedClinic and selectedClinic.photo %}
+                    <img class="logo" src="{{ vich_uploader_asset(selectedClinic, 'photoFile')|imagine_filter('thumb') }}" alt="{{ selectedClinic.nameSlugiffied }}" title="logo de {{ selectedClinic.nameSlugiffied }}">
+                {% else %}
+                    <img class="logo" src="{{ asset('build/images/vetogiciel-logo.png') }}" title="Vetogiciel" alt="vetogiciel-logo">
+                {% endif %}
                 <i class="fas fa-sort-down main-color"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -16,8 +20,13 @@
                 {% endfor %}
             </div>
         </div>
+
         <div class="text-center text-capitalize main-color">
-            {{ selectedClinic.name }}
+            {% if selectedClinic %}
+                {{ selectedClinic.name }}
+            {% else %}
+                Vetogiciel
+            {% endif %}
         </div>
     </div>
 

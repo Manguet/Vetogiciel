@@ -1,6 +1,10 @@
 <div class="footer d-flex justify-content-around align-items-center mb-5">
     <div>
-        {{ twigClinic.getActualClinic.name }} © 2020
+        {% if twigClinic.getActualClinic %}
+            {{ twigClinic.getActualClinic.name }} © 2020
+        {% else %}
+            Vetogiciel © 2020
+        {% endif %}
     </div>
 
     <span class="border-footer"></span>

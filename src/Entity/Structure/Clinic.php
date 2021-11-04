@@ -4,22 +4,27 @@ namespace App\Entity\Structure;
 
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Interfaces\Priority\PriorityInterface;
+use App\Interfaces\Structure\PhotoInterface;
 use App\Repository\Structure\ClinicRepository;
 use App\Traits\DateTime\EntityDateTrait;
 use App\Traits\Priority\PriorityTrait;
+use App\Traits\Structure\PhotoTrait;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=ClinicRepository::class)
  * @ORM\HasLifecycleCallbacks
+ * @Vich\Uploadable()
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Clinic implements EntityDateInterface, PriorityInterface
+class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface
 {
     use EntityDateTrait;
     use PriorityTrait;
+    use PhotoTrait;
 
     /**
      * @ORM\Id
