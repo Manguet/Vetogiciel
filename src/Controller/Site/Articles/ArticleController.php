@@ -112,10 +112,10 @@ class ArticleController extends AbstractController
      */
     public function postComment(Request $request): RedirectResponse
     {
-        $articleId = $request->query->get('id');
+        $articleTitle = $request->query->get('article');
 
         $article = $this->entityManager->getRepository(Article::class)
-            ->find((int)$articleId);
+            ->findOneBy(['titleUrl' => $articleTitle]);
 
         if (null !== $article && $this->getUser()) {
 
@@ -142,7 +142,7 @@ class ArticleController extends AbstractController
             $this->entityManager->flush();
 
             return $this->redirectToRoute('article_show', [
-                'id'        => (int)$articleId,
+                'id'        => $article->getId(),
                 'category'  => $article->getArticleCategory()->getTitleUrl(),
                 '_fragment' => 'comment-zone',
             ]);
