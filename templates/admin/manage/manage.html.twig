@@ -1,23 +1,16 @@
 {% extends 'admin/base.html.twig' %}
 
 {% block body %}
-    <div class="accueil-content">
-        <div class="wrapper">
-            {% include('admin/manage/_general_nav.html.twig') %}
-            <div class="main_content">
-                <div class="info">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <div>
-                            <p>Total ventes cette année : XXX € TTC</p>
-                            <p>Nombre de consultations : XX</p>
-                            <p>Panier moyen : XX €</p>
-                            <p>Nombre d'animaux recus : XX</p>
-                        </div>
-                        <div>
-                            <div id="div_graph"></div>
-                        </div>
-                    </div>
-                </div>
+    <div class="info">
+        <div class="d-flex align-items-center justify-content-center">
+            <div>
+                <p>Total ventes cette année : XXX € TTC</p>
+                <p>Nombre de consultations : XX</p>
+                <p>Panier moyen : XX €</p>
+                <p>Nombre d'animaux recus : XX</p>
+            </div>
+            <div>
+                <div id="div_graph"></div>
             </div>
         </div>
     </div>

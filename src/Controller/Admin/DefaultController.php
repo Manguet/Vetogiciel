@@ -2,7 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Admin\Header;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\ComboChart;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,6 +16,19 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DefaultController extends AbstractController
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * @Route("", name="index")
      *
@@ -59,4 +74,22 @@ class DefaultController extends AbstractController
         ]);
     }
 
+    /**
+     * @return Response
+     */
+    public function headerAction(): Response
+    {
+        $headers = $this->entityManager->getRepository(Header::class)
+            ->findBy(['isMainHeader' => false]);
+
+        $response = new Response();
+
+        $content = $this->renderView('admin/manage/_general_nav.html.twig', [
+            'headers' => $headers
+        ]);
+
+        $response->setContent($content);
+
+        return $response;
+    }
 }

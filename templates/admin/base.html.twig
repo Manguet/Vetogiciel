@@ -16,7 +16,10 @@
         {% endblock %}
     </head>
     <body>
+    {% include('admin/base/_topbar.html.twig') %}
+
         {% block button %}{% endblock %}
+
         {% block navbar %}
         {% endblock %}
 
@@ -30,7 +33,20 @@
             </div>
         {% endfor %}
 
-        {% block body %}{% endblock %}
+    <div class="accueil-content">
+        <div class="wrapper">
+            {{ render(controller(
+                'App\\Controller\\Admin\\DefaultController::headerAction'
+            )) }}
+            <div class="main_content">
+                <div class="info">
+                    <div class="container">
+                        {% block body %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
@@ -40,6 +56,9 @@
                         $('#flashMessage').fadeOut('fast');
                     }, 5000);
                 });
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip()
+                })
             </script>
         {% endblock %}
 

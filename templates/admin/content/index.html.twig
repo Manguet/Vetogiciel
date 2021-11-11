@@ -6,32 +6,21 @@
 {% endblock %}
 
 {% block body %}
-    <div class="accueil-content">
-        <div class="wrapper">
-            {% include('admin/manage/_general_nav.html.twig') %}
-            <div class="main_content">
-                <div class="info">
-                    <div class="container">
-                        <div class="mt-5 d-flex justify-content-between">
-                            <a href="{{ path('admin_content_new') }}">
-                                <button class="custom-button mb-3">
-                                    <i class="far fa-newspaper"></i> Créer un article
-                                </button>
-                            </a>
-                            <a href="{{ path('admin_article_category_index') }}">
-                                <button class="custom-button">
-                                    <i class="fas fa-hashtag"></i> Categories d'articles
-                                </button>
-                            </a>
-                        </div>
+    <div class="mt-5 d-flex justify-content-between">
+        <a href="{{ path('admin_content_new') }}">
+            <button class="custom-button mb-3">
+                <i class="far fa-newspaper"></i> Créer un article
+            </button>
+        </a>
+        <a href="{{ path('admin_article_category_index') }}">
+            <button class="custom-button">
+                <i class="fas fa-hashtag"></i> Categories d'articles
+            </button>
+        </a>
+    </div>
 
-                        <div id="my-tab">
+    <div id="my-tab">
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 {% endblock %}
 
