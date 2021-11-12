@@ -1,24 +1,40 @@
 {% extends 'admin/base.html.twig' %}
 
 {% block body %}
-    <div class="info">
-        <div class="d-flex align-items-center justify-content-center">
-            <div>
-                <p>Total ventes cette année : XXX € TTC</p>
-                <p>Nombre de consultations : XX</p>
-                <p>Panier moyen : XX €</p>
-                <p>Nombre d'animaux recus : XX</p>
-            </div>
-            <div>
-                <div id="div_graph"></div>
-            </div>
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="welcome-admin">
+            Bonjour, {{ app.user.firstName }} {{ app.user.lastName }}
         </div>
+        {{ include('admin/manage/include/_clinic_select.html.twig') }}
+    </div>
+
+    {{ include('admin/manage/include/_top_datas.html.twig') }}
+
+    {{ include('admin/manage/include/_main_graph.html.twig') }}
+
+    {{ include('admin/manage/include/_little_graphs.html.twig') }}
+
+    <div class="d-flex justify-content-end align-items-center mt-5 bottom-bar">
+        Created by Vetogiciel 2020©
     </div>
 {% endblock %}
 
 {% block endjavascript %}
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-        {{ gc_draw(chart, 'div_graph') }}
+        {{ gc_draw([chart, secondChart, thirdChart, fourthChart, fifthChart], ['div_graph', 'div_graph_2', 'div_graph_3', 'div_graph_4', 'div_graph_5']) }}
+$    </script>
+    <script>
+        $('.count').each(function () {
+            $(this).prop('Counter',0).animate({
+                Counter: $(this).text()
+            }, {
+                duration: 2000,
+                easing: 'swing',
+                step: function (now) {
+                    $(this).text(Math.ceil(now));
+                }
+            });
+        });
     </script>
 {% endblock %}

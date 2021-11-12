@@ -3,43 +3,43 @@ Contenu:
   childs:
     Page:
       path:
-      icon: 'fas fa-long-arrow-alt-right'
+      icon:
     Article:
       path: 'admin_content_index'
-      icon: 'fas fa-long-arrow-alt-right'
+      icon:
     Offre d'emploi:
       path:
-      icon: 'fas fa-long-arrow-alt-right'
+      icon:
 
 Clients:
   icon: 'fas fa-user'
   childs:
     Clients:
       path: 'admin_user_index'
-      icon: 'fas fa-long-arrow-alt-right'
+      icon:
     Animaux:
       path:
-      icon: 'fas fa-long-arrow-alt-right'
+      icon:
 
 Facturation:
   icon: 'fas fa-credit-card'
   childs:
     En Cours:
       path:
-      icon: 'fas fa-long-arrow-alt-right'
+      icon:
     Reglés:
       path:
-      icon: 'fas fa-long-arrow-alt-right'
+      icon:
 
 Etablissement:
   icon: 'fas fa-hospital'
   childs:
     Structures:
       path: 'admin_clinic_index'
-      icon: 'fas fa-long-arrow-alt-right'
+      icon:
     Vétérinaires:
       path: 'admin_veterinary_index'
-      icon: 'fas fa-long-arrow-alt-right'
+      icon:
     Employés:
       path: 'admin_employee_index'
-      icon: 'fas fa-long-arrow-alt-right'
+      icon:

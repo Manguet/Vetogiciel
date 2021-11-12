@@ -1,12 +1,27 @@
-{% extends 'admin/base.html.twig' %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Vetogiciel : Nous sommes là pour vous !{% endblock %}</title>
+    {% block stylesheets %}
+        <link href="https://fonts.googleapis.com/css2?family=Crimson+Text&family=Raleway:wght@200&display=swap" rel="stylesheet">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('build/images/favicons/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('build/images/favicons/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('build/images/favicons/favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ asset('build/images/favicons/site.webmanifest') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+    {% block morestylesheets %}
+    {% endblock %}
+</head>
+<body>
 
-{% block navbar %}
     {{ include('admin/base/_navbar.html.twig') }}
-{% endblock %}
 
-{% block body %}
     <div class="index-admin">
         <h1 class="mb-5">Bienvenue sur</h1>
         <img class="mt-5" src="{{ asset('build/images/vetogiciel-logo.png') }}" alt="Vetogiciel" title="vetogiciel">
     </div>
-{% endblock %}
+</body>
+</html>

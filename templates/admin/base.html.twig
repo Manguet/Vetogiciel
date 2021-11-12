@@ -16,12 +16,10 @@
         {% endblock %}
     </head>
     <body>
-    {% include('admin/base/_topbar.html.twig') %}
+        {% include('admin/base/_topbar.html.twig') %}
 
         {% block button %}{% endblock %}
 
-        {% block navbar %}
-        {% endblock %}
 
         {% for label, messages in app.flashes %}
             <div id="flashMessage" style="position: absolute; left: 250px; width: 78vw">

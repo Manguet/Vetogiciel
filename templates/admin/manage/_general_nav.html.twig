@@ -21,7 +21,14 @@
             </button>
 
             <div id="collapse{{ headerDatas.id }}"
-                 class="collapse"
+                 class="collapse
+                        {% for headerChild in headerDatas.childHeaders %}
+                             {% if route is not null and route is same as headerChild.path and break is not defined %}
+                                     show
+                                {% set break = true %}
+                            {% endif %}
+                        {% endfor %}
+                        "
                  aria-labelledby="heading{{ headerDatas.id }}"
                  data-parent="#accordion"
             >
@@ -30,14 +37,16 @@
                         <li>
                             {% if headerChild.path is not null %}
                                 <a href="{{ path(headerChild.path) }}"
-                                   class="d-flex justify-content-between align-items-center"
+                                   class="d-flex justify-content-between align-items-center
+                                         {% if route is not null and route is same as headerChild.path %} actual-link{% endif %}
+                                         "
                                 >
                             {% else %}
                                 <a href="#"
                                    class="d-flex justify-content-between align-items-center"
                                 >
                             {% endif %}
-                                <i class="{{ headerChild.icon }}"></i> {{ headerChild.title }}
+                                {{ headerChild.title }} {% if headerChild.icon %}<i class="{{ headerChild.icon }}"></i>{% endif %}
                             </a>
                         </li>
                     {% endfor %}
@@ -47,8 +56,14 @@
     </div>
 
     <div class="down-bar d-flex justify-content-around align-items-center">
+        <button type="button" class="btn down-button" data-toggle="tooltip" data-placement="top" title="Dashboard">
+            <a href="{{ path('admin_manage') }}">
+                <i class="fas fa-chart-line"></i>
+            </a>
+        </button>
+
         <button type="button" class="btn down-button" data-toggle="tooltip" data-placement="top" title="Outils">
-            <a href="{{ path('admin_index') }}">
+            <a href="#">
                 <i class="fas fa-cog"></i>
             </a>
         </button>

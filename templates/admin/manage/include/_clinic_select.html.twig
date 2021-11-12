@@ -1,0 +1,10 @@
+<div class="form-group d-flex justify-content-between align-items-center" id="manage-form">
+    <label for="clinic-select" style="color: dimgrey">Voir les données de :</label>
+
+    <select name="clinics" id="clinic-select" class="form-control">
+        <option value="all">Toutes les cliniques</option>
+        {% for clinic in clinics %}
+            <option value="{{ clinic.id }}">{{ clinic.name }}</option>
+        {% endfor %}
+    </select>
+</div>

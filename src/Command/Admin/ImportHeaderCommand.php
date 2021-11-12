@@ -10,6 +10,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -98,9 +99,10 @@ class ImportHeaderCommand extends Command
 
             $io->success('Import standard terminé');
             return 0;
+
         }
 
-        $io->success('Import spécifique terminé avec succès');
+        $io->error('Import spécifique terminé non configuré actuellement');
         return 0;
     }
 
@@ -110,20 +112,7 @@ class ImportHeaderCommand extends Command
      */
     private function standardImport(): void
     {
-        $isHeaderInBdd = $this->entityManager->getRepository(Header::class)
-            ->findOneBy([]);
-
-        if ($isHeaderInBdd) {
-            $this->truncateHeaderTable();
-        }
-
-        $mapping = $this->kernel->getProjectDir() . '/documents/mapping/admin/import_header.yaml';
-
-        if (!file_exists($mapping)) {
-            throw new FileNotFoundException($mapping . ' n\'existe pas');
-        }
-
-        $yamlMappings = Yaml::parseFile($mapping);
+        $yamlMappings = $this->truncateAndGetMapping();
 
         foreach ($yamlMappings as $title => $datas) {
 
@@ -143,7 +132,7 @@ class ImportHeaderCommand extends Command
                     $childHeader = new Header();
                     $childHeader
                         ->setTitle($titleChild)
-                        ->setIcon($childDatas['icon' ?? 'fas fa-long-arrow-alt-right'])
+                        ->setIcon($childDatas['icon' ?? null])
                         ->setPath($childDatas['path' ?? '#'])
                         ->setIsActivated(true)
                         ->setParentHeader($header)
@@ -158,6 +147,30 @@ class ImportHeaderCommand extends Command
         }
 
         $this->entityManager->flush();
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ConnectionException
+     * @throws Exception
+     */
+    private function truncateAndGetMapping()
+    {
+        $isHeaderInBdd = $this->entityManager->getRepository(Header::class)
+            ->findOneBy([]);
+
+        if ($isHeaderInBdd) {
+            $this->truncateHeaderTable();
+        }
+
+        $mapping = $this->kernel->getProjectDir() . '/documents/mapping/admin/import_header.yaml';
+
+        if (!file_exists($mapping)) {
+            throw new FileNotFoundException($mapping . ' n\'existe pas');
+        }
+
+        return Yaml::parseFile($mapping);
     }
 
     /**

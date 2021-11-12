@@ -23,10 +23,23 @@
 .actual-link {
   color: $second-color !important;
   text-decoration: none;
-  margin-left: 5px;
 }
 
 .sidebar {
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $white;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $white;
+    border-radius: 20px;
+    border: 3px solid $second-color;
+  }
 
   overflow-y: auto;
 
@@ -49,9 +62,41 @@
   }
 
   #accordion {
+
+    li {
+
+      border-left: 1px solid $light-grey;
+      border-right: 5px solid $second-color;
+
+      &::before {
+        background: $second-color;
+        bottom: auto;
+        content: "";
+        height: 8px;
+        left: 36px;
+        margin-top: 8px;
+        position: absolute;
+        right: auto;
+        width: 8px;
+        z-index: 1;
+        border-radius: 50%;
+        border: 1px solid $white;
+      }
+    }
+
     button {
       color: white;
-      height: 60px
+      height: 60px;
+
+      &:hover {
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+        background-color: lighten($darken-blue, 10%);
+      }
+
+      &:focus {
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+        background-color: lighten($darken-blue, 10%);
+      }
     }
   }
 }
