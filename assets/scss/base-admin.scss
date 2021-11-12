@@ -44,3 +44,103 @@
     margin: 10px;
   }
 }
+
+#manage-form {
+  background-color: white;
+  height: 50px;
+  padding: 20px;
+  border: 1px solid darkgrey;
+  border-radius: 5px;
+  width: 380px;
+
+  #clinic-select {
+    width: 250px;
+
+    option {
+      color: $darken-grey;
+    }
+  }
+}
+
+.welcome-admin {
+  font-size: 1.2em;
+  font-style: italic;
+  color: $grey-shadow;
+}
+
+.card-manage {
+  background-color: $white;
+  border: 1px solid $light-grey;
+  border-radius: 7px;
+  padding: 20px;
+  color: $grey-shadow;
+
+  .card-span {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: $darken-grey;
+  }
+}
+
+.dashboard-titles {
+  padding: 10px;
+  font-size: 30px;
+  color: $grey-shadow;
+  font-style: italic
+}
+
+.graph-zone {
+  background-color: $white;
+  border: 1px solid $grey-shadow;
+
+  .graph {
+    border-top: 1px solid darken($light-grey, 20%);
+  }
+}
+
+.best-sells {
+  width: 277px;
+  border-left: 1px solid $grey-shadow;
+
+  .trophy {
+    font-size: 12px !important;
+  }
+
+  .sell {
+    padding-left: 10px;
+    padding-right: 10px;
+    border-top: 1px solid $light-grey;
+
+    .seller {
+      font-size: 15px;
+      color: $darken-grey;
+
+      .client {
+        float: left;
+        font-size: 45px;
+      }
+
+      .user-info {
+        font-weight: bold;
+        font-style: italic;
+        font-size: 20px;
+        color: $grey-shadow !important;
+      }
+
+      .user-extra {
+        font-style: italic;
+        color: $white;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+.bottom-bar {
+  background-color: $darken-blue;
+  color: $white;
+  width: 100%;
+  height: 38px;
+  font-size: 12px;
+  padding-right: 75px;
+}

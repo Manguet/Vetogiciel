@@ -1,0 +1,45 @@
+Contenu:
+  icon: 'fas fa-paste'
+  childs:
+    Page:
+      path:
+      icon:
+    Article:
+      path: 'admin_content_index'
+      icon:
+    Offre d'emploi:
+      path:
+      icon:
+
+Clients:
+  icon: 'fas fa-user'
+  childs:
+    Clients:
+      path: 'admin_user_index'
+      icon:
+    Animaux:
+      path:
+      icon:
+
+Facturation:
+  icon: 'fas fa-credit-card'
+  childs:
+    En Cours:
+      path:
+      icon:
+    Reglés:
+      path:
+      icon:
+
+Etablissement:
+  icon: 'fas fa-hospital'
+  childs:
+    Structures:
+      path: 'admin_clinic_index'
+      icon:
+    Vétérinaires:
+      path: 'admin_veterinary_index'
+      icon:
+    Employés:
+      path: 'admin_employee_index'
+      icon:

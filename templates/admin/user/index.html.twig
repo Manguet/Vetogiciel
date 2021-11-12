@@ -6,27 +6,16 @@
 {% endblock %}
 
 {% block body %}
-    <div class="accueil-content">
-        <div class="wrapper">
-            {% include('admin/manage/_general_nav.html.twig') %}
-            <div class="main_content">
-                <div class="info">
-                    <div class="container">
-                        <div class="mt-5">
-                            <a href="{{ path('admin_user_new') }}">
-                                <button class="custom-button mb-3">
-                                    <i class="fas fa-user-plus"></i> Créer un client
-                                </button>
-                            </a>
-                        </div>
+    <div class="mt-5">
+        <a href="{{ path('admin_user_new') }}">
+            <button class="custom-button mb-3">
+                <i class="fas fa-user-plus"></i> Créer un client
+            </button>
+        </a>
+    </div>
 
-                        <div id="my-tab">
+    <div id="my-tab">
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 {% endblock %}
 
