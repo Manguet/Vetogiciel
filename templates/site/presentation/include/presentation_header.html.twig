@@ -33,6 +33,38 @@
             </div>
         {% endfor %}
         </div>
+
+        <div class="d-flex align-items-center">
+            {% if worker.facebook is not null %}
+                <a href="{{ worker.facebook }}" target="_blank" class="mx-2">
+                    <span class="socials-presentation"><i class="fab fa-facebook-square"></i></span>
+                </a>
+            {% endif %}
+
+            {% if worker.instagram is not null %}
+                <a href="{{ worker.instagram }}" target="_blank" class="mx-2">
+                    <span class="socials-presentation"><i class="fab fa-instagram"></i></span>
+                </a>
+            {% endif %}
+
+            {% if worker.linkedin is not null %}
+                <a href="{{ worker.linkedin }}" target="_blank" class="mx-2">
+                    <span class="socials-presentation"><i class="fab fa-linkedin"></i></span>
+                </a>
+            {% endif %}
+
+            {% if worker.twitter is not null %}
+                <a href="{{ worker.twitter }}" target="_blank" class="mx-2">
+                    <span class="socials-presentation"><i class="fab fa-twitter-square"></i></span>
+                </a>
+            {% endif %}
+
+            {% if worker.youtube is not null %}
+                <a href="{{ worker.youtube }}" target="_blank" class="mx-2">
+                    <span class="socials-presentation"><i class="fab fa-youtube"></i></span>
+                </a>
+            {% endif %}
+        </div>
     </div>
 
     {% if worker.photoFile %}

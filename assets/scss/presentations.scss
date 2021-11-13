@@ -87,4 +87,13 @@
     color: $second-color;
     width: 18%;
   }
+
+  .socials-presentation {
+    color: $grey-shadow;
+    font-size: 2em;
+
+    &:hover {
+      color: $second-color;
+    }
+  }
 }
