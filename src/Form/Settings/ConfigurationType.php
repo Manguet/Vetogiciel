@@ -24,9 +24,9 @@ class ConfigurationType extends AbstractType
         foreach ($options['configurations'] as $configuration) {
 
             if ($configuration->getFieldType() === CheckboxType::class) {
-                $datas = (bool)$configuration->getDatas()['values'];
+                $datas = isset($configuration->getDatas()['values']) && $configuration->getDatas()['values'];
             } else {
-                $datas = $configuration->getDatas()['values'];
+                $datas = $configuration->getDatas()['values'] ?? null;
             }
 
             $builder

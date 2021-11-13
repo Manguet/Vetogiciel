@@ -43,6 +43,14 @@ generals:
     onglet: Options
     position: 1
 
+  activate_breadcrumbs:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\CheckboxType
+    settings:
+      label: "Activer les breadcrumbs ?"
+      required: false
+    onglet: Options
+    position: 2
+
   activate_chat:
     fieldType: Symfony\Component\Form\Extension\Core\Type\CheckboxType
     settings:
