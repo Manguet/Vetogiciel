@@ -64,7 +64,7 @@
                         <br>
                         <br>
                         {% if twigClinic.getActualClinic %}
-                            {{ twigClinic.getActualClinic.phone2 }}
+                            {{ twigClinic.getActualClinic.phone2|phone }}
                         {% else %}
                             XX.XX.XX.XX.XX
                         {% endif %}
@@ -84,7 +84,7 @@
                         Uniquement sur RDV :
                         <br>
                         {% if twigClinic.getActualClinic %}
-                            {{ twigClinic.getActualClinic.phone }}
+                            {{ twigClinic.getActualClinic.phone|phone }}
                         {% else %}
                             XX.XX.XX.XX.XX
                         {% endif %}
