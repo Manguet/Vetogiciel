@@ -2,7 +2,7 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Vetogiciel : Nous sommes là pour vous !{% endblock %}</title>
+        <title>{{ twigSettings.siteTitle }} : {% block title %}{{ twigSettings.siteDescription }}{% endblock %}</title>
         {% block stylesheets %}
             <link href="https://fonts.googleapis.com/css2?family=Crimson+Text&family=Raleway:wght@200&display=swap" rel="stylesheet">
             <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('build/images/favicons/apple-touch-icon.png') }}">
