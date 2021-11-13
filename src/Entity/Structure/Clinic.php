@@ -4,10 +4,14 @@ namespace App\Entity\Structure;
 
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Interfaces\Priority\PriorityInterface;
+use App\Interfaces\Socials\SocialInterface;
+use App\Interfaces\Structure\AddressInterface;
 use App\Interfaces\Structure\PhotoInterface;
 use App\Repository\Structure\ClinicRepository;
 use App\Traits\DateTime\EntityDateTrait;
 use App\Traits\Priority\PriorityTrait;
+use App\Traits\Socials\SocialTrait;
+use App\Traits\Structure\AddressTrait;
 use App\Traits\Structure\PhotoTrait;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,11 +24,13 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface
+class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface, AddressInterface, SocialInterface
 {
     use EntityDateTrait;
     use PriorityTrait;
     use PhotoTrait;
+    use AddressTrait;
+    use SocialTrait;
 
     /**
      * @ORM\Id
@@ -52,36 +58,6 @@ class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $status;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $address;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $address2;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $postalCode;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $city;
-
-    /**
-     * @ORM\Column(type="string", length=25, nullable=true)
-     */
-    private $phone;
-
-    /**
-     * @ORM\Column(type="string", length=25, nullable=true)
-     */
-    private $phone2;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -152,78 +128,6 @@ class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface
     public function setStatus(?string $status): self
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(?string $address): self
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    public function getAddress2(): ?string
-    {
-        return $this->address2;
-    }
-
-    public function setAddress2(?string $address2): self
-    {
-        $this->address2 = $address2;
-
-        return $this;
-    }
-
-    public function getPostalCode(): ?int
-    {
-        return $this->postalCode;
-    }
-
-    public function setPostalCode(?int $postalCode): self
-    {
-        $this->postalCode = $postalCode;
-
-        return $this;
-    }
-
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(?string $city): self
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(?string $phone): self
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getPhone2(): ?string
-    {
-        return $this->phone2;
-    }
-
-    public function setPhone2(?string $phone2): self
-    {
-        $this->phone2 = $phone2;
 
         return $this;
     }
