@@ -1,6 +1,7 @@
 twig:
     globals:
         twigClinic: '@App\Service\Clinic\ClinicServices'
+        twigSettings: '@App\Service\Settings\SettingServices'
 
     default_path: '%kernel.project_dir%/templates'
     debug: '%kernel.debug%'

@@ -1,0 +1,52 @@
+generals:
+  site_title:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\TextType
+    settings:
+      label: 'Titre du site'
+      placeholder: 'Titre du site'
+      required: true
+    onglet: Général
+    position: 1
+
+  site_description:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\TextType
+    settings:
+      label: 'Description du site'
+      placeholder: 'Description du site'
+      required: true
+    onglet: Général
+    position: 2
+
+  site_annonce:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\TextType
+    settings:
+      label: 'Créer une annonce générale'
+      placeholder: 'Créer une annonce générale'
+      required: false
+    onglet: Annonce
+    position: 1
+
+  site_annonce_cookie:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\TextType
+    settings:
+      label: "Id du cookie de l'annonce"
+      placeholder: "Id du cookie de l'annonce"
+      required: false
+    onglet: Annonce
+    position: 2
+
+  activate_appointment:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\CheckboxType
+    settings:
+      label: "Activer la prise de rendez-vous client ?"
+      required: false
+    onglet: Options
+    position: 1
+
+  activate_chat:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\CheckboxType
+    settings:
+      label: "Activer le chat ?"
+      required: false
+    onglet: Options
+    position: 2

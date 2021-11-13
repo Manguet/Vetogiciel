@@ -1,0 +1,74 @@
+{% extends 'admin/base.html.twig' %}
+
+{% import 'macros/macro_card.html.twig' as macroCard %}
+
+{% block body %}
+    <h1 class="text-center">Settings</h1>
+    <hr>
+
+    <h2 class="text-center dashboard-titles mt-3">Configurations</h2>
+    <div class="row mt-5">
+
+        {{ macroCard.card('Configurations générales',
+            'fas fa-cogs',
+            'Vous permet de configurer les informations générales de tous les sites (Titre site, description, annonces, settings, ...)',
+            4,
+            'settings_configuration',
+            'general'
+        ) }}
+        {{ macroCard.card('Configurations spéficiques',
+            'fas fa-sliders-h',
+            'Vous permet de configurer les informations spécifiques des sites',
+            4,
+            ''
+        ) }}
+        {{ macroCard.card('Configurations avancées',
+            'fas fa-toolbox',
+            'Vous permet de configurer les informations avancées des sites',
+            4,
+            ''
+        ) }}
+    </div>
+    <br>
+    <hr>
+
+    <h2 class="text-center dashboard-titles mt-3">Autorisations</h2>
+    <div class="row mt-3">
+        {{ macroCard.card('Autorisations',
+            'fas fa-ruler-combined',
+            'Vous pouvez gérer les autorisations des utilisateurs',
+            6,
+            ''
+        ) }}
+        {{ macroCard.card('Roles',
+            'fas fa-user-tag',
+            'Vous pouvez gérer les rôles des utilisateurs',
+            6,
+            ''
+        ) }}
+    </div>
+
+    <br>
+    <hr>
+    <h2 class="text-center dashboard-titles mt-3">Mailing</h2>
+    <div class="row mt-3 mb-5">
+        {{ macroCard.card('Email',
+            'fas fa-envelope-open-text',
+            'Vous pouvez les emails du site',
+            4,
+            ''
+        ) }}
+        {{ macroCard.card('SMS',
+            'far fa-comment-dots',
+            'Vous pouvez gérer les SMS du site',
+            4,
+            ''
+        ) }}
+        {{ macroCard.card('Chat',
+            'far fa-comments',
+            'Vous pouvez gérer le chat du site',
+            4,
+            ''
+        ) }}
+    </div>
+{% endblock %}

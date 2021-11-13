@@ -1,0 +1,39 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <div>
+        <div class="mb-5">
+            <a href="{{ path('settings_index') }}">
+                <button class="custom-button">
+                    <i class="fas fa-backspace"></i> Retour
+                </button>
+            </a>
+        </div>
+        {{ form_start(form) }}
+
+        <ul class="tabs">
+            {% for ongletTitle, ongletNames in onglets %}
+                <li class="tab-link {% if loop.first %}current{% endif %}" data-tab="tab-{{ loop.index }}">{{ ongletTitle }}</li>
+            {% endfor %}
+        </ul>
+
+        {% for ongletTitle, ongletsEntries in onglets %}
+
+            <div id="tab-{{ loop.index }}" class="tab-content {% if loop.first %}current{% endif %}">
+                <h2 class="dashboard-titles my-2">{{ ongletTitle }}</h2>
+                {% for ongletEntry in ongletsEntries %}
+                    <div>
+                        {{ form_label(form.children[ongletEntry]) }}
+                        {{ form_widget(form.children[ongletEntry]) }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <div class="d-flex justify-content-center align-items-center my-3">
+            {{ form_widget(form.save) }}
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
