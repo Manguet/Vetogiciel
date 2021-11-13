@@ -5,7 +5,8 @@
         <li class="tab-link current" data-tab="tab-1">Informations Générales</li>
         <li class="tab-link" data-tab="tab-2">Coordonnées</li>
         <li class="tab-link" data-tab="tab-3">Informations légales</li>
-        <li class="tab-link" data-tab="tab-4">Logo</li>
+        <li class="tab-link" data-tab="tab-4">Réseaux Sociaux</li>
+        <li class="tab-link" data-tab="tab-5">Logo</li>
     </ul>
 
     <div id="tab-1" class="tab-content current">
@@ -80,6 +81,29 @@
     </div>
 
     <div id="tab-4" class="tab-content">
+        <div>
+            {{ form_label(form.facebook) }}
+            {{ form_widget(form.facebook) }}
+        </div>
+        <div>
+            {{ form_label(form.instagram) }}
+            {{ form_widget(form.instagram) }}
+        </div>
+        <div>
+            {{ form_label(form.linkedin) }}
+            {{ form_widget(form.linkedin) }}
+        </div>
+        <div>
+            {{ form_label(form.twitter) }}
+            {{ form_widget(form.twitter) }}
+        </div>
+        <div>
+            {{ form_label(form.youtube) }}
+            {{ form_widget(form.youtube) }}
+        </div>
+    </div>
+
+    <div id="tab-5" class="tab-content">
         <div>
             {{ form_label(form.photoFile) }}
             {{ form_widget(form.photoFile) }}

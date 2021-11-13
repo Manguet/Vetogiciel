@@ -4,11 +4,13 @@ namespace App\Entity\Structure;
 
 use App\Entity\Contents\Article;
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\Socials\SocialInterface;
 use App\Interfaces\Structure\ClinicInterface;
 use App\Interfaces\Structure\PhotoInterface;
 use App\Interfaces\Structure\PresentationInterface;
 use App\Interfaces\User\UserEntityInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\Socials\SocialTrait;
 use App\Traits\Structure\ClinicTrait;
 use App\Traits\Structure\PhotoTrait;
 use App\Traits\Structure\PresentationTrait;
@@ -31,13 +33,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class Veterinary implements EntityDateInterface, UserEntityInterface, UserInterface,
-                            ClinicInterface, PhotoInterface, PresentationInterface
+                            ClinicInterface, PhotoInterface, PresentationInterface,
+                            SocialInterface
 {
     use EntityDateTrait;
     use UserEntityTrait;
     use ClinicTrait;
     use PhotoTrait;
     use PresentationTrait;
+    use SocialTrait;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)

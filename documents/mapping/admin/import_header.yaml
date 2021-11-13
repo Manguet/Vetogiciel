@@ -43,3 +43,13 @@ Etablissement:
     Employés:
       path: 'admin_employee_index'
       icon:
+
+Gestion:
+  icon: 'far fa-calendar-check'
+  childs:
+    Agenda:
+      path:
+      icon:
+    Comptabilité:
+      path:
+      icon:

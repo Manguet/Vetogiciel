@@ -116,6 +116,41 @@ class EmployeeType extends AbstractType
                     'placeholder' => 'CV de l\'employée (format : png, jpeg, jpg, pdf)',
                 ],
             ])
+            ->add('facebook', TextType::class, [
+                'label'      => 'Lien vers le Facebook',
+                'required'   => false,
+                'attr'       => [
+                    'placeholder' => 'Lien vers le Facebook'
+                ]
+            ])
+            ->add('instagram', TextType::class, [
+                'label'      => 'Lien vers le Instagram',
+                'required'   => false,
+                'attr'       => [
+                    'placeholder' => 'Lien vers le Instagram'
+                ]
+            ])
+            ->add('linkedin', TextType::class, [
+                'label'      => 'Lien vers le Linkedin',
+                'required'   => false,
+                'attr'       => [
+                    'placeholder' => 'Lien vers le Linkedin'
+                ]
+            ])
+            ->add('twitter', TextType::class, [
+                'label'      => 'Lien vers le Twitter',
+                'required'   => false,
+                'attr'       => [
+                    'placeholder' => 'Lien vers le Twitter'
+                ]
+            ])
+            ->add('youtube', TextType::class, [
+                'label'      => 'Lien vers le Youtube',
+                'required'   => false,
+                'attr'       => [
+                    'placeholder' => 'Lien vers le Youtube'
+                ]
+            ])
         ;
 
         if ($options['isShow']) {
