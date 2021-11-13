@@ -4,10 +4,12 @@ namespace App\Entity\Structure;
 
 use App\Entity\Contents\Article;
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\Socials\SocialInterface;
 use App\Interfaces\Structure\PhotoInterface;
 use App\Interfaces\Structure\PresentationInterface;
 use App\Interfaces\User\UserEntityInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\Socials\SocialTrait;
 use App\Traits\Structure\PhotoTrait;
 use App\Traits\Structure\PresentationTrait;
 use App\Traits\User\UserEntityTrait;
@@ -26,12 +28,14 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Employee implements EntityDateInterface, UserEntityInterface, UserInterface, PresentationInterface, PhotoInterface
+class Employee implements EntityDateInterface, UserEntityInterface, UserInterface,
+                          PresentationInterface, PhotoInterface, SocialInterface
 {
     use EntityDateTrait;
     use UserEntityTrait;
     use PhotoTrait;
     use PresentationTrait;
+    use SocialTrait;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)

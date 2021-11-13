@@ -4,6 +4,7 @@
     <ul class="tabs">
         <li class="tab-link current" data-tab="tab-1">Informations Générales</li>
         <li class="tab-link" data-tab="tab-2">Informations praticien</li>
+        <li class="tab-link" data-tab="tab-5">Réseaux Sociaux</li>
         <li class="tab-link" data-tab="tab-3">Photos</li>
         <li class="tab-link" data-tab="tab-4">Présentation</li>
     </ul>
@@ -88,6 +89,30 @@
         <div>
             {{ form_label(form.cvFile) }}
             {{ form_widget(form.cvFile) }}
+        </div>
+    </div>
+
+
+    <div id="tab-5" class="tab-content">
+        <div>
+            {{ form_label(form.facebook) }}
+            {{ form_widget(form.facebook) }}
+        </div>
+        <div>
+            {{ form_label(form.instagram) }}
+            {{ form_widget(form.instagram) }}
+        </div>
+        <div>
+            {{ form_label(form.linkedin) }}
+            {{ form_widget(form.linkedin) }}
+        </div>
+        <div>
+            {{ form_label(form.twitter) }}
+            {{ form_widget(form.twitter) }}
+        </div>
+        <div>
+            {{ form_label(form.youtube) }}
+            {{ form_widget(form.youtube) }}
         </div>
     </div>
 
