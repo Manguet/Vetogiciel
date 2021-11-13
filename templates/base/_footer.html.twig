@@ -36,20 +36,34 @@
     <span class="border-footer"></span>
 
     <div>
-        <a href="#">
-            <span class="logo-footer"><i class="fab fa-facebook-square"></i></span>
-        </a>
-        <a href="#">
-            <span class="logo-footer"><i class="fab fa-instagram"></i></span>
-        </a>
-        <a href="#">
-            <span class="logo-footer"><i class="fab fa-linkedin"></i></span>
-        </a>
-        <a href="#">
-            <span class="logo-footer"><i class="fab fa-twitter-square"></i></span>
-        </a>
-        <a href="#">
-            <span class="logo-footer"><i class="fab fa-youtube"></i></span>
-        </a>
+        {% if twigClinic.getActualClinic and twigClinic.getActualClinic.facebook is not null %}
+            <a href="{{ twigClinic.getActualClinic.facebook }}" target="_blank">
+                <span class="logo-footer"><i class="fab fa-facebook-square"></i></span>
+            </a>
+        {% endif %}
+
+        {% if twigClinic.getActualClinic and twigClinic.getActualClinic.instagram is not null %}
+            <a href="{{ twigClinic.getActualClinic.instagram }}" target="_blank">
+                <span class="logo-footer"><i class="fab fa-instagram"></i></span>
+            </a>
+        {% endif %}
+
+        {% if twigClinic.getActualClinic and twigClinic.getActualClinic.linkedin is not null %}
+            <a href="{{ twigClinic.getActualClinic.linkedin }}" target="_blank">
+                <span class="logo-footer"><i class="fab fa-linkedin"></i></span>
+            </a>
+        {% endif %}
+
+        {% if twigClinic.getActualClinic and twigClinic.getActualClinic.twitter is not null %}
+            <a href="{{ twigClinic.getActualClinic.twitter }}" target="_blank">
+                <span class="logo-footer"><i class="fab fa-twitter-square"></i></span>
+            </a>
+        {% endif %}
+
+        {% if twigClinic.getActualClinic and twigClinic.getActualClinic.youtube is not null %}
+            <a href="{{ twigClinic.getActualClinic.youtube }}" target="_blank">
+                <span class="logo-footer"><i class="fab fa-youtube"></i></span>
+            </a>
+        {% endif %}
     </div>
 </div>

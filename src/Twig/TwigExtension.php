@@ -45,12 +45,16 @@ class TwigExtension extends AbstractExtension
     }
 
     /**
-     * @param string $phone
+     * @param null|string $phone
      *
      * @return string
      */
-    public function formatPhone(string $phone): string
+    public function formatPhone(?string $phone): string
     {
+        if (null === $phone) {
+            return '';
+        }
+
         $phone = str_replace(['+33', ' ', '-', ',', '.'], ['0', '', '', '', ''], $phone);
 
         $chunks = str_split($phone, 2);
