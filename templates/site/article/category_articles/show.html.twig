@@ -11,12 +11,14 @@
 
             <div class="article-margin">
 
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ path('articles_index') }}"><i class="fas fa-angle-double-right"></i> Articles</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{ category.title }}</li>
-                    </ol>
-                </nav>
+                {% if twigSettings.isBreadcrumbsActivated %}
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ path('articles_index') }}"><i class="fas fa-angle-double-right"></i> Articles</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ category.title }}</li>
+                        </ol>
+                    </nav>
+                {% endif %}
 
                 <h1 class="text-center main-color">{{ category.title }}</h1>
                 <div>

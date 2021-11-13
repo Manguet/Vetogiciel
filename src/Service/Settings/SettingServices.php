@@ -35,7 +35,7 @@ class SettingServices
             return 'Vetogiciel';
         }
 
-        return $title->getDatas()['values'];
+        return $title->getDatas()['values'] ?? 'Vetogiciel';
     }
 
     /**
@@ -50,6 +50,21 @@ class SettingServices
             return 'Nous sommes là pour vous !';
         }
 
-        return $title->getDatas()['values'];
+        return $title->getDatas()['values'] ?? 'Nous sommes là pour vous !';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBreadcrumbsActivated(): bool
+    {
+        $isActivated = $this->entityManager->getRepository(Configuration::class)
+            ->findOneBy(['name' => 'activate_breadcrumbs']);
+
+        if (!$isActivated) {
+            return true;
+        }
+
+        return $isActivated->getDatas()['values'] ?? false;
     }
 }

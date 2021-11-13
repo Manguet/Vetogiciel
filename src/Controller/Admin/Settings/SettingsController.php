@@ -64,16 +64,11 @@ class SettingsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            foreach ($request->get('configuration') as $configurationName => $configurationData) {
+            foreach ($configurations as $configuration) {
 
-                $configuration = $this->entityManager->getRepository(Configuration::class)
-                    ->findOneBy(['name' => $configurationName]);
+                $configuration->setDatas(['values' => $request->get('configuration')[$configuration->getName()] ?? null]);
 
-                if ($configuration) {
-
-                    $configuration->setDatas(['values' => $configurationData]);
-                    $this->entityManager->persist($configuration);
-                }
+                $this->entityManager->persist($configuration);
             }
 
             $this->entityManager->flush();
