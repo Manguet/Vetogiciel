@@ -23,6 +23,8 @@ ul.tabs li.current{
   background: $main-color;
   padding: 15px;
   margin-top: 25px;
+  border-radius: 6px;
+  border: 1px solid $grey-shadow;
 }
 
 .tab-content.current{
