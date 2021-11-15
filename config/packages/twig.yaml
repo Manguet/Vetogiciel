@@ -4,6 +4,10 @@ twig:
         twigSettings: '@App\Service\Settings\SettingServices'
 
     default_path: '%kernel.project_dir%/templates'
+    paths:
+        "/var/www/Vetogiciel/assets/images": images
+        "/var/www/Vetogiciel/assets/css": styles
+
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     exception_controller: null

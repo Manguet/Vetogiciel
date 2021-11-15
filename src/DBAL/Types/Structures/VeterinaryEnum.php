@@ -11,6 +11,7 @@ use App\DBAL\EnumType;
  */
 class VeterinaryEnum extends EnumType
 {
+    public const NULL        = null;
     public const GENERALIST  = 'Généraliste';
     public const SPECIALIST  = 'Spécialiste';
     public const STUDENT     = 'Etudiant';
@@ -26,6 +27,7 @@ class VeterinaryEnum extends EnumType
      * @var string[]
      */
     protected $values = [
+        self::NULL       => self::NULL,
         self::GENERALIST => self::GENERALIST,
         self::SPECIALIST => self::SPECIALIST,
         self::STUDENT    => self::STUDENT,

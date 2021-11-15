@@ -1,0 +1,14 @@
+framework:
+    messenger:
+         failure_transport: failed
+
+         transports:
+            failed: 'doctrine://default?queue_name=failed'
+            async_mail:
+               dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+               options:
+                 queue_name: mail_queue
+                 auto_setup: false
+
+         routing:
+            'App\Message\StartMail': async_mail
