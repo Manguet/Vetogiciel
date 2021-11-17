@@ -48,6 +48,7 @@ class ConfigurationType extends AbstractType
                 ],
             ]);
     }
+
     /**
      * @param OptionsResolver $resolver
      *

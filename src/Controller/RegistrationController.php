@@ -3,16 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Structure\Veterinary;
+use App\Message\StartMail;
 use App\Security\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
 use App\Security\Login\LoginFormAuthenticator;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Mime\Address;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
@@ -38,13 +37,20 @@ class RegistrationController extends AbstractController
     private $flashBag;
 
     /**
+     * @var MessageBusInterface
+     */
+    private $bus;
+
+    /**
      * @param EmailVerifier $emailVerifier
      * @param FlashBagInterface $flashBag
+     * @param MessageBusInterface $bus
      */
-    public function __construct(EmailVerifier $emailVerifier, FlashBagInterface $flashBag)
+    public function __construct(EmailVerifier $emailVerifier, FlashBagInterface $flashBag, MessageBusInterface $bus)
     {
         $this->emailVerifier = $emailVerifier;
         $this->flashBag      = $flashBag;
+        $this->bus           = $bus;
     }
 
     /**
@@ -56,8 +62,6 @@ class RegistrationController extends AbstractController
      * @param LoginFormAuthenticator $authenticator
      *
      * @return Response
-     *
-     * @throws TransportExceptionInterface
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
     {
@@ -88,13 +92,7 @@ class RegistrationController extends AbstractController
             /**
              * Generate a signed url and email it to the user
              */
-            $this->emailVerifier->sendEmailConfirmation('app_register_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('benjamin.manguet@gmail.com', 'Vetogiciel'))
-                    ->to($user->getEmail())
-                    ->subject('Confirmation d\'adresse : Vetogiciel')
-                    ->htmlTemplate('email/confirmation_email.html.twig')
-            );
+            $this->bus->dispatch(new StartMail('confirmation_email.html.twig', $user->getId()));
 
             $this->flashBag->add('warning', 'Merci de confirmer votre adresse mail : ' . $user->getEmail() . ' afin d\'accéder aux fonctionnalités.');
 

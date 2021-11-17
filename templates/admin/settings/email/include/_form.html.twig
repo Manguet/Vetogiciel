@@ -1,0 +1,76 @@
+<div>
+    {{ form_start(form) }}
+
+    <ul class="tabs">
+        <li class="tab-link current" data-tab="tab-1">Informations Générales</li>
+        <li class="tab-link" data-tab="tab-2">Expéditeur / Destinataires</li>
+        <li class="tab-link" data-tab="tab-3">Template</li>
+    </ul>
+
+    <div id="tab-1" class="tab-content current">
+        <div class="mb-2">
+            {{ form_label(form.title) }}
+            {{ form_widget(form.title) }}
+        </div>
+        <div class="mb-2">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description) }}
+        </div>
+        <div class="mb-2">
+            {{ form_label(form.subject) }}
+            {{ form_widget(form.subject) }}
+        </div>
+        <div>
+            {{ form_label(form.isActivated) }}
+            {{ form_widget(form.isActivated) }}
+        </div>
+    </div>
+
+    <div id="tab-2" class="tab-content">
+        <div class="mb-2">
+            {{ form_label(form.isExpeditorCurrentUser) }}
+            {{ form_widget(form.isExpeditorCurrentUser) }}
+        </div>
+        <div class="mb-2 add-expeditor">
+            {{ form_label(form.expeditor) }}
+            {{ form_widget(form.expeditor) }}
+        </div>
+        <div class="mb-2">
+            {{ form_label(form.isDestinatorCurrentUser) }}
+            {{ form_widget(form.isDestinatorCurrentUser) }}
+        </div>
+        <div class="add-destinator">
+            {{ form_label(form.addDestinator) }}
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="col-11">
+                    {{ form_widget(form.addDestinator) }}
+                </div>
+
+                <div class="col-1">
+                    <button id="add-destinator" class="btn">
+                        <i class="far fa-plus-square"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-3" class="tab-content">
+        <div>
+            {{ form_label(form.template) }}
+            {{ form_widget(form.template) }}
+        </div>
+        {% if email.template is not null %}
+            <h5 class="dashboard-titles mt-3">Rendu</h5>
+            <div style="border: 1px solid dimgrey; background-color: lightgrey; border-radius: 7px" class="p-3">
+                {{ include('email/demo/' ~ email.template) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center my-3">
+        {{ form_widget(form.save) }}
+    </div>
+
+    {{ form_end(form) }}
+</div>
