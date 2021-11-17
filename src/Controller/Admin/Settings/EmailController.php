@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Settings;
 
-use App\Entity\Settings\Email;
+use App\Entity\Mail\Email;
 use App\Form\Settings\EmailType;
 use Doctrine\ORM\EntityManagerInterface;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
@@ -10,6 +10,8 @@ use Omines\DataTablesBundle\Column\BoolColumn;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -71,6 +73,10 @@ class EmailController extends AbstractController
                     return substr($value,0,60) . ' ...';
                 }
             ])
+            ->add('template', TextColumn::class, [
+                'label'     => 'Template utilisé',
+                'orderable' => true,
+            ])
             ->add('isActivated', BoolColumn::class, [
                 'label'      => 'Email activé ?',
                 'orderable'  => true,
@@ -113,8 +119,11 @@ class EmailController extends AbstractController
     public function new(Request $request): Response
     {
         $email = new Email();
+        $templates = $this->getTemplates();
 
-        $form = $this->createForm(EmailType::class, $email);
+        $form = $this->createForm(EmailType::class, $email, [
+            'templates' => $templates
+        ]);
 
         $form->handleRequest($request);
 
@@ -150,9 +159,11 @@ class EmailController extends AbstractController
         $email = $this->entityManager->getRepository(Email::class)
             ->find((int)$id);
 
-        dump($email, $id);
+        $templates = $this->getTemplates();
 
-        $form = $this->createForm(EmailType::class, $email);
+        $form = $this->createForm(EmailType::class, $email, [
+            'templates' => $templates
+        ]);
 
         $form->handleRequest($request);
 
@@ -167,5 +178,28 @@ class EmailController extends AbstractController
             'form'  => $form->createView(),
             'email' => $email
         ]);
+    }
+
+    /**
+     * @return array
+     */
+    private function getTemplates(): array
+    {
+        $finder = new Finder();
+
+        $finder->files()->in($this->kernel->getProjectDir() . '/templates/email');
+
+        if (!$finder->hasResults()) {
+            throw new FileNotFoundException(
+                'Aucun fichier dans ' . $this->kernel->getProjectDir() . '/templates/email'
+            );
+        }
+
+        $files = [];
+        foreach ($finder as $file) {
+            $files[$file->getFilename()] = $file->getRelativePathname();
+        }
+
+        return $files;
     }
 }

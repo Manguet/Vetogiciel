@@ -36,7 +36,12 @@ class Email implements EntityDateInterface
     private $description;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $subject;
+
+    /**
+     * @ORM\Column(type="string", length=180, nullable=false)
      */
     private $template;
 
@@ -59,6 +64,11 @@ class Email implements EntityDateInterface
      * @ORM\Column(type="array", nullable=true)
      */
     private $destinators = [];
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isActivated;
 
     public function getId(): ?int
     {
@@ -85,6 +95,18 @@ class Email implements EntityDateInterface
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getSubject(): ?string
+    {
+        return $this->subject;
+    }
+
+    public function setSubject(?string $subject): self
+    {
+        $this->subject = $subject;
 
         return $this;
     }
@@ -145,6 +167,26 @@ class Email implements EntityDateInterface
     public function setDestinators(?array $destinators): self
     {
         $this->destinators = $destinators;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsActivated()
+    {
+        return $this->isActivated;
+    }
+
+    /**
+     * @param mixed $isActivated
+     *
+     * @return Email
+     */
+    public function setIsActivated($isActivated): self
+    {
+        $this->isActivated = $isActivated;
 
         return $this;
     }

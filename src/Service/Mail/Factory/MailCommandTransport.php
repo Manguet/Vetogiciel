@@ -122,7 +122,7 @@ class MailCommandTransport implements TransportInterface
         $mailMessage = new MailMessage();
 
         $mailMessage->setHeaders('');
-        $mailMessage->setEmailId($envelope->getMessage()->getMailId());
+        $mailMessage->setEmailId($envelope->getMessage()->getMailTitle());
         $mailMessage->setQueueName($this->getQueue($envelope));
         $mailMessage->setBody($encodedMessage['body']);
 

@@ -61,8 +61,9 @@
             {{ form_widget(form.template) }}
         </div>
         {% if email.template is not null %}
-            <div class="mt-3">
-                <iframe src="{{ email.template|raw }}" width=1000 height=400 scrolling=auto></iframe>
+            <h5 class="dashboard-titles mt-3">Rendu</h5>
+            <div style="border: 1px solid dimgrey; background-color: lightgrey; border-radius: 7px" class="p-3">
+                {{ include('email/demo/' ~ email.template) }}
             </div>
         {% endif %}
     </div>

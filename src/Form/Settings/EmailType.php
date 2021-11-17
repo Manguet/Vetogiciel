@@ -2,10 +2,10 @@
 
 namespace App\Form\Settings;
 
-use App\Entity\Settings\Email;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use App\Entity\Mail\Email;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -51,9 +51,10 @@ class EmailType extends AbstractType
                 'label'    => 'Activé ce mail ?',
                 'required' => false
             ])
-            ->add('template', CKEditorType::class, [
+            ->add('template', ChoiceType::class, [
                 'label'    => 'Template',
-                'required' => false,
+                'required' => true,
+                'choices'  => $options['templates']
             ])
             ->add('isExpeditorCurrentUser', CheckboxType::class, [
                 'label'    => 'Utiliser l\'utilisateur en cours comme expéditeur ?',
@@ -98,6 +99,7 @@ class EmailType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Email::class,
+            'templates'  => null,
         ]);
     }
 }

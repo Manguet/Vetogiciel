@@ -60,6 +60,8 @@ class StartMailHandler implements MessageHandlerInterface
                 ->find($mailMessage->getUserId());
 
             $this->sendConfirmationMessage($user);
+
+            return;
         }
 
         $mail = $this->entityManager->getRepository(Email::class)
@@ -80,19 +82,36 @@ class StartMailHandler implements MessageHandlerInterface
      */
     private function sendConfirmationMessage(UserInterface $user): void
     {
-        $logo = $this->kernel->getProjectDir() . '/assets/images/vetogiciel-logo.png';
-        $css  = $this->kernel->getProjectDir() . '/assets/css/email.css';
+        /**
+         * @var Email $htmlTemplate
+         */
+        $htmlTemplate = $this->entityManager->getRepository(Email::class)
+            ->findOneBy(['title' => 'confirmation_email.html.twig']);
 
-        $this->emailVerifier->sendEmailConfirmation('app_register_verify_email', $user,
-            (new TemplatedEmail())
-                ->from(new Address('benjamin.manguet@gmail.com', 'Vetogiciel'))
-                ->to($user->getEmail())
-                ->subject('Confirmation d\'adresse : Vetogiciel')
-                ->htmlTemplate('email/confirmation_email.html.twig')
-                ->context([
-                    'logo' => $logo,
-                    'css'  => $css
-                ])
-        );
+        if ($htmlTemplate->getIsActivated()) {
+
+            /**
+             * @var $user Veterinary
+             */
+            if ($htmlTemplate->getIsDestinatorCurrentUser()) {
+                $destinators = [$user->getEmail()];
+            } else {
+                $destinators = $htmlTemplate->getDestinators();
+            }
+
+            if ($htmlTemplate->getIsExpeditorCurrentUser()) {
+                $expeditor = $user->getEmail();
+            } else {
+                $expeditor = $htmlTemplate->getExpeditor();
+            }
+
+            $this->emailVerifier->sendEmailConfirmation('app_register_verify_email', $user,
+                (new TemplatedEmail())
+                    ->from(new Address($expeditor, 'Vetogiciel'))
+                    ->to(...$destinators)
+                    ->subject($htmlTemplate->getSubject())
+                    ->htmlTemplate('email/' . $htmlTemplate->getTemplate())
+            );
+        }
     }
 }

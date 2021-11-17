@@ -77,9 +77,9 @@ class MailMessage
     protected $deliveredAt;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="email_id", type="integer", nullable=false)
+     * @ORM\Column(name="email_id", type="string", nullable=false)
      */
     protected $emailId;
 
@@ -196,17 +196,17 @@ class MailMessage
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getEmailId(): int
+    public function getEmailId(): string
     {
         return $this->emailId;
     }
 
     /**
-     * @param int $emailId
+     * @param string $emailId
      */
-    public function setEmailId(int $emailId): void
+    public function setEmailId(string $emailId): void
     {
         $this->emailId = $emailId;
     }
