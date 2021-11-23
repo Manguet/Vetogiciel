@@ -5,13 +5,19 @@ namespace App\Controller\Admin\Settings;
 use App\Entity\Mail\Email;
 use App\Form\Settings\EmailType;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\BoolColumn;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -129,11 +135,6 @@ class EmailController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $template = "{% apply inky_to_html|inline_css(source('@styles/email.css')) %}
-                <container>" . $email->getTemplate() . "</container>{% endapply %}";
-
-            $email->setTemplate($template);
-
             $this->entityManager->persist($email);
             $this->entityManager->flush();
 
@@ -187,7 +188,10 @@ class EmailController extends AbstractController
     {
         $finder = new Finder();
 
-        $finder->files()->in($this->kernel->getProjectDir() . '/templates/email');
+        $finder->files()
+            ->in($this->kernel->getProjectDir() . '/templates/email')
+            ->exclude('demo')
+        ;
 
         if (!$finder->hasResults()) {
             throw new FileNotFoundException(
@@ -201,5 +205,46 @@ class EmailController extends AbstractController
         }
 
         return $files;
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete", methods={"POST"})
+     *
+     * @param Email $email
+     *
+     * @return JsonResponse
+     */
+    public function delete(Email $email): JsonResponse
+    {
+        if (!$email instanceof Email) {
+            return new JsonResponse('Email Not Found', 404);
+        }
+
+        $this->entityManager->remove($email);
+        $this->entityManager->flush();
+
+        return new JsonResponse('Email deleted with success', 200);
+    }
+
+    /**
+     * @Route("generate", name="generate")
+     *
+     * @return JsonResponse
+     *
+     * @throws Exception
+     */
+    public function generate(): JsonResponse
+    {
+        $command = new Application($this->kernel);
+        $command->setAutoExit(false);
+
+        $input = new ArrayInput([
+            'command' => 'import:mail:templates',
+        ]);
+
+        $output = new NullOutput();
+        $command->run($input, $output);
+
+        return new JsonResponse('Template mail importés');
     }
 }

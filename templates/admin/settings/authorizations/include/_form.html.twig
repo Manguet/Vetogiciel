@@ -1,0 +1,36 @@
+<div>
+    {{ form_start(form) }}
+
+    <div>
+        <div class="mb-2">
+            {{ form_label(form.relatedEntity) }}
+            {{ form_widget(form.relatedEntity) }}
+        </div>
+        <div class="mb-2">
+            {{ form_label(form.canAccess) }}
+            {{ form_widget(form.canAccess) }}
+        </div>
+        <div class="mb-2">
+            {{ form_label(form.canAdd) }}
+            {{ form_widget(form.canAdd) }}
+        </div>
+        <div class="mb-2">
+            {{ form_label(form.canShow) }}
+            {{ form_widget(form.canShow) }}
+        </div>
+        <div class="mb-2">
+            {{ form_label(form.canEdit) }}
+            {{ form_widget(form.canEdit) }}
+        </div>
+        <div>
+            {{ form_label(form.canDelete) }}
+            {{ form_widget(form.canDelete) }}
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center my-3">
+        {{ form_widget(form.save) }}
+    </div>
+
+    {{ form_end(form) }}
+</div>

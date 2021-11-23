@@ -6,21 +6,14 @@
 {% endblock %}
 
 {% block body %}
-    <div>
+    <div class="my-3 d-flex justify-content-between">
         <a href="{{ path('settings_index') }}">
             <button class="custom-button">
                 <i class="fas fa-backspace"></i> Retour
             </button>
         </a>
-    </div>
-    <div class="mt-3 d-flex justify-content-between">
-        <a href="{{ path('email_new') }}">
-            <button class="custom-button mb-3">
-                <i class="fas fa-mail-bulk"></i> Créer un email
-            </button>
-        </a>
-        <button class="custom-button generateAjax" href="{{ path('email_generate') }}">
-            <i class="fas fa-upload"></i> Générer les Emails
+        <button class="custom-button generateAjax" href="{{ path('authorization_generate') }}">
+            <i class="fas fa-upload"></i> Générer les autorisations
         </button>
     </div>
 
@@ -50,7 +43,7 @@
                     let url = $(this).attr('href');
                     swal({
                         title      : 'ATTENTION',
-                        text       : 'Voulez-vous vraiment supprimer cet email ?',
+                        text       : 'Voulez-vous vraiment supprimer cette autorisation ?',
                         icon       : 'warning',
                         buttons    : true,
                         dangerMode : true,
@@ -67,7 +60,6 @@
                         }
                     })
                 })
-
                 /** Generate */
                 $(document).on('click', '.generateAjax', function (e) {
                     e.preventDefault();
@@ -75,7 +67,7 @@
                     let url = $(this).attr('href');
                     swal({
                         title      : 'ATTENTION',
-                        text       : 'Voulez-vous vraiment importer les emails ?',
+                        text       : 'Voulez-vous vraiment importer les autorisations ?',
                         icon       : 'warning',
                         buttons    : true,
                         dangerMode : true,

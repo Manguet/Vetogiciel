@@ -77,7 +77,7 @@ class EmailType extends AbstractType
                 'required' => false,
                 'mapped'   => false,
                 'attr'     => [
-                    'placeholder' => 'Ajouter un destinaitaire'
+                    'placeholder' => 'Ajouter un destinataire'
                 ]
             ])
 
