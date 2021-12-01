@@ -71,7 +71,7 @@ class DefaultController extends AbstractController
             ['Jour', 'Ce jour'],
             range(1, 24),
             [0,0,0,0,0,0,0,0,120,210,350,460,460,460,580,690,850,980,980,980,980,980,980,980],
-            [320, 831],
+            [504, 831],
             'Evolution du CA'
         );
 

@@ -1,0 +1,62 @@
+{% import 'macros/macro_table_role.html.twig' as macroTable %}
+<div>
+    {{ form_start(form) }}
+
+    {% if not isEdit %}
+        <div class="text-center">
+            Vous pouvez accéder au paramétrage des autorisations sur l'écran d'édition qui suivra cette étape
+        </div>
+    {% endif %}
+    <ul class="tabs">
+        <li class="tab-link current" data-tab="tab-1">Informations Générales</li>
+        {% if isEdit %}
+            <li class="tab-link" data-tab="tab-2">Autorisations Admin</li>
+            <li class="tab-link" data-tab="tab-3">Autorisations Site</li>
+            <li class="tab-link" data-tab="tab-4">Autorisations Profil</li>
+            <li class="tab-link" data-tab="tab-5">Autorisations Spéciales</li>
+        {% endif %}
+    </ul>
+
+    <div id="tab-1" class="tab-content current">
+        <div class="mb-2">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+        </div>
+        <div class="mb-2">
+            {{ form_label(form.permissionLevel) }}
+            {{ form_widget(form.permissionLevel) }}
+        </div>
+        <div class="mb-2">
+            {{ form_label(form.parentRole) }}
+            {{ form_widget(form.parentRole) }}
+        </div>
+        <div>
+            {{ form_label(form.childRoles) }}
+            {{ form_widget(form.childRoles) }}
+        </div>
+    </div>
+
+    {% if isEdit %}
+        <div id="tab-2" class="tab-content">
+            {{ macroTable.tableRole('ADMIN', authorizations, role) }}
+        </div>
+
+        <div id="tab-3" class="tab-content">
+            {{ macroTable.tableRole('SITE', authorizations, role) }}
+        </div>
+
+        <div id="tab-4" class="tab-content">
+            {{ macroTable.tableRole('PROFIL', authorizations, role) }}
+        </div>
+
+        <div id="tab-5" class="tab-content">
+            Aucune autorisation spéciale pour le moment
+        </div>
+    {% endif %}
+
+    <div class="d-flex justify-content-center align-items-center my-3">
+        {{ form_widget(form.save) }}
+    </div>
+
+    {{ form_end(form) }}
+</div>

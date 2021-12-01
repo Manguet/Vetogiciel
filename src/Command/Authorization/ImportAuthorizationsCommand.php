@@ -99,22 +99,20 @@ class ImportAuthorizationsCommand extends Command
             $entityInBDD = $this->entityManager->getRepository(Authorization::class)
                 ->findOneBy(['relatedEntity' => $fileName]);
 
-            if (!$entityInBDD) {
+            if (!$entityInBDD && $fileName !== 'MailMessage') {
 
-                if ($fileName !== 'MailMessage') {
-                    $authorization = new Authorization();
+                $authorization = new Authorization();
 
-                    $authorization
-                        ->setRelatedEntity($fileName)
-                        ->setCanAccess('ADMIN_' . strtoupper($fileName) . '_ACCESS')
-                        ->setCanShow('ADMIN_' . strtoupper($fileName) . '_SHOW')
-                        ->setCanAdd('ADMIN_' . strtoupper($fileName) . '_ADD')
-                        ->setCanEdit('ADMIN_' . strtoupper($fileName) . '_EDIT')
-                        ->setCanDelete('ADMIN_' . strtoupper($fileName) . '_DELETE')
-                    ;
+                $authorization
+                    ->setRelatedEntity($fileName)
+                    ->setCanAccess(strtoupper($fileName) . '_ACCESS')
+                    ->setCanShow(strtoupper($fileName) . '_SHOW')
+                    ->setCanAdd(strtoupper($fileName) . '_ADD')
+                    ->setCanEdit(strtoupper($fileName) . '_EDIT')
+                    ->setCanDelete(strtoupper($fileName) . '_DELETE')
+                ;
 
-                    $this->entityManager->persist($authorization);
-                }
+                $this->entityManager->persist($authorization);
             }
 
             $io->progressAdvance();

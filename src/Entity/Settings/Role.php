@@ -43,14 +43,18 @@ class Role implements EntityDateInterface
     private $childRoles;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Authorization::class)
+     * @ORM\Column(type="array", nullable=true)
      */
-    private $authorizations;
+    private $authorizations = [];
+
+    /**
+     * @ORM\Column(type="enumRoleLevel", nullable=true)
+     */
+    private $permissionLevel;
 
     public function __construct()
     {
         $this->childRoles = new ArrayCollection();
-        $this->authorizations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -113,28 +117,48 @@ class Role implements EntityDateInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Authorization[]
-     */
-    public function getAuthorizations(): Collection
+    public function getAuthorizations(): ?array
     {
         return $this->authorizations;
     }
 
-    public function addAuthorization(Authorization $authorization): self
+    public function addAuthorization(string $authorization): self
     {
-        if (!$this->authorizations->contains($authorization)) {
+        if (null === $this->authorizations) {
+            $this->authorizations = [];
+        }
+
+        if (!in_array($authorization, $this->authorizations, true)) {
             $this->authorizations[] = $authorization;
         }
 
         return $this;
     }
 
-    public function removeAuthorization(Authorization $authorization): self
+    public function removeAuthorization(string $authorization): self
     {
-        if ($this->authorizations->contains($authorization)) {
-            $this->authorizations->removeElement($authorization);
+        if (($key = array_search($authorization, $this->authorizations, true)) !== false) {
+            unset($this->authorizations[$key]);
         }
+
+        return $this;
+    }
+
+    public function setAuthorizations(?array $authorizations): self
+    {
+        $this->authorizations = $authorizations;
+
+        return $this;
+    }
+
+    public function getPermissionLevel(): string
+    {
+        return $this->permissionLevel ?? 'user';
+    }
+
+    public function setPermissionLevel($permissionLevel): self
+    {
+        $this->permissionLevel = $permissionLevel;
 
         return $this;
     }

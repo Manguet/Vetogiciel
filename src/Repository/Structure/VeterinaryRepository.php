@@ -39,7 +39,7 @@ class VeterinaryRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get all Sectors ordered by name
+     * Get all Veterinaries ordered by name
      * @param null $q
      *
      * @return int|mixed|string
