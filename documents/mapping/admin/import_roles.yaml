@@ -1,4 +1,4 @@
-ROLE_SUPER_AMDIN:
+ROLE_SUPER_ADMIN:
   level: group
   entities:
     ADMIN: all

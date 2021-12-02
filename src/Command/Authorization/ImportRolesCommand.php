@@ -148,15 +148,15 @@ class ImportRolesCommand extends Command
      */
     private function addEntitiesAuthorizations(array $settingDatas, Role $role): void
     {
-        foreach ($settingDatas as $sectorTitle => $sectorDatas) {
+        foreach ($settingDatas as $sectorTitle => $sectorData) {
 
-            if ($sectorDatas === 'all') {
+            if ($sectorData === 'all') {
 
                 $role->addAuthorization($sectorTitle . '_FULL_ACCESS');
 
             } else {
 
-                $this->addAuthorizationsByYamlLogic($settingDatas, $role, $sectorTitle);
+                $this->addAuthorizationsByYamlLogic($sectorData, $role, $sectorTitle);
             }
         }
     }
@@ -170,10 +170,10 @@ class ImportRolesCommand extends Command
      */
     private function addAuthorizationsByYamlLogic(array $sectorDatas, Role $role, string $sectorTitle): void
     {
-        foreach ($sectorDatas as $title => $data) {
+        foreach ($sectorDatas as $entityTitle => $data) {
 
             $authorization = $this->entityManager->getRepository(Authorization::class)
-                ->findOneBy(['relatedEntity' => $title]);
+                ->findOneBy(['relatedEntity' => $entityTitle]);
 
             if (!$authorization) {
                 return;
@@ -181,11 +181,11 @@ class ImportRolesCommand extends Command
 
             if ($data === 'all') {
 
-                $role->addAuthorization($sectorTitle . '_' . strtoupper($title) . '_MANAGE');
+                $role->addAuthorization($sectorTitle . '_' . strtoupper($entityTitle) . '_MANAGE');
 
             } else {
 
-                $this->addAuthorizationsMinorLevel($authorization, $role, $data, $sectorTitle, $title);
+                $this->addAuthorizationsMinorLevel($authorization, $role, $data, $sectorTitle);
             }
         }
     }
@@ -195,32 +195,31 @@ class ImportRolesCommand extends Command
      * @param Role $role
      * @param array $data
      * @param string $sectorTitle
-     * @param string $title
      *
      * @return void
      */
     private function addAuthorizationsMinorLevel(Authorization $authorization, Role $role, array $data,
-                                                 string $sectorTitle, string $title): void
+                                                 string $sectorTitle): void
     {
         if (isset($data['access']) && $data['access'] === 'yes' && $authorization->getCanAccess()) {
 
-            $role->addAuthorization($sectorTitle . '_' . strtoupper($title) . '_' . $authorization->getCanAccess());
+            $role->addAuthorization($sectorTitle . '_' . $authorization->getCanAccess());
         }
         if (isset($data['add']) && $data['add'] === 'yes' && $authorization->getCanAdd()) {
 
-            $role->addAuthorization($sectorTitle . '_' . strtoupper($title) . '_' . $authorization->getCanAdd());
+            $role->addAuthorization($sectorTitle . '_' . $authorization->getCanAdd());
         }
         if (isset($data['show']) && $data['show'] === 'yes' && $authorization->getCanShow()) {
 
-            $role->addAuthorization($sectorTitle . '_' . strtoupper($title) . '_' . $authorization->getCanShow());
+            $role->addAuthorization($sectorTitle . '_' . $authorization->getCanShow());
         }
         if (isset($data['edit']) && $data['edit'] === 'yes' && $authorization->getCanEdit()) {
 
-            $role->addAuthorization($sectorTitle . '_' . strtoupper($title) . '_' . $authorization->getCanEdit());
+            $role->addAuthorization($sectorTitle . '_' . $authorization->getCanEdit());
         }
         if (isset($data['delete']) && $data['delete'] === 'yes' && $authorization->getCanDelete()) {
 
-            $role->addAuthorization($sectorTitle . '_' . strtoupper($title) . '_' . $authorization->getCanDelete());
+            $role->addAuthorization($sectorTitle . '_' . $authorization->getCanDelete());
         }
     }
 }
