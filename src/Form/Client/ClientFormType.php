@@ -3,6 +3,7 @@
 namespace App\Form\Client;
 
 use App\Entity\Patients\Client;
+use App\Traits\Role\AddRoleTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -17,6 +18,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ClientFormType extends AbstractType
 {
+    use AddRoleTrait;
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -121,6 +124,8 @@ class ClientFormType extends AbstractType
                 ],
             ])
         ;
+
+        $this->addRoleField($builder, $options);
     }
 
     /**

@@ -139,6 +139,10 @@ class ClientController extends AbstractController
             /** Manually encode password */
             $this->encoderServices->encodePassword($form, $client);
 
+            if (isset($request->request->get('client_form')['roles'])) {
+                $client->setRoles([$request->request->get('client_form')['roles']]);
+            }
+
             $this->entityManager->persist($client);
             $this->entityManager->flush();
 
@@ -251,6 +255,10 @@ class ClientController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if (isset($request->request->get('client_form')['roles'])) {
+                $client->setRoles([$request->request->get('client_form')['roles']]);
+            }
 
             $this->entityManager->flush();
 

@@ -184,6 +184,10 @@ class EmployeeController extends AbstractController
             /** Manually encode password */
             $this->encoderServices->encodePassword($form, $employee);
 
+            if (isset($request->request->get('employee')['roles'])) {
+                $employee->setRoles([$request->request->get('employee')['roles']]);
+            }
+
             $employee->setFullNameSlugiffied(
                 $this->slugger->generateSlugUrl(
                     $employee->getFirstname() . '-' . $employee->getLastname(),
@@ -239,6 +243,10 @@ class EmployeeController extends AbstractController
 
             /** Manually encode password */
             $this->encoderServices->encodePassword($form, $employee);
+
+            if (isset($request->request->get('employee')['roles'])) {
+                $employee->setRoles([$request->request->get('employee')['roles']]);
+            }
 
             $this->entityManager->persist($employee);
             $this->entityManager->flush();

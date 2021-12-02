@@ -185,6 +185,10 @@ class VeterinaryController extends AbstractController
             /** Manually encode password */
             $this->encoderServices->encodePassword($form, $veterinary);
 
+            if (isset($request->request->get('veterinary_form')['roles'])) {
+                $veterinary->setRoles([$request->request->get('veterinary_form')['roles']]);
+            }
+
             $veterinary->setFullNameSlugiffied(
                 $this->slugger->generateSlugUrl(
                     $veterinary->getFirstname() . '-' . $veterinary->getLastname(),
@@ -239,6 +243,10 @@ class VeterinaryController extends AbstractController
 
             /** Manually encode password */
             $this->encoderServices->encodePassword($form, $veterinary);
+
+            if (isset($request->request->get('veterinary_form')['roles'])) {
+                $veterinary->setRoles([$request->request->get('veterinary_form')['roles']]);
+            }
 
             $this->entityManager->persist($veterinary);
             $this->entityManager->flush();

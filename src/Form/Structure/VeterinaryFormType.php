@@ -3,10 +3,14 @@
 namespace App\Form\Structure;
 
 use App\DBAL\Types\Structures\VeterinaryEnum;
+use App\Entity\Settings\Role;
 use App\Entity\Structure\Clinic;
 use App\Entity\Structure\Sector;
 use App\Entity\Structure\Veterinary;
+use App\Traits\Role\AddRoleTrait;
+use Doctrine\ORM\EntityManagerInterface;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -14,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,6 +29,8 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
  */
 class VeterinaryFormType extends AbstractType
 {
+    use AddRoleTrait;
+
     /**
      * @var VeterinaryEnum
      */
@@ -33,10 +38,18 @@ class VeterinaryFormType extends AbstractType
 
     /**
      * @param VeterinaryEnum $veterinaryTypes
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(VeterinaryEnum $veterinaryTypes)
+    public function __construct(VeterinaryEnum $veterinaryTypes, EntityManagerInterface $entityManager)
     {
         $this->veterinaryTypes = $veterinaryTypes->getValues();
+
+        $roles = $entityManager->getRepository(Role::class)
+            ->findBy([], ['name' => 'ASC']);
+
+        foreach ($roles as $role) {
+            $this->roles[$role->getName()] = $role->getName();
+        }
     }
 
     /**
@@ -215,6 +228,8 @@ class VeterinaryFormType extends AbstractType
                 ])
             ;
         }
+
+        $this->addRoleField($builder, $options);
 
         $builder
             ->add('save', SubmitType::class, [
