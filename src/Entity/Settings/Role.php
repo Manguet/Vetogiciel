@@ -52,6 +52,11 @@ class Role implements EntityDateInterface
      */
     private $permissionLevel;
 
+    /**
+     * @ORM\Column(type="enumRoleType")
+     */
+    private $type;
+
     public function __construct()
     {
         $this->childRoles = new ArrayCollection();
@@ -159,6 +164,18 @@ class Role implements EntityDateInterface
     public function setPermissionLevel($permissionLevel): self
     {
         $this->permissionLevel = $permissionLevel;
+
+        return $this;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

@@ -47,7 +47,7 @@ class ImportAuthorizationsCommand extends Command
     {
         $this
             ->setName('import:authorizations')
-            ->setDescription('Command to import mail templates in database')
+            ->setDescription('Command to import authorizations in database')
         ;
     }
 

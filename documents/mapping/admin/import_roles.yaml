@@ -1,0 +1,214 @@
+ROLE_SUPER_AMDIN:
+  level: group
+  entities:
+    ADMIN: all
+    PROFIL: all
+    SITE: all
+
+ROLE_DIRECTOR:
+  level: group
+  entities:
+    ADMIN: all
+    PROFIL: all
+    SITE: all
+
+ROLE_VETERINARY:
+  level: society
+  entities:
+    ADMIN: all
+    PROFIL: all
+    SITE: all
+
+ROLE_MANAGER:
+  level: society
+  entities:
+    ADMIN:
+      Booking: all
+      Article: all
+      ArticleCategory: all
+      Commentary: all
+      Laboratory: all
+      Email: all
+      Animal: all
+      Client: all
+      Comment: all
+      Consultation: all
+      Document: all
+      Folder: all
+      Race: all
+      Species: all
+      Bill: all
+      Clinic:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      Employee:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      Note: all
+      Prestation:
+        access: yes
+        add: yes
+        show: yes
+        edit: no
+        delete: no
+      Sector:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      Vat: all
+      Veterinary:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      WaitingRoom: all
+    PROFIL: all
+    SITE: all
+
+ROLE_EMPLOYEE:
+  level: society
+  entities:
+    ADMIN:
+      Booking: all
+      Article: all
+      ArticleCategory: all
+      Commentary: all
+      Laboratory: all
+      Email: all
+      Animal: all
+      Client: all
+      Comment: all
+      Consultation: all
+      Document: all
+      Folder:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      Race: all
+      Species: all
+      Bill: all
+      Clinic:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      Note: all
+      Prestation:
+        access: yes
+        add: yes
+        show: yes
+        edit: no
+        delete: no
+      Sector:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      Vat:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      WaitingRoom: all
+
+    PROFIL: all
+    SITE: all
+
+ROLE_COMPTABLE:
+  level: group
+  entities:
+    ADMIN:
+      Article: all
+      ArticleCategory: all
+      Commentary: all
+      Laboratory:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      Email: all
+      Animal:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      Client:
+        acces: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      Comment:
+        access: yes
+        add: yes
+        show: yes
+        edit: no
+        delete: no
+      Race:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      Species:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      Clinic:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      Employee:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      Note:
+        access: yes
+        add: yes
+        show: yes
+        edit: no
+        delete: no
+      Sector:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+      Vat: all
+      Veterinary:
+        access: yes
+        add: no
+        show: yes
+        edit: no
+        delete: no
+
+    PROFIL: all
+    SITE: all
+
+ROLE_USER:
+  level: user
+  entities:
+    PROFIL: all
+    SITE: all

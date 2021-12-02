@@ -10,6 +10,9 @@ Contenu:
     Offre d'emploi:
       path:
       icon:
+    Email:
+      path: 'email_index'
+      icon:
 
 Clients:
   icon: 'fas fa-user'

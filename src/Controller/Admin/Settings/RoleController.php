@@ -7,13 +7,18 @@ use App\Entity\Settings\Role;
 use App\Form\Settings\RoleType;
 use App\Interfaces\Settings\RoleTableInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -80,6 +85,10 @@ class RoleController extends AbstractController
                     return $roles;
                 }
             ])
+            ->add('type', TextColumn::class, [
+                'label'     => 'Type de Rôle',
+                'orderable' => true
+            ])
             ->add('delete', TextColumn::class, [
                 'label'   => 'Supprimer ?',
                 'render'  => function($value, $role) {
@@ -124,6 +133,7 @@ class RoleController extends AbstractController
 
             $name = $this->createRoleName($role->getName());
             $role->setName($name);
+            $role->setType('custom');
 
             $this->entityManager->persist($role);
             $this->entityManager->flush();
@@ -214,6 +224,10 @@ class RoleController extends AbstractController
             return new JsonResponse('Role Not Found', 404);
         }
 
+        if ($role->getType() === 'system') {
+            return new JsonResponse('Role can\'t be deleted', 403);
+        }
+
         $this->entityManager->remove($role);
         $this->entityManager->flush();
 
@@ -235,5 +249,29 @@ class RoleController extends AbstractController
         }
 
         return 'ROLE_' . $replaceName;
+    }
+
+    /**
+     * @Route("generate", name="generate")
+     *
+     * @param KernelInterface $kernel
+     *
+     * @return JsonResponse
+     *
+     * @throws Exception
+     */
+    public function generate(KernelInterface $kernel): JsonResponse
+    {
+        $command = new Application($kernel);
+        $command->setAutoExit(false);
+
+        $input = new ArrayInput([
+            'command' => 'import:roles',
+        ]);
+
+        $output = new NullOutput();
+        $command->run($input, $output);
+
+        return new JsonResponse('Import des rôles effectué');
     }
 }
