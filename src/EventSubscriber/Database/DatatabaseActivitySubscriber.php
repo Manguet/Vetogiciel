@@ -59,7 +59,7 @@ class DatatabaseActivitySubscriber implements EventSubscriberInterface
     {
         $entity = $args->getObject();
 
-        if (!method_exists($entity, 'setCreatedBy') && null !== $entity->getCreatedBy()) {
+        if (!method_exists($entity, 'setCreatedBy') || null !== $entity->getCreatedBy()) {
             return;
         }
 

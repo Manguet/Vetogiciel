@@ -6,19 +6,22 @@
 
     <div id="accordion" class="d-flex flex-column mb-3">
         {% for headerDatas in headers %}
-            <button class="btn"
-                    data-toggle="collapse"
-                    data-target="#collapse{{ headerDatas.id }}"
-                    aria-expanded="true"
-                    aria-controls="collapse{{ headerDatas.id }}"
-            >
-                <span class="d-flex justify-content-between align-items-center">
-                    <span class="pl-3">
-                        <i class="{{ headerDatas.icon }}"></i> {{ headerDatas.title }}
+
+            {% if headerDatas.authorizations is null or is_granted(headerDatas.authorizations) %}
+                <button class="btn"
+                        data-toggle="collapse"
+                        data-target="#collapse{{ headerDatas.id }}"
+                        aria-expanded="true"
+                        aria-controls="collapse{{ headerDatas.id }}"
+                >
+                    <span class="d-flex justify-content-between align-items-center">
+                        <span class="pl-3">
+                            <i class="{{ headerDatas.icon }}"></i> {{ headerDatas.title }}
+                        </span>
+                         <i class="fas fa-level-down-alt"></i>
                     </span>
-                     <i class="fas fa-level-down-alt"></i>
-                </span>
-            </button>
+                </button>
+            {% endif %}
 
             <div id="collapse{{ headerDatas.id }}"
                  class="collapse
@@ -34,21 +37,23 @@
             >
                 <ul>
                     {% for headerChild in headerDatas.childHeaders %}
-                        <li>
-                            {% if headerChild.path is not null %}
-                                <a href="{{ path(headerChild.path) }}"
-                                   class="d-flex justify-content-between align-items-center
-                                         {% if route is not null and route is same as headerChild.path %} actual-link{% endif %}
-                                         "
-                                >
-                            {% else %}
-                                <a href="#"
-                                   class="d-flex justify-content-between align-items-center"
-                                >
-                            {% endif %}
-                                {{ headerChild.title }} {% if headerChild.icon %}<i class="{{ headerChild.icon }}"></i>{% endif %}
-                            </a>
-                        </li>
+                        {% if headerChild.authorizations is null or is_granted(headerChild.authorizations) %}
+                            <li>
+                                {% if headerChild.path is not null %}
+                                    <a href="{{ path(headerChild.path) }}"
+                                       class="d-flex justify-content-between align-items-center
+                                             {% if route is not null and route is same as headerChild.path %} actual-link{% endif %}
+                                             "
+                                    >
+                                {% else %}
+                                    <a href="#"
+                                       class="d-flex justify-content-between align-items-center"
+                                    >
+                                {% endif %}
+                                    {{ headerChild.title }} {% if headerChild.icon %}<i class="{{ headerChild.icon }}"></i>{% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>
@@ -56,17 +61,21 @@
     </div>
 
     <div class="down-bar d-flex justify-content-around align-items-center">
-        <button type="button" class="btn down-button" data-toggle="tooltip" data-placement="top" title="Dashboard">
-            <a href="{{ path('admin_manage') }}">
-                <i class="fas fa-chart-line"></i>
-            </a>
-        </button>
+        {% if is_granted('ADMIN_ADMIN_ACCESS') %}
+            <button type="button" class="btn down-button" data-toggle="tooltip" data-placement="top" title="Dashboard">
+                <a href="{{ path('admin_manage') }}">
+                    <i class="fas fa-chart-line"></i>
+                </a>
+            </button>
+        {% endif %}
 
-        <button type="button" class="btn down-button" data-toggle="tooltip" data-placement="top" title="Outils">
-            <a href="{{ path('settings_index') }}">
-                <i class="fas fa-cog"></i>
-            </a>
-        </button>
+        {% if is_granted('ADMIN_SETTINGS_ACCESS') %}
+            <button type="button" class="btn down-button" data-toggle="tooltip" data-placement="top" title="Outils">
+                <a href="{{ path('settings_index') }}">
+                    <i class="fas fa-cog"></i>
+                </a>
+            </button>
+        {% endif %}
 
         <button type="button" class="btn down-button" data-toggle="tooltip" data-placement="top" title="Quitter la zone">
             <a href="{{ path('admin_index') }}">

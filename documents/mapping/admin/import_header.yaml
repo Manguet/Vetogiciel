@@ -1,5 +1,6 @@
 Contenu:
   icon: 'fas fa-paste'
+  authorizations: ['ADMIN_ARTICLE_ACCESS', 'ADMIN_EMAIL_ACCESS']
   childs:
     Page:
       path:
@@ -7,19 +8,23 @@ Contenu:
     Article:
       path: 'admin_content_index'
       icon:
+      authorizations: ['ADMIN_ARTICLE_ACCESS']
     Offre d'emploi:
       path:
       icon:
     Email:
       path: 'email_index'
       icon:
+      authorizations: ['ADMIN_EMAIL_ACCESS']
 
 Clients:
   icon: 'fas fa-user'
+  authorizations: ['ADMIN_CLIENT_ACCESS']
   childs:
     Clients:
       path: 'admin_user_index'
       icon:
+      authorizations: ['ADMIN_CLIENT_ACCESS']
     Animaux:
       path:
       icon:
@@ -36,16 +41,20 @@ Facturation:
 
 Etablissement:
   icon: 'fas fa-hospital'
+  authorizations: ['ADMIN_CLINIC_ACCESS', 'ADMIN_VETERINARY_ACCESS', 'ADMIN_EMPLOYEE']
   childs:
     Structures:
       path: 'admin_clinic_index'
       icon:
+      authorizations: ['ADMIN_CLINIC_ACCESS']
     Vétérinaires:
       path: 'admin_veterinary_index'
       icon:
+      authorizations: ['ADMIN_VETERINARY_ACCESS']
     Employés:
       path: 'admin_employee_index'
       icon:
+      authorizations: ['ADMIN_EMPLOYEE_ACCESS']
 
 Gestion:
   icon: 'far fa-calendar-check'

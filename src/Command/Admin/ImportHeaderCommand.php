@@ -122,6 +122,7 @@ class ImportHeaderCommand extends Command
                 ->setIcon($datas['icon'] ?? 'fas fa-long-arrow-alt-right')
                 ->setIsActivated(true)
                 ->setIsMainHeader(!isset($datas['childs']))
+                ->setAuthorizations($datas['authorizations'] ?? null)
             ;
 
             if (!$header->getIsMainHeader()) {
@@ -131,11 +132,12 @@ class ImportHeaderCommand extends Command
                     $childHeader = new Header();
                     $childHeader
                         ->setTitle($titleChild)
-                        ->setIcon($childDatas['icon' ?? null])
-                        ->setPath($childDatas['path' ?? '#'])
+                        ->setIcon($childDatas['icon'] ?? null)
+                        ->setPath($childDatas['path'] ?? null)
                         ->setIsActivated(true)
                         ->setParentHeader($header)
                         ->setIsMainHeader(true)
+                        ->setAuthorizations($childDatas['authorizations'] ?? null)
                     ;
 
                     $this->entityManager->persist($childHeader);

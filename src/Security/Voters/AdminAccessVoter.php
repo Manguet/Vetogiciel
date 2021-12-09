@@ -4,9 +4,6 @@ namespace App\Security\Voters;
 
 use App\Entity\Settings\Role;
 use Doctrine\ORM\EntityManagerInterface;
-use InvalidArgumentException;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -27,23 +24,16 @@ class AdminAccessVoter extends Voter
     private $entityManager;
 
     /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**
      * @var array
      */
     private $allRoles = [];
 
     /**
      * @param EntityManagerInterface $entityManager
-     * @param KernelInterface $kernel
      */
-    public function __construct(EntityManagerInterface $entityManager, KernelInterface $kernel)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->kernel        = $kernel;
     }
 
     /**

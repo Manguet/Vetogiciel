@@ -56,6 +56,11 @@ class Header
      */
     private $childHeaders;
 
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $authorizations;
+
     public function __construct()
     {
         $this->childHeaders = new ArrayCollection();
@@ -165,6 +170,24 @@ class Header
                 $childHeader->setParentHeader(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return null|array
+     */
+    public function getAuthorizations(): ?array
+    {
+        return $this->authorizations;
+    }
+
+    /**
+     * @param mixed $authorizations
+     */
+    public function setAuthorizations($authorizations): self
+    {
+        $this->authorizations = $authorizations;
 
         return $this;
     }
