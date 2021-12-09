@@ -11,6 +11,7 @@ use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\BoolColumn;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -28,6 +29,8 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/email/", name="email_")
+ *
+ * @Security("is_granted('ADMIN_EMAIL_ACCESS')")
  */
 class EmailController extends AbstractController
 {

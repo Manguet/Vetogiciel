@@ -12,6 +12,7 @@ use Exception;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -26,6 +27,8 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/role/", name="role_")
+ *
+ * @Security("is_granted('ADMIN_ROLE_ACCESS')")
  */
 class RoleController extends AbstractController
 {

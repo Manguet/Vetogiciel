@@ -12,6 +12,7 @@ use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\DateTimeColumn;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +24,8 @@ use App\Form\Client\ClientFormType;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/user", name="admin_user_")
+ *
+ * @Security("is_granted('ADMIN_CLIENT_ACCESS')")
  */
 class ClientController extends AbstractController
 {

@@ -9,6 +9,7 @@ use App\Service\Dates\DateServices;
 use DateInterval;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/animal", name="admin_animal_")
+ *
+ * @Security("is_granted('ADMIN_ANIMAL_ACCESS')")
  */
 class AnimalController extends AbstractController
 {

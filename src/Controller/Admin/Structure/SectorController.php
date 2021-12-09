@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/sector", name="admin_sector_")
+ *
+ * @Security("is_granted('ADMIN_SECTOR_ACCESS')")
  */
 class SectorController extends AbstractController
 {

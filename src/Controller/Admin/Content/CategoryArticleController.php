@@ -8,9 +8,9 @@ use App\Form\Content\ArticleCategoryType;
 use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Slugger\SluggerInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/article-category", name="admin_article_category_")
+ *
+ * @Security("is_granted('ADMIN_ARTICLECATEGORY_ACCESS')")
  */
 class CategoryArticleController extends AbstractController
 {
