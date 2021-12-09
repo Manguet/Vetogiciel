@@ -4,8 +4,11 @@ namespace App\Entity\Patients;
 
 use App\Entity\Structure\Clinic;
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
+use App\Interfaces\User\CreatedByWithUserInterface;
 use App\Interfaces\User\UserEntityInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByWithUserTrait;
 use App\Traits\User\UserEntityTrait;
 use DateTime;
 use DateTimeInterface;
@@ -22,10 +25,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Client implements EntityDateInterface, UserEntityInterface, UserInterface
+class Client implements EntityDateInterface, UserInterface, UserEntityInterface, CreatedByWithUserInterface
 {
     use EntityDateTrait;
     use UserEntityTrait;
+    use CreatedByWithUserTrait;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -92,8 +96,8 @@ class Client implements EntityDateInterface, UserEntityInterface, UserInterface
      */
     public function __construct()
     {
-        $this->animals = new ArrayCollection();
-        $this->clinic = new ArrayCollection();
+        $this->animals  = new ArrayCollection();
+        $this->clinic   = new ArrayCollection();
     }
 
     /**

@@ -11,6 +11,7 @@ use CMEN\GoogleChartsBundle\GoogleCharts\Charts\BarChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\ColumnChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\LineChart;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/admin", name="admin_")
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
+ *
+ * @Security("is_granted('ADMIN_ADMIN_ACCESS')")
  */
 class DefaultController extends AbstractController
 {

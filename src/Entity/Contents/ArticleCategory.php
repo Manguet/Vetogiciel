@@ -2,7 +2,9 @@
 
 namespace App\Entity\Contents;
 
+use App\Interfaces\User\CreatedByInterface;
 use App\Repository\Contents\ArticleCategoryRepository;
+use App\Traits\User\CreatedByTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,8 +16,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class ArticleCategory
+class ArticleCategory implements CreatedByInterface
 {
+    use CreatedByTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

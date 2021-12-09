@@ -3,7 +3,9 @@
 namespace App\Entity\Calendar;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByWithUserInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByWithUserTrait;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\Calendar\BookingRepository;
 
@@ -13,9 +15,10 @@ use App\Repository\Calendar\BookingRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Booking implements EntityDateInterface
+class Booking implements EntityDateInterface, CreatedByWithUserInterface
 {
     use EntityDateTrait;
+    use CreatedByWithUserTrait;
 
     /**
      * @ORM\Id()

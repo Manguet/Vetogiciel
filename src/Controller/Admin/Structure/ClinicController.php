@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Structure;
 
 use App\Entity\Structure\Clinic;
 use App\Form\Structure\ClinicType;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Slugger\SluggerInterface;
 use App\Service\Priority\PriorityServices;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,10 +59,12 @@ class ClinicController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
         $table = $dataTableFactory->create()
             ->add('name', TextColumn::class, [
@@ -82,12 +85,16 @@ class ClinicController extends AbstractController
             ->add('priority', TextColumn::class, [
                 'label'     => 'Priorité d\'affichage',
                 'orderable' => true,
-            ])
+            ]);
+
+        $datatableField
+            ->addCreatedBy($table);
+
+        $table
             ->addOrderBy('priority')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => Clinic::class
-            ])
         ;
+
+        $datatableField->createDatatableAdapter($table, Clinic::class);
 
         $table->handleRequest($request);
 

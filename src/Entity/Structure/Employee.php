@@ -7,11 +7,13 @@ use App\Interfaces\DateTime\EntityDateInterface;
 use App\Interfaces\Socials\SocialInterface;
 use App\Interfaces\Structure\PhotoInterface;
 use App\Interfaces\Structure\PresentationInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Interfaces\User\UserEntityInterface;
 use App\Traits\DateTime\EntityDateTrait;
 use App\Traits\Socials\SocialTrait;
 use App\Traits\Structure\PhotoTrait;
 use App\Traits\Structure\PresentationTrait;
+use App\Traits\User\CreatedByTrait;
 use App\Traits\User\UserEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,14 +30,16 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Employee implements EntityDateInterface, UserEntityInterface, UserInterface,
-                          PresentationInterface, PhotoInterface, SocialInterface
+class Employee implements EntityDateInterface, UserInterface,
+                          PresentationInterface, PhotoInterface, SocialInterface,
+                          UserEntityInterface, CreatedByInterface
 {
     use EntityDateTrait;
-    use UserEntityTrait;
     use PhotoTrait;
     use PresentationTrait;
     use SocialTrait;
+    use UserEntityTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -53,11 +57,17 @@ class Employee implements EntityDateInterface, UserEntityInterface, UserInterfac
     private $isVerified = false;
 
     /**
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="createdByEmployee")
+     */
+    private $articles;
+
+    /**
      * @return void
      */
     public function __construct()
     {
         $this->sector   = new ArrayCollection();
+        $this->articles = new ArrayCollection();
     }
 
     /**
@@ -132,6 +142,37 @@ class Employee implements EntityDateInterface, UserEntityInterface, UserInterfac
     public function setIsVerified(?bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->setCreatedByEmployee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): self
+    {
+        if ($this->articles->contains($article)) {
+            $this->articles->removeElement($article);
+            // set the owning side to null (unless already changed)
+            if ($article->getCreatedByEmployee() === $this) {
+                $article->setCreatedByEmployee(null);
+            }
+        }
 
         return $this;
     }

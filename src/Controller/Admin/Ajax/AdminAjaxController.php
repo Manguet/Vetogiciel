@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Ajax;
 
 use App\Entity\Contents\ArticleCategory;
+use App\Entity\Patients\Client;
 use App\Entity\Patients\Race;
 use App\Entity\Patients\Species;
 use App\Entity\Settings\Role;

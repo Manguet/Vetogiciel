@@ -45,6 +45,6 @@ class ClinicRepository extends ServiceEntityRepository
             ->orderBy('c.priority', 'ASC')
             ->getQuery()
             ->getResult()
-        ;
+            ;
     }
 }

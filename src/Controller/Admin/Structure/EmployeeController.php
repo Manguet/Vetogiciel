@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Structure;
 
 use App\Entity\Structure\Employee;
 use App\Form\Structure\EmployeeType;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Slugger\SluggerInterface;
 use App\Security\EmailVerifier;
 use App\Service\User\PasswordEncoderServices;
@@ -78,10 +79,12 @@ class EmployeeController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
         $table = $dataTableFactory->create()
             ->add('firstname', TextColumn::class, [
@@ -134,20 +137,17 @@ class EmployeeController extends AbstractController
                     return '';
                 }
 
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'   => 'Supprimer ?',
-                'render'  => function($value, $employee) {
-                    return $this->renderView('admin/employee/include/_delete-button.html.twig', [
-                        'employee' => $employee,
-                    ]);
-                }
+            ]);
+
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/employee/include/_delete-button.html.twig', [
+                'entity' => 'employee'
             ])
             ->addOrderBy('lastname')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => Employee::class
-            ])
         ;
+
+        $datatableField->createDatatableAdapter($table, Employee::class);
 
         $table->handleRequest($request);
 

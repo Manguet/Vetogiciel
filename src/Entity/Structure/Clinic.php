@@ -7,12 +7,14 @@ use App\Interfaces\Priority\PriorityInterface;
 use App\Interfaces\Socials\SocialInterface;
 use App\Interfaces\Structure\AddressInterface;
 use App\Interfaces\Structure\PhotoInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Repository\Structure\ClinicRepository;
 use App\Traits\DateTime\EntityDateTrait;
 use App\Traits\Priority\PriorityTrait;
 use App\Traits\Socials\SocialTrait;
 use App\Traits\Structure\AddressTrait;
 use App\Traits\Structure\PhotoTrait;
+use App\Traits\User\CreatedByTrait;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -24,13 +26,15 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface, AddressInterface, SocialInterface
+class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface, AddressInterface, SocialInterface,
+                        CreatedByInterface
 {
     use EntityDateTrait;
     use PriorityTrait;
     use PhotoTrait;
     use AddressTrait;
     use SocialTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id

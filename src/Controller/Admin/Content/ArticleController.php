@@ -3,14 +3,14 @@
 namespace App\Controller\Admin\Content;
 
 use App\Entity\Contents\Article;
-use App\Entity\Structure\Veterinary;
 use App\Form\Content\ArticleType;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Slugger\SluggerInterface;
 use App\Service\Priority\PriorityServices;
 use Doctrine\ORM\EntityManagerInterface;
-use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/content", name="admin_content_")
+ *
+ * @Security("is_granted('ADMIN_ARTICLE_ACCESS')")
  */
 class ArticleController extends AbstractController
 {
@@ -57,10 +59,12 @@ class ArticleController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
         $table = $dataTableFactory->create()
             ->add('title', TextColumn::class, [
@@ -94,19 +98,18 @@ class ArticleController extends AbstractController
             ->add('priority', TextColumn::class, [
                 'label'     => 'Priorité d\'affichage',
                 'orderable' => true,
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'  => 'Supprimer ?',
-                'render' => function ($value, $article) {
-                    return $this->renderView('admin/content/include/_delete-button.html.twig', [
-                        'article' => $article,
-                    ]);
-                }
+            ]);
+
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/content/include/_delete-button.html.twig', [
+                'entity' => 'article'
             ])
             ->addOrderBy('priority')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => Article::class
-            ]);
+        ;
+
+        $datatableField
+            ->createDatatableAdapter($table, Article::class);
 
         $table->handleRequest($request);
 
@@ -140,12 +143,6 @@ class ArticleController extends AbstractController
 
             $priority = $this->priorityServices->setPriorityOnCreation($article);
             $article->setPriority($priority);
-
-            $user = $this->getUser();
-
-            if ($user instanceof Veterinary) {
-                $article->setCreatedBy($user);
-            }
 
             $article->setTitleUrl(
                 $this->slugger->generateSlugUrl(

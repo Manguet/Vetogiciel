@@ -4,7 +4,6 @@ namespace App\Entity\Settings;
 
 use App\Repository\Settings\ConfigurationRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 /**
  * @ORM\Entity(repositoryClass=ConfigurationRepository::class)

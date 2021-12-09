@@ -17,19 +17,19 @@ class RoleRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get all Role ordered by name
+     * Get all Role ordered by title
      * @param null $q
      *
      * @return int|mixed|string
      */
     public function findAllByNameResults($q = null)
     {
-        $qb = $this->createQueryBuilder('r')
-            ->orderBy('r.name', 'ASC');
+        $qb = $this->createQueryBuilder('s')
+            ->orderBy('s.name', 'ASC');
 
         if ($q) {
             $qb
-                ->where('r.name LIKE :q')
+                ->andWhere('s.name LIKE :q')
                 ->setParameter('q', '%' . $q . '%');
         }
 

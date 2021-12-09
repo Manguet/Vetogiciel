@@ -47,7 +47,7 @@ class VeterinaryRepository extends ServiceEntityRepository
     public function findAllByNameResults($q = null)
     {
         $qb = $this->createQueryBuilder('s')
-            ->orderBy('s.name', 'ASC');
+            ->orderBy('s.lastname', 'ASC');
 
         if ($q) {
             $qb

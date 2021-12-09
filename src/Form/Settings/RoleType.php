@@ -34,7 +34,7 @@ class RoleType extends AbstractType
             ])
             ->add('permissionLevel', ChoiceType::class, [
                 'label'       => 'Niveau de permission',
-                'required'    => false,
+                'required'    => true,
                 'placeholder' => 'Sélectionner un niveau de permission',
                 'choices'     => [
                     'Utilisateur' => 'user',

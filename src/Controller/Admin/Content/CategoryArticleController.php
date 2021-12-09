@@ -5,6 +5,7 @@ namespace App\Controller\Admin\Content;
 use App\Entity\Contents\Article;
 use App\Entity\Contents\ArticleCategory;
 use App\Form\Content\ArticleCategoryType;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Slugger\SluggerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
@@ -50,10 +51,12 @@ class CategoryArticleController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
         $table = $dataTableFactory->create()
             ->add('title', TextColumn::class, [
@@ -62,19 +65,17 @@ class CategoryArticleController extends AbstractController
                 'render'    => function ($value, $category) {
                     return '<a href="/admin/article-category/edit/' . $category->getId() . '">' . $value . '</a>';
                 }
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'  => 'Supprimer ?',
-                'render' => function ($value, $category) {
-                    return $this->renderView('admin/content/category/include/_delete-button.html.twig', [
-                        'category' => $category,
-                    ]);
-                }
+            ]);
+
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/content/category/include/_delete-button.html.twig', [
+                'entity' => 'category'
             ])
             ->addOrderBy('title')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => ArticleCategory::class
-            ]);
+        ;
+
+        $datatableField->createDatatableAdapter($table, ArticleCategory::class);
 
         $table->handleRequest($request);
 

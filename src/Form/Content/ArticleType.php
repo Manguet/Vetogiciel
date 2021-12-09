@@ -4,13 +4,16 @@ namespace App\Form\Content;
 
 use App\Entity\Contents\Article;
 use App\Entity\Contents\ArticleCategory;
+use App\Entity\Structure\Veterinary;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 

@@ -2,11 +2,14 @@
 
 namespace App\Entity\Contents;
 
+use App\Entity\Structure\Employee;
 use App\Entity\Structure\Veterinary;
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Interfaces\Priority\PriorityInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
 use App\Traits\Priority\PriorityTrait;
+use App\Traits\User\CreatedByTrait;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,10 +25,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Article implements EntityDateInterface, PriorityInterface
+class Article implements EntityDateInterface, PriorityInterface, CreatedByInterface
 {
     use EntityDateTrait;
     use PriorityTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id()
@@ -73,11 +77,6 @@ class Article implements EntityDateInterface, PriorityInterface
     private $imageFile;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Veterinary::class, inversedBy="articles")
-     */
-    private $createdBy;
-
-    /**
      * @ORM\ManyToOne(targetEntity=ArticleCategory::class, inversedBy="article", cascade={"persist"})
      */
     private $articleCategory;
@@ -86,6 +85,16 @@ class Article implements EntityDateInterface, PriorityInterface
      * @ORM\OneToMany(targetEntity=Commentary::class, mappedBy="article")
      */
     private $comments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Veterinary::class, inversedBy="articles")
+     */
+    private $createdByVeterinary;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Employee::class, inversedBy="articles")
+     */
+    private $createdByEmployee;
 
     public function __construct()
     {
@@ -183,18 +192,6 @@ class Article implements EntityDateInterface, PriorityInterface
     public function getImage(): ?string
     {
         return $this->image;
-    }
-
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(?Veterinary $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
     }
 
     public function getArticleCategory(): ?ArticleCategory

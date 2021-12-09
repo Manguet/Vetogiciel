@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Settings;
 
 use App\Entity\Settings\Authorization;
 use App\Form\Settings\AuthorizationType;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
@@ -52,10 +53,12 @@ class AuthorizationsController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
         $table = $dataTableFactory->create()
             ->add('relatedEntity', TextColumn::class, [
@@ -109,14 +112,10 @@ class AuthorizationsController extends AbstractController
                         return '<i class="fas fa-check"></i>';
                     }
                 }
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'   => 'Supprimer ?',
-                'render'  => function($value, $authorization) {
-                    return $this->renderView('admin/settings/authorizations/include/_delete-button.html.twig', [
-                        'authorization' => $authorization,
-                    ]);
-                }
+            ]);
+        $datatableField
+            ->addDeleteField($table, 'admin/settings/authorizations/include/_delete-button.html.twig', [
+                'entity' => 'authorization'
             ])
             ->addOrderBy('relatedEntity')
             ->createAdapter(ORMAdapter::class, [

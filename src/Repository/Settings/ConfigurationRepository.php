@@ -4,7 +4,6 @@ namespace App\Repository\Settings;
 
 use App\Entity\Settings\Configuration;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\QueryException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,8 +20,6 @@ class ConfigurationRepository extends ServiceEntityRepository
      * @param string $configurationType
      *
      * @return int|mixed|string
-     *
-     * @throws QueryException
      */
     public function findByConfigurationInOrder(string $configurationType)
     {

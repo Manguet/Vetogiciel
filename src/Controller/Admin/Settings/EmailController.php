@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Settings;
 
 use App\Entity\Mail\Email;
 use App\Form\Settings\EmailType;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
@@ -55,10 +56,12 @@ class EmailController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
         $table = $dataTableFactory->create()
             ->add('title', TextColumn::class, [
@@ -72,11 +75,11 @@ class EmailController extends AbstractController
                 'label'     => 'Description',
                 'orderable' => true,
                 'render'    => function ($value) {
-                    if (strlen($value) <= 60) {
+                    if (strlen($value) <= 30) {
                         return $value;
                     }
 
-                    return substr($value,0,60) . ' ...';
+                    return substr($value,0,30) . ' ...';
                 }
             ])
             ->add('template', TextColumn::class, [
@@ -89,20 +92,17 @@ class EmailController extends AbstractController
                 'trueValue'  => '<i class="fas fa-check"></i>',
                 'falseValue' => '<i class="fas fa-times"></i>',
                 'nullValue'  => '<i class="fas fa-times"></i>',
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'   => 'Supprimer ?',
-                'render'  => function($value, $email) {
-                    return $this->renderView('admin/settings/email/include/_delete-button.html.twig', [
-                        'email' => $email,
-                    ]);
-                }
+            ]);
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/settings/email/include/_delete-button.html.twig', [
+                'entity' => 'email'
             ])
             ->addOrderBy('title')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => Email::class
-            ])
         ;
+
+        $datatableField
+            ->createDatatableAdapter($table, Email::class);
 
         $table->handleRequest($request);
 

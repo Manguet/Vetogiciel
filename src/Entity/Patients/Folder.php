@@ -4,7 +4,9 @@ namespace App\Entity\Patients;
 
 use App\Entity\Structure\Bill;
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,9 +19,10 @@ use App\Repository\Patients\FolderRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Folder implements EntityDateInterface
+class Folder implements EntityDateInterface, CreatedByInterface
 {
     use EntityDateTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id()

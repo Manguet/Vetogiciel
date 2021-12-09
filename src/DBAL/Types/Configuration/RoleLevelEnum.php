@@ -9,6 +9,7 @@ use App\DBAL\EnumType;
  */
 class RoleLevelEnum extends EnumType
 {
+    public const NULL       = null;
     public const SIMPLE     = 'user';
     public const SOCIETY    = 'society';
     public const GROUP      = 'group';
@@ -22,8 +23,9 @@ class RoleLevelEnum extends EnumType
      * @var string[]
      */
     protected $values = [
+        self::NULL    => self::SIMPLE,
         self::SIMPLE  => self::SIMPLE,
         self::SOCIETY => self::SOCIETY,
-        self::GROUP => self::GROUP,
+        self::GROUP   => self::GROUP,
     ];
 }

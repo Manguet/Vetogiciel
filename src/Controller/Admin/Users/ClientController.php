@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Users;
 
 use App\Entity\Patients\Animal;
 use App\Entity\Patients\Client;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Service\User\PasswordEncoderServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -52,10 +53,12 @@ class ClientController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
         $table = $dataTableFactory->create()
             ->add('lastname', TextColumn::class, [
@@ -92,20 +95,17 @@ class ClientController extends AbstractController
                 'render'    => function ($value, $client) {
                     return count($client->getAnimals());
                 }
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'   => 'Supprimer ?',
-                'render'  => function($value, $client) {
-                    return $this->renderView('admin/user/include/_delete-button.html.twig', [
-                        'client' => $client,
-                    ]);
-                }
+            ]);
+
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/user/include/_delete-button.html.twig', [
+                'entity' => 'client'
             ])
             ->addOrderBy('lastname')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => Client::class
-            ])
         ;
+
+        $datatableField->createDatatableAdapter($table, Client::class);
 
         $table->handleRequest($request);
 
@@ -162,10 +162,12 @@ class ClientController extends AbstractController
      * @param Client $client
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function show(Client $client, Request $request, DataTableFactory $dataTableFactory): Response
+    public function show(Client $client, Request $request, DataTableFactory $dataTableFactory,
+                         DatatableFieldInterface $datatableField): Response
     {
         $table = $dataTableFactory->create()
             ->add('name', TextColumn::class, [
@@ -204,16 +206,17 @@ class ClientController extends AbstractController
 
                     return '';
                 }
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'   => 'Supprimer ?',
-                'render'  => function($value, $animal) {
-                    return $this->renderView('admin/animal/include/_delete-button.html.twig', [
-                        'animal' => $animal,
-                    ]);
-                }
+            ]);
+
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/animal/include/_delete-button.html.twig', [
+                'entity' => 'animal'
             ])
             ->addOrderBy('name')
+        ;
+
+        $table
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Animal::class,
                 'query'  => function (QueryBuilder $builder) use ($client){

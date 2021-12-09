@@ -5,6 +5,7 @@ namespace App\Controller\Admin\Settings;
 use App\Entity\Settings\Authorization;
 use App\Entity\Settings\Role;
 use App\Form\Settings\RoleType;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Settings\RoleTableInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -53,10 +54,12 @@ class RoleController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
         $table = $dataTableFactory->create()
             ->add('name', TextColumn::class, [
@@ -88,20 +91,17 @@ class RoleController extends AbstractController
             ->add('type', TextColumn::class, [
                 'label'     => 'Type de Rôle',
                 'orderable' => true
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'   => 'Supprimer ?',
-                'render'  => function($value, $role) {
-                    return $this->renderView('admin/settings/roles/include/_delete-button.html.twig', [
-                        'role' => $role,
-                    ]);
-                }
+            ]);
+
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/settings/roles/include/_delete-button.html.twig', [
+                'entity' => 'role'
             ])
             ->addOrderBy('name')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => Role::class
-            ])
         ;
+
+        $datatableField->createDatatableAdapter($table, Role::class);
 
         $table->handleRequest($request);
 

@@ -3,7 +3,9 @@
 namespace App\Entity\Patients;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByTrait;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,9 +18,10 @@ use App\Entity\Structure\WaitingRoom;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Animal implements EntityDateInterface
+class Animal implements EntityDateInterface, CreatedByInterface
 {
     use EntityDateTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id()

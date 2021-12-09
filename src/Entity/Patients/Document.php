@@ -3,7 +3,9 @@
 namespace App\Entity\Patients;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Patients\DocumentRepository;
@@ -14,9 +16,10 @@ use App\Repository\Patients\DocumentRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Document implements EntityDateInterface
+class Document implements EntityDateInterface, CreatedByInterface
 {
     use EntityDateTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id()

@@ -3,19 +3,22 @@
 namespace App\Entity\Contents;
 
 use App\Interfaces\DateTime\EntityDateInterface;
-use App\Repository\Contents\CommentRepository;
+use App\Interfaces\User\CreatedByWithUserInterface;
+use App\Repository\Contents\CommentaryRepository;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByWithUserTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass=CommentRepository::class)
+ * @ORM\Entity(repositoryClass=CommentaryRepository::class)
  */
-class Commentary implements EntityDateInterface
+class Commentary implements EntityDateInterface, CreatedByWithUserInterface
 {
     use EntityDateTrait;
+    use CreatedByWithUserTrait;
 
     /**
      * @ORM\Id
@@ -33,11 +36,6 @@ class Commentary implements EntityDateInterface
      * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="comments")
      */
     private $article;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $createdBy;
 
     public function getId(): ?int
     {
@@ -64,18 +62,6 @@ class Commentary implements EntityDateInterface
     public function setArticle(?Article $article): self
     {
         $this->article = $article;
-
-        return $this;
-    }
-
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy($createdBy): self
-    {
-        $this->createdBy = $createdBy;
 
         return $this;
     }

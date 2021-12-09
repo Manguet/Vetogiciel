@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Structure;
 
 use App\Entity\Structure\Veterinary;
 use App\Form\Structure\VeterinaryFormType;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Slugger\SluggerInterface;
 use App\Security\EmailVerifier;
 use App\Service\User\PasswordEncoderServices;
@@ -76,10 +77,12 @@ class VeterinaryController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
         $table = $dataTableFactory->create()
             ->add('firstname', TextColumn::class, [
@@ -135,20 +138,16 @@ class VeterinaryController extends AbstractController
 
                     return '';
                 }
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'   => 'Supprimer ?',
-                'render'  => function($value, $veterinary) {
-                    return $this->renderView('admin/veterinary/include/_delete-button.html.twig', [
-                        'veterinary' => $veterinary,
-                    ]);
-                }
+            ]);
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/veterinary/include/_delete-button.html.twig', [
+                'entity' => 'veterinary'
             ])
             ->addOrderBy('firstname')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => Veterinary::class
-            ])
         ;
+
+        $datatableField->createDatatableAdapter($table, Veterinary::class);
 
         $table->handleRequest($request);
 

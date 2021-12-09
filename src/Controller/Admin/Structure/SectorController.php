@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Structure;
 
 use App\Entity\Structure\Sector;
 use App\Form\Structure\SectorFormType;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
@@ -39,10 +40,12 @@ class SectorController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
         $table = $dataTableFactory->create()
             ->add('name', TextColumn::class, [
@@ -76,20 +79,17 @@ class SectorController extends AbstractController
 
                     return 0;
                 }
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'   => 'Supprimer ?',
-                'render'  => function($value, $sector) {
-                    return $this->renderView('admin/sector/include/_delete-button.html.twig', [
-                        'sector' => $sector,
-                    ]);
-                }
+            ]);
+
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/sector/include/_delete-button.html.twig', [
+                'entity' => 'sector'
             ])
             ->addOrderBy('name')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => Sector::class
-            ])
         ;
+
+        $datatableField->createDatatableAdapter($table, Sector::class);
 
         $table->handleRequest($request);
 

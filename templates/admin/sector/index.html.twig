@@ -2,6 +2,7 @@
 
 {% block morestylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/datatables.bootstrap.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.24/rr-1.2.7/datatables.min.css"/>
 {% endblock %}
 
 {% block body %}
@@ -20,6 +21,7 @@
 
 {% block endjavascript %}
     <script src="{{ asset('bundles/datatables/js/datatables.js') }}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.24/rr-1.2.7/datatables.min.js"></script>
     <script>
         $(function() {
             $('#my-tab').initDataTables({{ datatable_settings(table) }}, {

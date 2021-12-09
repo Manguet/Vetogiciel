@@ -5,8 +5,6 @@ namespace App\Traits\User;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Trait for Client, Veterinary and Employee
- *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 trait UserEntityTrait
@@ -103,7 +101,7 @@ trait UserEntityTrait
      */
     public function getPassword(): string
     {
-        return (string)$this->password;
+        return $this->password;
     }
 
     public function setPassword(string $password): self

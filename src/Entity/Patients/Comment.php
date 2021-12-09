@@ -3,7 +3,9 @@
 namespace App\Entity\Patients;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByWithUserTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Patients\CommentRepository;
@@ -14,9 +16,10 @@ use App\Repository\Patients\CommentRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Comment implements EntityDateInterface
+class Comment implements EntityDateInterface, CreatedByInterface
 {
     use EntityDateTrait;
+    use CreatedByWithUserTrait;
 
     /**
      * @ORM\Id()
