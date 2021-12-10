@@ -6,8 +6,10 @@ use App\Entity\Structure\Employee;
 use App\Entity\Structure\Veterinary;
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Interfaces\Priority\PriorityInterface;
+use App\Interfaces\Structure\ClinicInterface;
 use App\Traits\DateTime\EntityDateTrait;
 use App\Traits\Priority\PriorityTrait;
+use App\Traits\Structure\ClinicTrait;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,10 +26,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Article implements EntityDateInterface, PriorityInterface
+class Article implements EntityDateInterface, PriorityInterface, ClinicInterface
 {
     use EntityDateTrait;
     use PriorityTrait;
+    use ClinicTrait;
 
     /**
      * @ORM\Id()

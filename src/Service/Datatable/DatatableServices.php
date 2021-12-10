@@ -83,6 +83,30 @@ class DatatableServices implements DatatableFieldInterface
 
     /**
      * @param DataTable $table
+     *
+     * @return DataTable
+     */
+    public function addClinicField(DataTable $table): DataTable
+    {
+        $table
+            ->add('clinic', TextColumn::class, [
+                'label'     => 'Clinique',
+                'orderable' => false,
+                'render'    => function ($value, $context) {
+
+                    if (null !== $context->getClinic()) {
+                        return $context->getClinic()->getName();
+                    }
+
+                    return '';
+                }
+            ]);
+
+        return $table;
+    }
+
+    /**
+     * @param DataTable $table
      * @param string $template
      * @param null|array $options
      *
@@ -242,8 +266,7 @@ class DatatableServices implements DatatableFieldInterface
                     if ($permissionLevel === 'society') {
                         $qb
                             ->leftJoin('a.createdByVeterinary', 'v')
-                            ->where('v.clinic = :society')
-                            ->orWhere('v.clinic is null');
+                            ->where('v.clinic = :society');
 
                         if (method_exists($class, 'getCreatedByEmployee')) {
                             $qb

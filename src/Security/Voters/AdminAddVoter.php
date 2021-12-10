@@ -71,6 +71,6 @@ class AdminAddVoter extends Voter
 
         return in_array('ADMIN_FULL_ACCESS', $this->allRoles, true)
             || in_array('ADMIN_' . $entity . '_MANAGE', $this->allRoles, true)
-            || in_array('ADMIN_' . $entity . '_ACCESS', $this->allRoles, true);
+            || in_array('ADMIN_' . $entity . '_ADD', $this->allRoles, true);
     }
 }

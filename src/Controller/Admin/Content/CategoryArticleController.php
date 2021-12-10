@@ -63,6 +63,9 @@ class CategoryArticleController extends AbstractController
             );
 
         $datatableField
+            ->addClinicField($table);
+
+        $datatableField
             ->addCreatedBy($table)
             ->addDeleteField($table, 'admin/content/category/include/_delete-button.html.twig', [
                 'entity'         => 'category',

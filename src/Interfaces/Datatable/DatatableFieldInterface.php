@@ -19,6 +19,13 @@ interface DatatableFieldInterface
 
     /**
      * @param DataTable $table
+     *
+     * @return DataTable
+     */
+    public function addClinicField(DataTable $table): DataTable;
+
+    /**
+     * @param DataTable $table
      * @param string $template
      * @param null|array $options
      *
