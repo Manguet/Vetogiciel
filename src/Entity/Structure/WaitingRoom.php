@@ -29,22 +29,22 @@ class WaitingRoom implements EntityDateInterface, CreatedByInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=80, nullable=true)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Patients\Animal", mappedBy="waitingRoom")
      */
-    private $animals;
+    private ArrayCollection $animals;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $capacity;
+    private ?int $capacity;
 
     public function __construct()
     {

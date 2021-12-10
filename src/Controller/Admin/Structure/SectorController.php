@@ -25,10 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SectorController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -58,14 +55,6 @@ class SectorController extends AbstractController
                 'sector',
                 'ADMIN_SECTOR_EDIT'
             )
-            ->add('name', TextColumn::class, [
-                'label'     => 'Nom du secteur',
-                'orderable' => true,
-                'render'    => function ($value, $sector) {
-
-                    return '<a href="/admin/sector/edit/' . $sector->getId() . '">' . $value . '</a>';
-                }
-            ])
             ->add('veterinaries', TextColumn::class, [
                 'label'     => 'Nombre de vétérinaires',
                 'orderable' => true,
@@ -94,7 +83,8 @@ class SectorController extends AbstractController
         $datatableField
             ->addCreatedBy($table)
             ->addDeleteField($table, 'admin/sector/include/_delete-button.html.twig', [
-                'entity' => 'sector'
+                'entity'         => 'sector',
+                'authorizations' => 'ADMIN_SECTOR_DELETE'
             ])
             ->addOrderBy('name')
         ;

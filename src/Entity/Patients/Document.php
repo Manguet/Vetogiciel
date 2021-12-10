@@ -26,22 +26,22 @@ class Document implements EntityDateInterface, CreatedByInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Patients\Folder", inversedBy="documents")
      */
-    private $folder;
+    private ?Folder $folder;
 
     public function getId(): ?int
     {

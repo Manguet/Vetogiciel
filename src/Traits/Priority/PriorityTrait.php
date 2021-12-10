@@ -12,7 +12,7 @@ trait PriorityTrait
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $priority;
+    private ?int $priority;
 
     /**
      * @return int|null

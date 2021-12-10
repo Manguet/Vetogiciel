@@ -32,30 +32,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class VeterinaryController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var PasswordEncoderServices
-     */
-    private $encoderServices;
+    private PasswordEncoderServices $encoderServices;
 
-    /**
-     * @var EmailVerifier
-     */
-    private $emailVerifier;
+    private EmailVerifier $emailVerifier;
 
-    /**
-     * @var FlashBagInterface
-     */
-    private $flashBag;
+    private FlashBagInterface $flashBag;
 
-    /**
-     * @var SluggerInterface
-     */
-    private $slugger;
+    private SluggerInterface $slugger;
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -143,7 +128,8 @@ class VeterinaryController extends AbstractController
         $datatableField
             ->addCreatedBy($table)
             ->addDeleteField($table, 'admin/veterinary/include/_delete-button.html.twig', [
-                'entity' => 'veterinary'
+                'entity'         => 'veterinary',
+                'authorizations' => 'ADMIN_VETERINARY_DELETE'
             ])
             ->addOrderBy('firstname')
         ;

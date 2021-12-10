@@ -25,7 +25,7 @@ class ArticleCategory implements CreatedByInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\OneToMany(targetEntity=Article::class, mappedBy="articleCategory")
@@ -35,12 +35,12 @@ class ArticleCategory implements CreatedByInterface
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $titleUrl;
+    private ?string $titleUrl;
 
     public function __construct()
     {

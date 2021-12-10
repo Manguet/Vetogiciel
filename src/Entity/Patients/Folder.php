@@ -29,23 +29,23 @@ class Folder implements EntityDateInterface, CreatedByInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=20)
      */
-    private $number;
+    private ?string $number;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Patients\Animal", inversedBy="folder", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $animal;
+    private ?Animal $animal;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Patients\Document", mappedBy="folder", cascade={"persist", "remove"})

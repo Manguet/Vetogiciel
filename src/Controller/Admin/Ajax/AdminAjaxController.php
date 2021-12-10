@@ -24,10 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminAjaxController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * AdminAjaxController constructor.

@@ -29,15 +29,9 @@ use App\Form\Client\ClientFormType;
  */
 class ClientController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var PasswordEncoderServices
-     */
-    private $encoderServices;
+    private PasswordEncoderServices $encoderServices;
 
     /**
      * ClientController constructor.
@@ -74,24 +68,15 @@ class ClientController extends AbstractController
             ->add('firstname', TextColumn::class, [
                 'label'     => 'Prénom',
                 'orderable' => true,
-                'render'    => function ($value, $client) {
-                    return '<a href="/admin/user/show/' . $client->getId() . '">' . $value . '</a>';
-                }
             ])
             ->add('city', TextColumn::class, [
                 'label'     => 'Ville',
                 'orderable' => true,
-                'render'    => function ($value, $client) {
-                    return '<a href="/admin/user/show/' . $client->getId() . '">' . $value . '</a>';
-                }
             ])
             ->add('lastVisit', DateTimeColumn::class, [
                 'label'     => 'Dernière visite le',
                 'format'    => 'd/m/Y',
                 'orderable' => true,
-                'render'    => function ($value, $client) {
-                    return '<a href="/admin/user/show/' . $client->getId() . '">' . $value . '</a>';
-                }
             ])
             ->add('animals', TextColumn::class, [
                 'label'     => 'Nombre d\'animaux',
@@ -103,7 +88,8 @@ class ClientController extends AbstractController
         $datatableField
             ->addCreatedBy($table)
             ->addDeleteField($table, 'admin/user/include/_delete-button.html.twig', [
-                'entity' => 'client'
+                'entity'         => 'client',
+                'authorizations' => 'ADMIN_CLIENT_DELETE'
             ])
             ->addOrderBy('lastname')
         ;
@@ -218,7 +204,8 @@ class ClientController extends AbstractController
         $datatableField
             ->addCreatedBy($table)
             ->addDeleteField($table, 'admin/animal/include/_delete-button.html.twig', [
-                'entity' => 'animal'
+                'entity'         => 'animal',
+                'authorizations' => 'ADMIN_ANIMAL_DELETE'
             ])
             ->addOrderBy('name')
         ;

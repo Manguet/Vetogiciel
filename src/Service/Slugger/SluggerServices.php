@@ -12,15 +12,9 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class SluggerServices implements SluggerInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var string
-     */
-    private $incremente = '';
+    private string $incremente = '';
 
     /**
      * @var array

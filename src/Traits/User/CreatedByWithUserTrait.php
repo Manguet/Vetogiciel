@@ -18,7 +18,7 @@ trait CreatedByWithUserTrait
     /**
      * @ORM\ManyToOne(targetEntity=Client::class)
      */
-    private $createdByClient;
+    private ?Client $createdByClient;
 
     public function getCreatedByClient(): ?Client
     {

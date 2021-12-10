@@ -13,10 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class RoleTableServices implements RoleTableInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * @var string

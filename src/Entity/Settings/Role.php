@@ -28,17 +28,17 @@ class Role implements EntityDateInterface, CreatedByInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="childRoles")
      */
-    private $parentRole;
+    private ?Role $parentRole;
 
     /**
      * @ORM\OneToMany(targetEntity=Role::class, mappedBy="parentRole")
@@ -48,17 +48,17 @@ class Role implements EntityDateInterface, CreatedByInterface
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $authorizations = [];
+    private ?array $authorizations = [];
 
     /**
      * @ORM\Column(type="enumRoleLevel", nullable=true)
      */
-    private $permissionLevel;
+    private ?string $permissionLevel;
 
     /**
      * @ORM\Column(type="enumRoleType")
      */
-    private $type;
+    private ?string $type;
 
     public function __construct()
     {
@@ -171,7 +171,7 @@ class Role implements EntityDateInterface, CreatedByInterface
         return $this;
     }
 
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }

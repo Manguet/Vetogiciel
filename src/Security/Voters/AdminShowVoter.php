@@ -16,10 +16,7 @@ class AdminShowVoter extends Voter
 {
     use VoterTrait;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * @param EntityManagerInterface $entityManager

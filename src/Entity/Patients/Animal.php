@@ -6,7 +6,6 @@ use App\Interfaces\DateTime\EntityDateInterface;
 use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
 use App\Traits\User\CreatedByTrait;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Patients\AnimalRepository;
@@ -28,87 +27,87 @@ class Animal implements EntityDateInterface, CreatedByInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $age;
+    private ?int $age;
 
     /**
      * @ORM\Column(type="string", length=80, nullable=true)
      */
-    private $color;
+    private ?string $color;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $transponder;
+    private ?string $transponder;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
      */
-    private $tatoo;
+    private ?string $tatoo;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isLof;
+    private ?bool $isLof;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isInsured;
+    private ?bool $isInsured;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isAlive = true;
+    private bool $isAlive = true;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Patients\Race", cascade={"persist"})
      */
-    private $race;
+    private ?Race $race;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Patients\Species", cascade={"persist"})
      */
-    private $species;
+    private ?Species $species;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Patients\Comment")
      */
-    private $comment;
+    private ?Comment $comment;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Patients\Client", inversedBy="animals")
      */
-    private $client;
+    private ?Client $client;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Patients\Folder", mappedBy="animal", cascade={"persist", "remove"})
      */
-    private $folder;
+    private ?Folder $folder;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Structure\WaitingRoom", inversedBy="animals")
      */
-    private $waitingRoom;
+    private ?WaitingRoom $waitingRoom;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $birthdate;
+    private ?\DateTimeInterface $birthdate;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $idLocalization;
+    private ?string $idLocalization;
 
     public function getId(): ?int
     {

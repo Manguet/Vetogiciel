@@ -16,15 +16,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class CalendarSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var BookingRepository
-     */
-    private $bookingRepository;
+    private BookingRepository $bookingRepository;
 
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $router;
+    private UrlGeneratorInterface $router;
 
     /**
      * @param BookingRepository $bookingRepository

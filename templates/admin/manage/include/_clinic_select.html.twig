@@ -1,10 +1,16 @@
-<div class="form-group d-flex justify-content-between align-items-center" id="manage-form">
-    <label for="clinic-select" style="color: dimgrey">Voir les données de :</label>
+{% if authorizationLevel is same as('group') %}
+    <div class="form-group d-flex justify-content-between align-items-center" id="manage-form">
+        <label for="clinic-select" style="color: dimgrey">Voir les données de :</label>
 
-    <select name="clinics" id="clinic-select" class="form-control">
-        <option value="all">Toutes les cliniques</option>
-        {% for clinic in clinics %}
-            <option value="{{ clinic.id }}">{{ clinic.name }}</option>
-        {% endfor %}
-    </select>
-</div>
+        <select name="clinics" id="clinic-select" class="form-control">
+            <option value="all">Toutes les cliniques</option>
+            {% for clinic in clinics %}
+                <option value="{{ clinic.id }}">{{ clinic.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{% elseif app.user and app.user.clinic %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="dashboard-titles">{{ app.user.clinic.name }}</h2>
+    </div>
+{% endif %}

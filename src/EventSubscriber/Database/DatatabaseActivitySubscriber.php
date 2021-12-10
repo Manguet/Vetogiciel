@@ -12,10 +12,7 @@ use Symfony\Component\Security\Core\Security;
  */
 class DatatabaseActivitySubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var Security
-     */
-    private $security;
+    private Security $security;
 
     /**
      * @param Security $security

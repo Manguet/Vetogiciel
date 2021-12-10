@@ -26,22 +26,22 @@ class Comment implements EntityDateInterface, CreatedByInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private $color;
+    private ?string $color;
 
     public function getId(): ?int
     {

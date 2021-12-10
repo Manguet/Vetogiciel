@@ -25,15 +25,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CategoryArticleController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var SluggerInterface
-     */
-    private $slugger;
+    private SluggerInterface $slugger;
 
     /**
      * CategoryArticleController constructor.
@@ -71,7 +65,8 @@ class CategoryArticleController extends AbstractController
         $datatableField
             ->addCreatedBy($table)
             ->addDeleteField($table, 'admin/content/category/include/_delete-button.html.twig', [
-                'entity' => 'category'
+                'entity'         => 'category',
+                'authorizations' => 'ADMIN_ARTICLECATEGORY_DELETE'
             ])
             ->addOrderBy('title')
         ;

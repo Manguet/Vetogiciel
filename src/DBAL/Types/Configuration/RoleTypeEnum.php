@@ -12,15 +12,9 @@ class RoleTypeEnum extends EnumType
     public const SYSTEM = 'system';
     public const CUSTOM = 'custom';
 
-    /**
-     * @var string
-     */
-    protected $name = 'enumRoleType';
+    protected string $name = 'enumRoleType';
 
-    /**
-     * @var string[]
-     */
-    protected $values = [
+    protected array $values = [
         self::SYSTEM => self::SYSTEM,
         self::CUSTOM => self::CUSTOM,
     ];

@@ -26,52 +26,52 @@ class Email implements EntityDateInterface, CreatedByInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=120, unique=true)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $subject;
+    private ?string $subject;
 
     /**
      * @ORM\Column(type="string", length=180, nullable=false)
      */
-    private $template;
+    private ?string $template;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isExpeditorCurrentUser;
+    private ?bool $isExpeditorCurrentUser;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $expeditor;
+    private ?string $expeditor;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isDestinatorCurrentUser;
+    private ?bool $isDestinatorCurrentUser;
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $destinators = [];
+    private ?array $destinators = [];
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isActivated;
+    private ?bool $isActivated;
 
     public function getId(): ?int
     {

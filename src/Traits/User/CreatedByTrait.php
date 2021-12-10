@@ -15,12 +15,12 @@ trait CreatedByTrait
     /**
      * @ORM\ManyToOne(targetEntity=Veterinary::class)
      */
-    private $createdByVeterinary;
+    private ?Veterinary $createdByVeterinary;
 
     /**
      * @ORM\ManyToOne(targetEntity=Employee::class)
      */
-    private $createdByEmployee;
+    private ?Employee $createdByEmployee;
 
     public function getCreatedByVeterinary(): ?Veterinary
     {

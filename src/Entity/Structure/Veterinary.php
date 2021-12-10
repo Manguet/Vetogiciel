@@ -20,6 +20,7 @@ use App\Traits\User\UserEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 use App\Repository\Structure\VeterinaryRepository;
@@ -50,12 +51,12 @@ class Veterinary implements EntityDateInterface, UserInterface,
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private $color;
+    private ?string $color;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private $number;
+    private ?string $number;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Structure\Sector", inversedBy="veterinaries")
@@ -65,21 +66,18 @@ class Veterinary implements EntityDateInterface, UserInterface,
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isVerified = false;
+    private ?bool $isVerified = false;
 
     /**
      * @ORM\Column(type="enumVeterinaryTypes", nullable=true)
      */
-    private $type;
+    private ?string $type;
 
     /**
      * @ORM\OneToMany(targetEntity=Article::class, mappedBy="createdByVeterinary")
      */
     private $articles;
 
-    /**
-     * Veterinary constructor.
-     */
     public function __construct()
     {
         $this->sector   = new ArrayCollection();

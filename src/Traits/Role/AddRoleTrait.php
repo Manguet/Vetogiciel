@@ -12,10 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 trait AddRoleTrait
 {
-    /**
-     * @var array
-     */
-    protected $roles = [];
+    protected array $roles = [];
 
     /**
      * @param EntityManagerInterface $entityManager

@@ -27,27 +27,27 @@ class Bill implements EntityDateInterface, CreatedByInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=80)
      */
-    private $number;
+    private string $number;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $priceHT;
+    private float $priceHT;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $priceTTC;
+    private ?float $priceTTC;
 
     /**
      * @ORM\ManyToOne(targetEntity=Folder::class, inversedBy="bills")
      */
-    private $folder;
+    private ?Folder $folder;
 
     public function getId(): ?int
     {

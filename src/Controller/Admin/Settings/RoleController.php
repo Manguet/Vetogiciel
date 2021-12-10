@@ -9,7 +9,6 @@ use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Settings\RoleTableInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -32,15 +31,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class RoleController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var RoleTableInterface
-     */
-    private $roleTable;
+    private RoleTableInterface $roleTable;
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -99,7 +92,8 @@ class RoleController extends AbstractController
         $datatableField
             ->addCreatedBy($table)
             ->addDeleteField($table, 'admin/settings/roles/include/_delete-button.html.twig', [
-                'entity' => 'role'
+                'entity'         => 'role',
+                'authorizations' => 'ADMIN_ROLE_DELETE'
             ])
             ->addOrderBy('name')
         ;

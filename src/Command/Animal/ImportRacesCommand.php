@@ -19,10 +19,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class ImportRacesCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     private const RACES_ARRAY = [
         'Chien',

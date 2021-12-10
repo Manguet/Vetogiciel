@@ -26,22 +26,22 @@ class Vat implements EntityDateInterface, CreatedByInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=120)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $code;
+    private ?string $code;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $value;
+    private ?float $value;
 
     public function getId(): ?int
     {

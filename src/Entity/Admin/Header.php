@@ -19,37 +19,37 @@ class Header
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=60)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="string", length=120, nullable=true)
      */
-    private $path;
+    private ?string $path;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
      */
-    private $icon;
+    private ?string $icon;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isActivated;
+    private ?bool $isActivated;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isMainHeader;
+    private ?bool $isMainHeader;
 
     /**
      * @ORM\ManyToOne(targetEntity=Header::class, inversedBy="childHeaders")
      */
-    private $parentHeader;
+    private ?Header $parentHeader;
 
     /**
      * @ORM\OneToMany(targetEntity=Header::class, mappedBy="parentHeader")
@@ -59,7 +59,7 @@ class Header
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $authorizations;
+    private ?array $authorizations;
 
     public function __construct()
     {

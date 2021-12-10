@@ -13,15 +13,9 @@ use InvalidArgumentException;
  */
 abstract class EnumType extends Type
 {
-    /**
-     * @var string
-     */
-    protected $name;
+    protected string $name;
 
-    /**
-     * @var array
-     */
-    protected $values = [];
+    protected array $values = [];
 
     /**
      * @param array $fieldDeclaration

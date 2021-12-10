@@ -31,15 +31,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AuthorizationsController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
+    private KernelInterface $kernel;
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -129,7 +123,8 @@ class AuthorizationsController extends AbstractController
 
         $datatableField
             ->addDeleteField($table, 'admin/settings/authorizations/include/_delete-button.html.twig', [
-                'entity' => 'authorization'
+                'entity'         => 'authorization',
+                'authorizations' => 'ADMIN_AUTHORIZATION_DELETE'
             ])
             ->addOrderBy('relatedEntity')
             ->createAdapter(ORMAdapter::class, [

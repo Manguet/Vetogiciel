@@ -26,20 +26,11 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ArticleController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var PriorityServices
-     */
-    private $priorityServices;
+    private PriorityServices $priorityServices;
 
-    /**
-     * @var SluggerInterface
-     */
-    private $slugger;
+    private SluggerInterface $slugger;
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -103,7 +94,8 @@ class ArticleController extends AbstractController
         $datatableField
             ->addCreatedBy($table)
             ->addDeleteField($table, 'admin/content/include/_delete-button.html.twig', [
-                'entity' => 'article'
+                'entity'         => 'article',
+                'authorizations' => 'ADMIN_ARTICLE_DELETE'
             ])
             ->addOrderBy('priority')
         ;

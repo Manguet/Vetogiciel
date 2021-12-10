@@ -6,15 +6,14 @@ use App\Entity\Structure\Employee;
 use App\Entity\Structure\Veterinary;
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Interfaces\Priority\PriorityInterface;
-use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
 use App\Traits\Priority\PriorityTrait;
-use App\Traits\User\CreatedByTrait;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,44 +24,43 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Article implements EntityDateInterface, PriorityInterface, CreatedByInterface
+class Article implements EntityDateInterface, PriorityInterface
 {
     use EntityDateTrait;
     use PriorityTrait;
-    use CreatedByTrait;
 
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $titleUrl;
+    private ?string $titleUrl;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isActivated;
+    private ?bool $isActivated;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @var string|null
      */
-    private $image;
+    private ?string $image;
 
     /**
      * @Vich\UploadableField(mapping="articles", fileNameProperty="image")
@@ -79,7 +77,7 @@ class Article implements EntityDateInterface, PriorityInterface, CreatedByInterf
     /**
      * @ORM\ManyToOne(targetEntity=ArticleCategory::class, inversedBy="article", cascade={"persist"})
      */
-    private $articleCategory;
+    private ?ArticleCategory $articleCategory;
 
     /**
      * @ORM\OneToMany(targetEntity=Commentary::class, mappedBy="article")
@@ -232,6 +230,48 @@ class Article implements EntityDateInterface, PriorityInterface, CreatedByInterf
             if ($comment->getArticle() === $this) {
                 $comment->setArticle(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getCreatedByVeterinary(): ?Veterinary
+    {
+        return $this->createdByVeterinary;
+    }
+
+    public function setCreatedByVeterinary(?Veterinary $createdByVeterinary): self
+    {
+        $this->createdByVeterinary = $createdByVeterinary;
+
+        return $this;
+    }
+
+    public function getCreatedByEmployee(): ?Employee
+    {
+        return $this->createdByEmployee;
+    }
+
+    public function setCreatedByEmployee(?Employee $createdByEmployee): self
+    {
+        $this->createdByEmployee = $createdByEmployee;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?UserInterface
+    {
+        return $this->createdByVeterinary ?? $this->createdByEmployee;
+    }
+
+    public function setCreatedBy(UserInterface $user): self
+    {
+        if ($user instanceof Veterinary) {
+            $this->createdByVeterinary = $user;
+        }
+
+        if ($user instanceof Employee) {
+            $this->createdByEmployee = $user;
         }
 
         return $this;

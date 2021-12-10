@@ -21,10 +21,7 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
  */
 class MailCommandTransport implements TransportInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $db;
+    protected EntityManagerInterface $db;
 
     /**
      * @var PhpSerializer|SerializerInterface

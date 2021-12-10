@@ -47,7 +47,7 @@ class Employee implements EntityDateInterface, UserInterface,
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isManager;
+    private ?bool $isManager;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Structure\Sector", inversedBy="employees")
@@ -57,7 +57,7 @@ class Employee implements EntityDateInterface, UserInterface,
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isVerified = false;
+    private ?bool $isVerified = false;
 
     /**
      * @ORM\OneToMany(targetEntity=Article::class, mappedBy="createdByEmployee")

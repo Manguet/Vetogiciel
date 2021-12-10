@@ -17,37 +17,37 @@ class Authorization
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=120)
      */
-    private $relatedEntity;
+    private string $relatedEntity;
 
     /**
      * @ORM\Column(type="string", length=80, nullable=true)
      */
-    private $canAccess;
+    private ?string $canAccess;
 
     /**
      * @ORM\Column(type="string", length=120, nullable=true)
      */
-    private $canAdd;
+    private ?string $canAdd;
 
     /**
      * @ORM\Column(type="string", length=120, nullable=true)
      */
-    private $canShow;
+    private ?string $canShow;
 
     /**
      * @ORM\Column(type="string", length=120, nullable=true)
      */
-    private $canEdit;
+    private ?string $canEdit;
 
     /**
      * @ORM\Column(type="string", length=120, nullable=true)
      */
-    private $canDelete;
+    private ?string $canDelete;
 
     public function getId(): ?int
     {

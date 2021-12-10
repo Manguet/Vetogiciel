@@ -15,15 +15,9 @@ class ConfigurationTypeEnum extends EnumType
     public const ADVANCED    = 'advanced';
     public const SPECIFIC    = 'specific';
 
-    /**
-     * @var string
-     */
-    protected $name = 'enumConfigurationTypes';
+    protected string $name = 'enumConfigurationTypes';
 
-    /**
-     * @var string[]
-     */
-    protected $values = [
+    protected array $values = [
         self::GENERAL  => self::GENERAL,
         self::ADVANCED => self::ADVANCED,
         self::SPECIFIC => self::SPECIFIC,

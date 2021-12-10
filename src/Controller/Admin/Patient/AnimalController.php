@@ -6,7 +6,6 @@ use App\Entity\Patients\Animal;
 use App\Entity\Patients\Client;
 use App\Form\Animal\AnimalType;
 use App\Service\Dates\DateServices;
-use DateInterval;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -25,15 +24,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AnimalController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var DateServices
-     */
-    private $dateServices;
+    private DateServices $dateServices;
 
     /**
      * @param EntityManagerInterface $entityManager

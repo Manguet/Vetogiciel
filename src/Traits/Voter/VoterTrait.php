@@ -10,10 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 trait VoterTrait
 {
-    /**
-     * @var array
-     */
-    private $allRoles = [];
+    private ?array $allRoles = [];
 
     /**
      * @param Role $role

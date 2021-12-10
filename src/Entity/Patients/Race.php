@@ -26,17 +26,17 @@ class Race implements EntityDateInterface, CreatedByInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\OneToMany(targetEntity=Species::class, mappedBy="race", orphanRemoval=true)
      */
-    private $species;
+    private ArrayCollection $species;
 
     public function __construct()
     {

@@ -26,25 +26,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class ImportCommandServices
 {
-    /**
-     * @var DateServices
-     */
-    private $dateServices;
+    private DateServices $dateServices;
 
-    /**
-     * @var HttpClientInterface
-     */
-    private $client;
+    private HttpClientInterface $client;
 
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
+    private KernelInterface $kernel;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * @param DateServices $dateServices

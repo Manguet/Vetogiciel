@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Admin\Header;
 use App\Entity\Patients\Client;
+use App\Entity\Settings\Role;
 use App\Entity\Structure\Clinic;
 use App\Interfaces\Charts\ChartCreationInterface;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\AreaChart;
@@ -26,15 +27,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DefaultController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -118,14 +113,27 @@ class DefaultController extends AbstractController
 
         $clients = $this->entityManager->getRepository(Client::class)->findBy([], [], 4);
 
+        if ($this->getUser()) {
+            $role = $this->getUser()->getRoles();
+
+            $role = $this->entityManager->getRepository(Role::class)
+                ->findOneBy(['name' => $role]);
+
+            if ($role) {
+                $authorizationLevel = $role->getPermissionLevel();
+            }
+        }
+
+
         return $this->render('admin/manage/manage.html.twig', [
-            'chart'       => $chart,
-            'secondChart' => $secondChart,
-            'thirdChart'  => $thirdChart,
-            'fourthChart' => $fourthChart,
-            'fifthChart'  => $fifthChart,
-            'clinics'     => $clinics,
-            'clients'     => $clients
+            'chart'              => $chart,
+            'secondChart'        => $secondChart,
+            'thirdChart'         => $thirdChart,
+            'fourthChart'        => $fourthChart,
+            'fifthChart'         => $fifthChart,
+            'clinics'            => $clinics,
+            'clients'            => $clients,
+            'authorizationLevel' => $authorizationLevel ?? null
         ]);
     }
 

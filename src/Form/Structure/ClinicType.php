@@ -21,10 +21,7 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
  */
 class ClinicType extends AbstractType
 {
-    /**
-     * @var StructureTypeEnum
-     */
-    private $structureTypes;
+    private array $structureTypes;
 
     /**
      * @param StructureTypeEnum $structureTypes
@@ -188,8 +185,7 @@ class ClinicType extends AbstractType
                 'attr'  => [
                     'class' => 'custom-button',
                 ],
-            ])
-        ;
+            ]);
     }
 
     /**

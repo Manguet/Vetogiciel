@@ -26,17 +26,17 @@ class Sector implements EntityDateInterface, CreatedByInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=120)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Structure\Veterinary", mappedBy="sector")
@@ -51,7 +51,7 @@ class Sector implements EntityDateInterface, CreatedByInterface
     /**
      * @ORM\Column(type="string", length=120, nullable=true)
      */
-    private $icon;
+    private ?string $icon;
 
     public function __construct()
     {

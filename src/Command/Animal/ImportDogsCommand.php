@@ -25,10 +25,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
  */
 class ImportDogsCommand extends Command
 {
-    /**
-     * @var ImportCommandServices
-     */
-    private $commandServices;
+    private ImportCommandServices $commandServices;
 
     /**
      * API Address

@@ -30,32 +30,32 @@ class Consultation implements EntityDateInterface, CreatedByInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Patients\Folder", inversedBy="consultations")
      */
-    private $folder;
+    private ?Folder $folder;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Structure\Veterinary")
      */
-    private $veterinary;
+    private ?Veterinary $veterinary;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Structure\Prestation", mappedBy="consultation")
      */
-    private $prestations;
+    private ArrayCollection $prestations;
 
     public function __construct()
     {

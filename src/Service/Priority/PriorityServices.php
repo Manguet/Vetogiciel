@@ -10,10 +10,7 @@ use InvalidArgumentException;
  */
 class PriorityServices
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * PriorityServices constructor.

@@ -14,15 +14,9 @@ class RoleLevelEnum extends EnumType
     public const SOCIETY    = 'society';
     public const GROUP      = 'group';
 
-    /**
-     * @var string
-     */
-    protected $name = 'enumRoleLevel';
+    protected string $name = 'enumRoleLevel';
 
-    /**
-     * @var string[]
-     */
-    protected $values = [
+    protected array $values = [
         self::NULL    => self::SIMPLE,
         self::SIMPLE  => self::SIMPLE,
         self::SOCIETY => self::SOCIETY,

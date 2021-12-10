@@ -25,17 +25,17 @@ class Commentary implements EntityDateInterface, CreatedByWithUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="comments")
      */
-    private $article;
+    private ?Article $article;
 
     public function getId(): ?int
     {

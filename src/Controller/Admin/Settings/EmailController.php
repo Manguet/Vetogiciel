@@ -34,15 +34,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class EmailController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
+    private KernelInterface $kernel;
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -99,7 +93,8 @@ class EmailController extends AbstractController
         $datatableField
             ->addCreatedBy($table)
             ->addDeleteField($table, 'admin/settings/email/include/_delete-button.html.twig', [
-                'entity' => 'email'
+                'entity'         => 'email',
+                'authorizations' => 'ADMIN_EMAIL_DELETE'
             ])
             ->addOrderBy('title')
         ;

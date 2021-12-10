@@ -15,10 +15,7 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
  */
 class MailTransportFactory implements TransportFactoryInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @param EntityManagerInterface $entityManager

@@ -26,62 +26,46 @@ use Doctrine\ORM\Mapping\PrePersist;
 class MailMessage
 {
     /**
-     * @var int
-     *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue()
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="body", type="text", nullable=false)
      */
-    private $body;
+    private string $body;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="headers", type="text", nullable=false)
      */
-    private $headers;
+    private string $headers;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="queue_name", type="string", length=190, nullable=false)
      */
-    private $queueName;
+    private string $queueName;
 
     /**
-     * @var DateTimeInterface
-     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    protected $createdAt;
+    protected DateTimeInterface $createdAt;
 
     /**
-     * @var DateTimeInterface
-     *
      * @ORM\Column(name="available_at", type="datetime", nullable=false)
      */
-    protected $availableAt;
+    protected DateTimeInterface $availableAt;
 
     /**
-     * @var DateTimeInterface
-     *
      * @ORM\Column(name="delivered_at", type="datetime", nullable=true)
      */
-    protected $deliveredAt;
+    protected DateTimeInterface $deliveredAt;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="email_id", type="string", nullable=false)
      */
-    protected $emailId;
+    protected string $emailId;
 
     /**
      * @return int

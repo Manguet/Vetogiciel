@@ -41,47 +41,47 @@ class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface, 
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $nameSlugiffied;
+    protected ?string $nameSlugiffied;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $fiscalDate;
+    private ?DateTimeInterface $fiscalDate;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $status;
+    private ?string $status;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $email;
+    private ?string $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $siren;
+    private ?string $siren;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $siret;
+    private ?string $siret;
 
     /**
      * @ORM\Column(type="enumStructureTypes", nullable=true)
      */
-    private $type;
+    private ?string $type;
 
     public function getId(): ?int
     {

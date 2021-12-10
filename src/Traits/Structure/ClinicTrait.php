@@ -15,7 +15,7 @@ trait ClinicTrait
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Structure\Clinic")
      */
-    protected $clinic;
+    protected ?Clinic $clinic;
 
     /**
      * @return Clinic|null

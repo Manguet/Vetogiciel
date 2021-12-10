@@ -10,10 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class SettingServices
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * @param EntityManagerInterface $entityManager

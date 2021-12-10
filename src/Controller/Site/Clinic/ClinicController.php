@@ -18,14 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ClinicController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
-     * ClinicController constructor.
-     *
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)

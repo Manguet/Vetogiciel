@@ -21,40 +21,21 @@ use Twig\Environment;
  */
 class DatatableServices implements DatatableFieldInterface
 {
-    /**
-     * @var Environment
-     */
-    private $templating;
+    private Environment $templating;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var Security
-     */
-    private $security;
+    private Security $security;
 
-    /**
-     * @var string
-     */
-    private $template;
+    private string $template;
 
-    /**
-     * @var null|string
-     */
-    private $entityName;
+    private ?string $entityName;
 
-    /**
-     * @var null|string
-     */
-    private $authorizations;
+    private ?string $authorizations;
 
-    /**
-     * @var string
-     */
-    private $url;
+    private ?string $url;
+
+    private $role;
 
     /**
      * @param Environment $environment
@@ -113,15 +94,36 @@ class DatatableServices implements DatatableFieldInterface
 
         $this->setOptions($options);
 
-        $table
-            ->add('delete', TextColumn::class, [
-                'label'  => 'Supprimer ?',
-                'render' => function ($value, $entity) {
-                    return $this->templating->render($this->template, [
-                        $this->entityName => $entity,
-                    ]);
-                }
-            ]);
+        $allAuthorizations = null;
+
+        if (isset($options['authorizations']) && $user = $this->security->getUser()) {
+
+            $roleUser = $user->getRoles();
+            $this->role = $this->entityManager->getRepository(Role::class)
+                ->findOneBy(['name' => $roleUser]);
+
+            $allAuthorizations = $this->setAuthorization($options['authorizations']);
+        }
+        if (null === $allAuthorizations
+                || in_array($allAuthorizations[0], $this->role->getAuthorizations(), true)
+                || in_array($allAuthorizations[1], $this->role->getAuthorizations(), true)
+                || in_array($allAuthorizations[2], $this->role->getAuthorizations(), true)
+        ) {
+            $table
+                ->add('delete', TextColumn::class, [
+                    'label'  => 'Supprimer ?',
+                    'render' => function ($value, $entity)  {
+
+                        if ($this->canAccessByLevel($this->role, $entity)) {
+                            return $this->templating->render($this->template, [
+                                $this->entityName => $entity,
+                            ]);
+                        }
+
+                        return '';
+                    }
+                ]);
+        }
 
         return $table;
     }
@@ -162,7 +164,7 @@ class DatatableServices implements DatatableFieldInterface
                     }
 
                     if (empty($this->authorizations)
-                        ||($role && (
+                        ||($role && $this->canAccessByLevel($role, $context) && (
                             in_array($allAuthorizations[0], $role->getAuthorizations(), true)
                             || in_array($allAuthorizations[1], $role->getAuthorizations(), true)
                             || in_array($allAuthorizations[2], $role->getAuthorizations(), true)
@@ -237,13 +239,19 @@ class DatatableServices implements DatatableFieldInterface
                         ->from($class, 'a')
                     ;
 
-                    if ($permissionLevel === 'society' && method_exists($class,'getClinic')) {
+                    if ($permissionLevel === 'society') {
                         $qb
                             ->leftJoin('a.createdByVeterinary', 'v')
                             ->where('v.clinic = :society')
-                            ->orWhere('v.clinic is null')
-                            ->leftJoin('a.createdByEmployee', 'e')
-                            ->orWhere('e.clinic = :society')
+                            ->orWhere('v.clinic is null');
+
+                        if (method_exists($class, 'getCreatedByEmployee')) {
+                            $qb
+                                ->leftJoin('a.createdByEmployee', 'e')
+                                ->orWhere('e.clinic = :society');
+                        }
+
+                        $qb
                             ->setParameter('society', $user->getClinic())
                         ;
                     }
@@ -252,7 +260,6 @@ class DatatableServices implements DatatableFieldInterface
                         $qb
                             ->where('a.createdByVeterinary = :user')
                             ->orWhere('a.createdByEmployee = :user')
-                            ->orWhere('a.createdByEmployee is null')
                             ->setParameter('user', $user)
                         ;
                     }
@@ -280,5 +287,42 @@ class DatatableServices implements DatatableFieldInterface
             $sector . '_' . $entity . '_MANAGE',
             $authorization
         ];
+    }
+
+    /**
+     * @param Role|null $role
+     * @param $entity
+     *
+     * @return bool
+     */
+    private function canAccessByLevel(?Role $role, $entity): bool
+    {
+        if (null === $role
+            || $role->getPermissionLevel() === 'group'
+            || !method_exists($entity, 'getCreatedBy')
+            || null === $entity->getCreatedBy()
+        )
+        {
+            return true;
+        }
+
+        $permissionLevel = $role->getPermissionLevel();
+        $user            = $this->security->getUser();
+
+        if ($permissionLevel === 'society'
+            && $user
+            && $user->getClinic() === $entity->getCreatedBy()->getClinic())
+        {
+            return true;
+        }
+
+        if ($permissionLevel === 'user'
+            && $user
+            && $user === $entity->getCreatedBy()
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }

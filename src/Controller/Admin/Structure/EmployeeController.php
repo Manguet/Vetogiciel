@@ -9,7 +9,6 @@ use App\Interfaces\Slugger\SluggerInterface;
 use App\Security\EmailVerifier;
 use App\Service\User\PasswordEncoderServices;
 use Doctrine\ORM\EntityManagerInterface;
-use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -32,30 +31,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class EmployeeController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var PasswordEncoderServices
-     */
-    private $encoderServices;
+    private PasswordEncoderServices $encoderServices;
 
-    /**
-     * @var FlashBagInterface
-     */
-    private $flashBag;
+    private FlashBagInterface $flashBag;
 
-    /**
-     * @var EmailVerifier
-     */
-    private $emailVerifier;
+    private EmailVerifier $emailVerifier;
 
-    /**
-     * @var SluggerInterface
-     */
-    private $slugger;
+    private SluggerInterface $slugger;
 
     /**
      * EmployeeController constructor.
@@ -142,7 +126,8 @@ class EmployeeController extends AbstractController
         $datatableField
             ->addCreatedBy($table)
             ->addDeleteField($table, 'admin/employee/include/_delete-button.html.twig', [
-                'entity' => 'employee'
+                'entity'         => 'employee',
+                'authorizations' => 'ADMIN_EMPLOYEE_DELETE'
             ])
             ->addOrderBy('lastname')
         ;

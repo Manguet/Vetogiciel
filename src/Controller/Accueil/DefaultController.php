@@ -15,10 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DefaultController extends AbstractController
 {
-    /**
-     * @var AdminAuthorizationServices
-     */
-    private $adminAuthorizationServices;
+    private AdminAuthorizationServices $adminAuthorizationServices;
 
     /**
      * DefaultController constructor.

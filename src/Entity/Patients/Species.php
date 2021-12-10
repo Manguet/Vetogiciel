@@ -26,18 +26,18 @@ class Species implements EntityDateInterface, CreatedByInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=Race::class, inversedBy="species")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $race;
+    private ?Race $race;
 
     public function getId(): ?int
     {
