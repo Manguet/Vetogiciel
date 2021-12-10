@@ -89,17 +89,14 @@ class EmployeeController extends AbstractController
     public function index(Request $request, DataTableFactory $dataTableFactory,
                           DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('firstname', TextColumn::class, [
-                'label'     => 'Nom de l\'employé',
-                'orderable' => true,
-                'render'    => function ($value, $employee) {
+        $table = $dataTableFactory->create();
 
-                    $employeeName = $value . ' ' . $employee->getLastname();
-
-                    return '<a href="/admin/employee/edit/' . $employee->getId() . '">' . $employeeName . '</a>';
-                }
-            ])
+        $datatableField
+            ->addFieldWithEditField($table, 'firstname',
+                'Nom de l\'employé',
+                'employee',
+                'ADMIN_EMPLOYEE_EDIT'
+            )
             ->add('lastname', TextColumn::class, [
                 'visible'   => false,
             ])

@@ -63,14 +63,14 @@ class ClientController extends AbstractController
     public function index(Request $request, DataTableFactory $dataTableFactory,
                           DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('lastname', TextColumn::class, [
-                'label'     => 'Nom',
-                'orderable' => true,
-                'render'    => function ($value, $client) {
-                    return '<a href="/admin/user/show/' . $client->getId() . '">' . $value . '</a>';
-                }
-            ])
+        $table = $dataTableFactory->create();
+
+        $datatableField
+            ->addFieldWithEditField($table, 'lastname',
+                'Nom',
+                'user',
+                'ADMIN_CLIENT_EDIT'
+            )
             ->add('firstname', TextColumn::class, [
                 'label'     => 'Prénom',
                 'orderable' => true,
@@ -172,14 +172,14 @@ class ClientController extends AbstractController
     public function show(Client $client, Request $request, DataTableFactory $dataTableFactory,
                          DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('name', TextColumn::class, [
-                'label'     => 'Nom',
-                'orderable' => true,
-                'render'    => function ($value, $animal) {
-                    return '<a href="/admin/animal/edit/' . $animal->getClient()->getId() . '/animal/' . $animal->getId() . '">' . $value . '</a>';
-                }
-            ])
+        $table = $dataTableFactory->create();
+
+        $datatableField
+            ->addFieldWithEditField($table, 'name',
+                'Nom',
+                'animal',
+                'ADMIN_ANIMAL_EDIT'
+            )
             ->add('age', TextColumn::class, [
                 'label'     => 'Age',
                 'orderable' => true,

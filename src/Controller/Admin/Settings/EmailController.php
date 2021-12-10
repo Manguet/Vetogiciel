@@ -66,14 +66,13 @@ class EmailController extends AbstractController
     public function index(Request $request, DataTableFactory $dataTableFactory,
                           DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('title', TextColumn::class, [
-                'label'     => 'Titre',
-                'orderable' => true,
-                'render'    => function ($value, $email) {
-                    return '<a href="/admin/email/edit/' . $email->getId() . '">' . $value . '</a>';
-                }
-            ])
+        $table = $dataTableFactory->create();
+
+        $datatableField
+            ->addFieldWithEditField($table, 'title',
+                'Titre',
+                'email',
+            'ADMIN_EMAIL_EDIT')
             ->add('description', TextColumn::class, [
                 'label'     => 'Description',
                 'orderable' => true,

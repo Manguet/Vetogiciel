@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Content;
 
 use App\Entity\Contents\Article;
+use App\Entity\Settings\Role;
 use App\Form\Content\ArticleType;
 use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Slugger\SluggerInterface;
@@ -66,14 +67,14 @@ class ArticleController extends AbstractController
     public function index(Request $request, DataTableFactory $dataTableFactory,
                           DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('title', TextColumn::class, [
-                'label'     => 'Titre de l\'article',
-                'orderable' => true,
-                'render'    => function ($value, $content) {
-                    return '<a href="/admin/content/edit/' . $content->getId() . '">' . $value . '</a>';
-                }
-            ])
+        $table = $dataTableFactory->create();
+
+        $datatableField
+            ->addFieldWithEditField($table, 'title',
+                'Titre de l\'article',
+                'content',
+                'ADMIN_ARTICLE_EDIT'
+            )
             ->add('articleCategory', TextColumn::class, [
                 'label'     => 'Catégorie',
                 'orderable' => false,
@@ -124,6 +125,7 @@ class ArticleController extends AbstractController
 
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_ARTICLE_ADD')")
      *
      * @param Request $request
      *
@@ -163,6 +165,7 @@ class ArticleController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_ARTICLE_EDIT', article)")
      *
      * @param Article $article
      * @param Request $request

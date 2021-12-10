@@ -13,6 +13,7 @@ use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTable;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Environment;
 
 /**
@@ -49,6 +50,11 @@ class DatatableServices implements DatatableFieldInterface
      * @var null|string
      */
     private $authorizations;
+
+    /**
+     * @var string
+     */
+    private $url;
 
     /**
      * @param Environment $environment
@@ -121,6 +127,59 @@ class DatatableServices implements DatatableFieldInterface
     }
 
     /**
+     * @param DataTable $table
+     * @param string $fieldName
+     * @param string $label
+     * @param string $url
+     * @param string|null $authorization
+     *
+     * @return DataTable
+     */
+    public function addFieldWithEditField(DataTable $table, string $fieldName, string $label,
+                                          string $url, ?string $authorization = null): DataTable
+    {
+        $this->authorizations = $authorization;
+        $this->url            = $url;
+
+        $table
+            ->add($fieldName, TextColumn::class, [
+                'label'     => $label,
+                'orderable' => true,
+                'render'    => function ($value, $context) {
+                    $role = $this->security->getUser()->getRoles();
+                    $role = $this->entityManager->getRepository(Role::class)
+                        ->findOneBy(['name' => $role]);
+
+                    $allAuthorizations = $this->setAuthorization($this->authorizations);
+
+                    if ($context instanceof UserInterface) {
+                        $prefix = '';
+
+                        if ($context instanceof Veterinary) {
+                            $prefix = 'Dr. ';
+                        }
+                        $value = $prefix . $context->getFirstname() . ' ' . $context->getLastName();
+                    }
+
+                    if (empty($this->authorizations)
+                        ||($role && (
+                            in_array($allAuthorizations[0], $role->getAuthorizations(), true)
+                            || in_array($allAuthorizations[1], $role->getAuthorizations(), true)
+                            || in_array($allAuthorizations[2], $role->getAuthorizations(), true)
+                            ))
+                    )
+                    {
+                        return '<a href="/admin/' . $this->url . '/edit/' . $context->getId() . '">' . $value . '</a>';
+                    }
+
+                    return $value;
+                }
+            ]);
+
+        return $table;
+    }
+
+    /**
      * @param array|null $options
      */
     private function setOptions(?array $options): void
@@ -178,7 +237,7 @@ class DatatableServices implements DatatableFieldInterface
                         ->from($class, 'a')
                     ;
 
-                    if ($permissionLevel === 'society') {
+                    if ($permissionLevel === 'society' && method_exists($class,'getClinic')) {
                         $qb
                             ->leftJoin('a.createdByVeterinary', 'v')
                             ->where('v.clinic = :society')
@@ -189,7 +248,7 @@ class DatatableServices implements DatatableFieldInterface
                         ;
                     }
 
-                    if ($permissionLevel === 'user') {
+                    if ($permissionLevel === 'user' && method_exists($class, 'getCreatedByEmployee')) {
                         $qb
                             ->where('a.createdByVeterinary = :user')
                             ->orWhere('a.createdByEmployee = :user')
@@ -199,5 +258,27 @@ class DatatableServices implements DatatableFieldInterface
                     }
                 },
             ]);
+    }
+
+    /**
+     * @param string|null $authorization
+     *
+     * @return array
+     */
+    private function setAuthorization(?string $authorization): array
+    {
+        if (!$authorization) {
+            return [];
+        }
+
+        $authorizations = explode('_', $authorization);
+
+        [$sector, $entity, $level] = $authorizations;
+
+        return [
+            $sector . '_FULL_ACCESS',
+            $sector . '_' . $entity . '_MANAGE',
+            $authorization
+        ];
     }
 }

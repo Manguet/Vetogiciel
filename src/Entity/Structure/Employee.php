@@ -5,12 +5,14 @@ namespace App\Entity\Structure;
 use App\Entity\Contents\Article;
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Interfaces\Socials\SocialInterface;
+use App\Interfaces\Structure\ClinicInterface;
 use App\Interfaces\Structure\PhotoInterface;
 use App\Interfaces\Structure\PresentationInterface;
 use App\Interfaces\User\CreatedByInterface;
 use App\Interfaces\User\UserEntityInterface;
 use App\Traits\DateTime\EntityDateTrait;
 use App\Traits\Socials\SocialTrait;
+use App\Traits\Structure\ClinicTrait;
 use App\Traits\Structure\PhotoTrait;
 use App\Traits\Structure\PresentationTrait;
 use App\Traits\User\CreatedByTrait;
@@ -32,7 +34,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 class Employee implements EntityDateInterface, UserInterface,
                           PresentationInterface, PhotoInterface, SocialInterface,
-                          UserEntityInterface, CreatedByInterface
+                          UserEntityInterface, CreatedByInterface, ClinicInterface
 {
     use EntityDateTrait;
     use PhotoTrait;
@@ -40,6 +42,7 @@ class Employee implements EntityDateInterface, UserInterface,
     use SocialTrait;
     use UserEntityTrait;
     use CreatedByTrait;
+    use ClinicTrait;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)

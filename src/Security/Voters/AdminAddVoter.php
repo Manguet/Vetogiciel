@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class AdminAccessVoter extends Voter
+class AdminAddVoter extends Voter
 {
     use VoterTrait;
 
@@ -37,11 +37,7 @@ class AdminAccessVoter extends Voter
      */
     protected function supports($attribute, $subject): bool
     {
-        return (0 === strpos($attribute, "ADMIN_")
-                && null === $subject
-                && (false !== strpos($attribute, "_ACCESS")
-                    || false !== strpos($attribute, "_MANAGE")
-                    || $attribute === 'ADMIN_FULL_ACCESS'));
+        return 0 === strpos($attribute, "ADMIN_") && false !== strpos($attribute, "_ADD");
     }
 
     /**

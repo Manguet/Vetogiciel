@@ -63,14 +63,14 @@ class AuthorizationsController extends AbstractController
     public function index(Request $request, DataTableFactory $dataTableFactory,
                           DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('relatedEntity', TextColumn::class, [
-                'label'     => 'Entité en relation',
-                'orderable' => true,
-                'render'    => function ($value, $authorization) {
-                    return '<a href="/admin/authorization/edit/' . $authorization->getId() . '">' . $value . '</a>';
-                }
-            ])
+        $table = $dataTableFactory->create();
+
+        $datatableField
+            ->addFieldWithEditField($table, 'relatedEntity',
+                'Entité en relation',
+                'authorization',
+                'ADMIN_AUTHORIZATION_EDIT'
+            )
             ->add('canAccess', TextColumn::class, [
                 'label'     => 'Accès',
                 'orderable' => true,

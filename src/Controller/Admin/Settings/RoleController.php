@@ -64,14 +64,14 @@ class RoleController extends AbstractController
     public function index(Request $request, DataTableFactory $dataTableFactory,
                           DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('name', TextColumn::class, [
-                'label'     => 'Nom du rôle',
-                'orderable' => true,
-                'render'    => function ($value, $role) {
-                    return '<a href="/admin/role/edit/' . $role->getId() . '">' . $value . '</a>';
-                }
-            ])
+        $table = $dataTableFactory->create();
+
+        $datatableField
+            ->addFieldWithEditField($table, 'name',
+                'Nom du rôle',
+                'role',
+                'ADMIN_ROLE_EDIT'
+            )
             ->add('parentRole', TextColumn::class, [
                 'label'     => 'Rôle Parent',
                 'orderable' => true,

@@ -60,14 +60,14 @@ class CategoryArticleController extends AbstractController
     public function index(Request $request, DataTableFactory $dataTableFactory,
                           DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('title', TextColumn::class, [
-                'label'     => 'Titre de la catégorie',
-                'orderable' => true,
-                'render'    => function ($value, $category) {
-                    return '<a href="/admin/article-category/edit/' . $category->getId() . '">' . $value . '</a>';
-                }
-            ]);
+        $table = $dataTableFactory->create();
+
+        $datatableField
+            ->addFieldWithEditField($table, 'title',
+                'Titre de la catégorie',
+                'article-category',
+                'ADMIN_ARTICLECATEGORY_EDIT'
+            );
 
         $datatableField
             ->addCreatedBy($table)

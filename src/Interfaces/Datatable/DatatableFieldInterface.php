@@ -28,6 +28,18 @@ interface DatatableFieldInterface
 
     /**
      * @param DataTable $table
+     * @param string $fieldName
+     * @param string $label
+     * @param string $url
+     * @param string|null $authorization
+     *
+     * @return DataTable
+     */
+    public function addFieldWithEditField(DataTable $table, string $fieldName, string $label,
+                                          string $url, ?string $authorization = null): DataTable;
+
+    /**
+     * @param DataTable $table
      * @param $class
      */
     public function createDatatableAdapter(DataTable $table, $class): void;

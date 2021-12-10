@@ -69,14 +69,14 @@ class ClinicController extends AbstractController
     public function index(Request $request, DataTableFactory $dataTableFactory,
                           DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('name', TextColumn::class, [
-                'label'     => 'Nom de la structure',
-                'orderable' => true,
-                'render'    => function ($value, $clinic) {
-                    return '<a href="/admin/clinic/edit/' . $clinic->getId() . '">' . $value . '</a>';
-                }
-            ])
+        $table = $dataTableFactory->create();
+
+        $datatableField
+            ->addFieldWithEditField($table, 'name',
+                'Nom de la structure',
+                'clinic',
+                'ADMIN_CLINIC_EDIT'
+            )
             ->add('city', TextColumn::class, [
                 'label'     => 'Ville de la structure',
                 'orderable' => true,

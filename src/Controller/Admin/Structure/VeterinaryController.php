@@ -87,17 +87,14 @@ class VeterinaryController extends AbstractController
     public function index(Request $request, DataTableFactory $dataTableFactory,
                           DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('firstname', TextColumn::class, [
-                'label'     => 'Nom du vétérinaire',
-                'orderable' => true,
-                'render'    => function ($value, $veterinary) {
+        $table = $dataTableFactory->create();
 
-                    $veterinaryName = 'Dr. ' . $value . ' ' . $veterinary->getLastname();
-
-                    return '<a href="/admin/veterinary/edit/' . $veterinary->getId() . '">' . $veterinaryName . '</a>';
-                }
-            ])
+        $datatableField
+            ->addFieldWithEditField($table, 'firstname',
+                'Nom du vétérinaire',
+                'veterinary',
+                'ADMIN_VETERINARY_EDIT'
+            )
             ->add('lastname', TextColumn::class, [
                 'visible'   => false,
             ])

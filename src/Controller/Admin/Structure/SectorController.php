@@ -50,7 +50,14 @@ class SectorController extends AbstractController
     public function index(Request $request, DataTableFactory $dataTableFactory,
                           DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
+        $table = $dataTableFactory->create();
+
+        $datatableField
+            ->addFieldWithEditField($table, 'name',
+                'Nom du secteur',
+                'sector',
+                'ADMIN_SECTOR_EDIT'
+            )
             ->add('name', TextColumn::class, [
                 'label'     => 'Nom du secteur',
                 'orderable' => true,

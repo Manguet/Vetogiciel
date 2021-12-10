@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class AdminAccessVoter extends Voter
+class AdminShowVoter extends Voter
 {
     use VoterTrait;
 
@@ -38,11 +38,10 @@ class AdminAccessVoter extends Voter
     protected function supports($attribute, $subject): bool
     {
         return (0 === strpos($attribute, "ADMIN_")
-                && null === $subject
-                && (false !== strpos($attribute, "_ACCESS")
-                    || false !== strpos($attribute, "_MANAGE")
-                    || $attribute === 'ADMIN_FULL_ACCESS'));
-    }
+            && null !== $subject
+            && (false !== strpos($attribute, "_SHOW")
+                || false !== strpos($attribute, "_MANAGE")
+                || $attribute === 'ADMIN_FULL_ACCESS'));    }
 
     /**
      * @param string $attribute
@@ -76,8 +75,13 @@ class AdminAccessVoter extends Voter
         $entityExploded = explode('_', $attribute);
         $entity = $entityExploded[1];
 
-        return in_array('ADMIN_FULL_ACCESS', $this->allRoles, true)
+        if (!(in_array('ADMIN_FULL_ACCESS', $this->allRoles, true)
             || in_array('ADMIN_' . $entity . '_MANAGE', $this->allRoles, true)
-            || in_array('ADMIN_' . $entity . '_ACCESS', $this->allRoles, true);
+            || in_array('ADMIN_' . $entity . '_SHOW', $this->allRoles, true)))
+        {
+            return false;
+        }
+
+        return $this->checkLevelAuthorization($role->getPermissionLevel(), $subject, $user);
     }
 }
