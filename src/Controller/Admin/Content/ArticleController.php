@@ -75,7 +75,10 @@ class ArticleController extends AbstractController
                     }
                     return '';
                 }
-            ])
+            ]);
+
+        $datatableField
+            ->addClinicField($table)
             ->add('isActivated', TextColumn::class, [
                 'label'     => 'Article actif ?',
                 'orderable' => true,

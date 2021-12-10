@@ -3,8 +3,10 @@
 namespace App\Entity\Structure;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\Structure\ClinicInterface;
 use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\Structure\ClinicTrait;
 use App\Traits\User\CreatedByTrait;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,10 +18,11 @@ use App\Repository\Structure\NoteRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Note implements EntityDateInterface, CreatedByInterface
+class Note implements EntityDateInterface, CreatedByInterface, ClinicInterface
 {
     use EntityDateTrait;
     use CreatedByTrait;
+    use ClinicTrait;
 
     /**
      * @ORM\Id()

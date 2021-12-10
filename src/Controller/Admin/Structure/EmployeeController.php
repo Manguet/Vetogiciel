@@ -108,7 +108,10 @@ class EmployeeController extends AbstractController
 
                     return '';
                 }
-            ])
+            ]);
+
+        $datatableField
+            ->addClinicField($table)
             ->add('isManager', TextColumn::class, [
                 'label'     => 'Manager ?',
                 'orderable' => true,

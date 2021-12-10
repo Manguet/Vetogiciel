@@ -54,7 +54,9 @@ class SectorController extends AbstractController
                 'Nom du secteur',
                 'sector',
                 'ADMIN_SECTOR_EDIT'
-            )
+            );
+        $datatableField
+            ->addClinicField($table)
             ->add('veterinaries', TextColumn::class, [
                 'label'     => 'Nombre de vétérinaires',
                 'orderable' => true,

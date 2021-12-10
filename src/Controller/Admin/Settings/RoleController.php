@@ -90,6 +90,9 @@ class RoleController extends AbstractController
             ]);
 
         $datatableField
+            ->addClinicField($table);
+
+        $datatableField
             ->addCreatedBy($table)
             ->addDeleteField($table, 'admin/settings/roles/include/_delete-button.html.twig', [
                 'entity'         => 'role',

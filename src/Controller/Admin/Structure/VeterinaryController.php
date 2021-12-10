@@ -86,19 +86,10 @@ class VeterinaryController extends AbstractController
             ->add('number', TextColumn::class, [
                 'label'     => 'Numéro d\'ordre',
                 'orderable' => true,
-            ])
-            ->add('clinic', TextColumn::class, [
-                'label'     => 'Clinique',
-                'orderable' => false,
-                'render'    => function ($value, $veterinary) {
+            ]);
 
-                    if (null !== $veterinary->getClinic()) {
-                        return $veterinary->getClinic()->getName();
-                    }
-
-                    return '';
-                }
-            ])
+        $datatableField
+            ->addClinicField($table)
             ->add('sector', TextColumn::class, [
                 'label'     => 'Secteur',
                 'orderable' => false,

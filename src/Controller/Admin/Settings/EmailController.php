@@ -81,7 +81,9 @@ class EmailController extends AbstractController
             ->add('template', TextColumn::class, [
                 'label'     => 'Template utilisé',
                 'orderable' => true,
-            ])
+            ]);
+        $datatableField
+            ->addClinicField($table)
             ->add('isActivated', BoolColumn::class, [
                 'label'      => 'Email activé ?',
                 'orderable'  => true,

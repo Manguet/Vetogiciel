@@ -4,8 +4,10 @@ namespace App\Entity\Structure;
 
 use App\Entity\Patients\Consultation;
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\Structure\ClinicInterface;
 use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\Structure\ClinicTrait;
 use App\Traits\User\CreatedByTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,10 +21,11 @@ use App\Repository\Structure\PrestationRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Prestation implements EntityDateInterface, CreatedByInterface
+class Prestation implements EntityDateInterface, CreatedByInterface, ClinicInterface
 {
     use EntityDateTrait;
     use CreatedByTrait;
+    use ClinicTrait;
 
     /**
      * @ORM\Id()

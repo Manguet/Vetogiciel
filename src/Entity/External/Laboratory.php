@@ -3,8 +3,10 @@
 namespace App\Entity\External;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\Structure\ClinicInterface;
 use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\Structure\ClinicTrait;
 use App\Traits\User\CreatedByTrait;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,10 +18,11 @@ use App\Repository\External\LaboratoryRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Laboratory implements EntityDateInterface, CreatedByInterface
+class Laboratory implements EntityDateInterface, CreatedByInterface, ClinicInterface
 {
     use EntityDateTrait;
     use CreatedByTrait;
+    use ClinicTrait;
 
     /**
      * @ORM\Id()

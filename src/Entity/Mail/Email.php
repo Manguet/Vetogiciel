@@ -3,9 +3,11 @@
 namespace App\Entity\Mail;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\Structure\ClinicInterface;
 use App\Interfaces\User\CreatedByInterface;
 use App\Repository\Mail\EmailRepository;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\Structure\ClinicTrait;
 use App\Traits\User\CreatedByTrait;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,10 +18,11 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\HasLifecycleCallbacks
  */
-class Email implements EntityDateInterface, CreatedByInterface
+class Email implements EntityDateInterface, CreatedByInterface, ClinicInterface
 {
     use EntityDateTrait;
     use CreatedByTrait;
+    use ClinicTrait;
 
     /**
      * @ORM\Id
