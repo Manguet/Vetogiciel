@@ -78,6 +78,8 @@ class AuthorizationsController extends AbstractController
                     if (!empty($value)) {
                         return '<i class="fas fa-check"></i>';
                     }
+
+                    return '';
                 }
             ])
             ->add('canAdd', TextColumn::class, [
@@ -87,6 +89,8 @@ class AuthorizationsController extends AbstractController
                     if (!empty($value)) {
                         return '<i class="fas fa-check"></i>';
                     }
+
+                    return '';
                 }
             ])
             ->add('canShow', TextColumn::class, [
@@ -96,6 +100,8 @@ class AuthorizationsController extends AbstractController
                     if (!empty($value)) {
                         return '<i class="fas fa-check"></i>';
                     }
+
+                    return '';
                 }
             ])
             ->add('canEdit', TextColumn::class, [
@@ -105,6 +111,8 @@ class AuthorizationsController extends AbstractController
                     if (!empty($value)) {
                         return '<i class="fas fa-check"></i>';
                     }
+
+                    return '';
                 }
             ])
             ->add('canDelete', TextColumn::class, [
@@ -114,8 +122,11 @@ class AuthorizationsController extends AbstractController
                     if (!empty($value)) {
                         return '<i class="fas fa-check"></i>';
                     }
+
+                    return '';
                 }
             ]);
+
         $datatableField
             ->addDeleteField($table, 'admin/settings/authorizations/include/_delete-button.html.twig', [
                 'entity' => 'authorization'
@@ -139,6 +150,7 @@ class AuthorizationsController extends AbstractController
 
     /**
      * @Route ("edit/{id}", name="edit")
+     * @Security("is_granted('ADMIN_AUTHORIZATION_EDIT', authorization)")
      *
      * @param Request $request
      * @param Authorization $authorization
@@ -167,6 +179,7 @@ class AuthorizationsController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_AUTHORIZATION_DELETE', authorization)")
      *
      * @param Authorization $authorization
      *
@@ -186,6 +199,7 @@ class AuthorizationsController extends AbstractController
 
     /**
      * @Route("generate", name="generate")
+     * @Security("is_granted('ADMIN_AUTHORIZATION_ADD')")
      *
      * @param KernelInterface $kernel
      *

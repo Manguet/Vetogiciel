@@ -8,7 +8,6 @@ use App\Form\Content\ArticleCategoryType;
 use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Slugger\SluggerInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -92,6 +91,7 @@ class CategoryArticleController extends AbstractController
 
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_ARTICLECATEGORY_ADD')")
      *
      * @param Request $request
      *
@@ -126,6 +126,7 @@ class CategoryArticleController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_ARTICLECATEGORY_EDIT', category)")
      *
      * @param ArticleCategory $category
      * @param Request $request
@@ -152,6 +153,7 @@ class CategoryArticleController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_ARTICLECATEGORY_DELETE', category)")
      *
      * @param ArticleCategory $category
      *

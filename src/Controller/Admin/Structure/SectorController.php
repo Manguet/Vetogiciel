@@ -114,6 +114,8 @@ class SectorController extends AbstractController
 
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_SECTOR_ADD')")
+     *
      * @param Request $request
      *
      * @return Response
@@ -141,6 +143,7 @@ class SectorController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_SECTOR_EDIT', sector)")
      *
      * @param Request $request
      * @param Sector $sector
@@ -168,6 +171,7 @@ class SectorController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_SECTOR_DELETE', sector)")
      *
      * @param Sector $sector
      *

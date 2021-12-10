@@ -95,6 +95,7 @@ class EmailController extends AbstractController
                 'falseValue' => '<i class="fas fa-times"></i>',
                 'nullValue'  => '<i class="fas fa-times"></i>',
             ]);
+
         $datatableField
             ->addCreatedBy($table)
             ->addDeleteField($table, 'admin/settings/email/include/_delete-button.html.twig', [
@@ -119,6 +120,7 @@ class EmailController extends AbstractController
 
     /**
      * @Route ("new", name="new")
+     * @Security("is_granted('ADMIN_EMAIL_ADD')")
      *
      * @param Request $request
      *
@@ -151,6 +153,7 @@ class EmailController extends AbstractController
 
     /**
      * @Route ("edit/{id}", name="edit")
+     * @Security("is_granted('ADMIN_EMAIL_ADD')")
      *
      * @param Request $request
      * @param mixed $id
@@ -211,6 +214,7 @@ class EmailController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_EMAIL_DELETE', email)")
      *
      * @param Email $email
      *
@@ -230,6 +234,7 @@ class EmailController extends AbstractController
 
     /**
      * @Route("generate", name="generate")
+     * @Security("is_granted('ADMIN_EMAIL_ADD')")
      *
      * @return JsonResponse
      *

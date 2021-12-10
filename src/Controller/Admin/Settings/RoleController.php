@@ -119,6 +119,7 @@ class RoleController extends AbstractController
 
     /**
      * @Route ("new", name="new")
+     * @Security("is_granted('ADMIN_ROLE_ADD')")
      *
      * @param Request $request
      *
@@ -154,6 +155,7 @@ class RoleController extends AbstractController
 
     /**
      * @Route ("edit/{id}", name="edit")
+     * @Security("is_granted('ADMIN_ROLE_EDIT', role)")
      *
      * @param Request $request
      * @param Role $role
@@ -189,6 +191,7 @@ class RoleController extends AbstractController
 
     /**
      * @Route ("add-authorization/{id}", name="add_authorization")
+     * @Security("is_granted('ADMIN_AUTHORIZATION_ADD')")
      *
      * @param Request $request
      * @param int $id
@@ -216,6 +219,7 @@ class RoleController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_ROLE_DELETE', role)")
      *
      * @param Role $role
      *
@@ -256,6 +260,7 @@ class RoleController extends AbstractController
 
     /**
      * @Route("generate", name="generate")
+     * @Security("is_granted('ADMIN_ROLE_ADD')")
      *
      * @param KernelInterface $kernel
      *

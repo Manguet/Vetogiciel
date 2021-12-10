@@ -123,6 +123,8 @@ class ClientController extends AbstractController
 
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_CLIENT_ADD')")
+     *
      * @param Request $request
      *
      * @return Response
@@ -162,6 +164,8 @@ class ClientController extends AbstractController
 
     /**
      * @Route("/show/{id}", name="show", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_CLIENT_SHOW', client)")
+     *
      * @param Client $client
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
@@ -247,6 +251,8 @@ class ClientController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_CLIENT_EDIT', client)")
+     *
      * @param Client $client
      * @param Request $request
      *
@@ -282,6 +288,7 @@ class ClientController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_CLIENT_DELETE', client)")
      *
      * @param Client $client
      *

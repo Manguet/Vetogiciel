@@ -162,6 +162,8 @@ class EmployeeController extends AbstractController
 
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_EMPLOYEE_ADD')")
+     *
      * @param Request $request
      *
      * @return Response
@@ -224,6 +226,7 @@ class EmployeeController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_EMPLOYEE_EDIT', employee)")
      *
      * @param Request $request
      * @param Employee $employee
@@ -263,6 +266,7 @@ class EmployeeController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_EMPLOYEE_DELETE', employee)")
      *
      * @param Employee $employee
      *

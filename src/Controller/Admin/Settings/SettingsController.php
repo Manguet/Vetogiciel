@@ -48,6 +48,7 @@ class SettingsController extends AbstractController
 
     /**
      * @Route ("configuration/{type}", name="configuration")
+     * @Security("is_granted('ADMIN_SETTINGS_ADD')")
      *
      * @param Request $request
      * @param string $type

@@ -139,6 +139,7 @@ class VeterinaryController extends AbstractController
                     return '';
                 }
             ]);
+
         $datatableField
             ->addCreatedBy($table)
             ->addDeleteField($table, 'admin/veterinary/include/_delete-button.html.twig', [
@@ -162,6 +163,8 @@ class VeterinaryController extends AbstractController
 
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_VETERINARY_ADD')")
+     *
      * @param Request $request
      *
      * @return Response
@@ -223,6 +226,7 @@ class VeterinaryController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_VETERINARY_EDIT', veterinary)")
      *
      * @param Request $request
      * @param Veterinary $veterinary
@@ -262,6 +266,7 @@ class VeterinaryController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_VETERINARY_DELETE', veterinary)")
      *
      * @param Veterinary $veterinary
      *

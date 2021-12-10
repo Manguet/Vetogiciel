@@ -47,6 +47,7 @@ class AnimalController extends AbstractController
 
     /**
      * @Route("/new/{id}", name="new", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_ANIMAL_ADD')")
      *
      * @param Client $client
      * @param Request $request
@@ -93,6 +94,7 @@ class AnimalController extends AbstractController
 
     /**
      * @Route("/edit/{id}/animal/{animal}", name="edit", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_ANIMAL_EDIT', animal)")
      *
      * @param Client $client
      * @param Animal $animal
@@ -137,6 +139,7 @@ class AnimalController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_ANIMAL_DELETE', animal)")
      *
      * @param Animal $animal
      *

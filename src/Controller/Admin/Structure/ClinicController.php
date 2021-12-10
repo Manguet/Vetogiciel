@@ -112,6 +112,7 @@ class ClinicController extends AbstractController
 
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_CLINIC_ADD')")
      *
      * @param Request $request
      *
@@ -149,6 +150,7 @@ class ClinicController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_CLINIC_EDIT', clinic)")
      *
      * @param Clinic $clinic
      * @param Request $request
@@ -175,6 +177,7 @@ class ClinicController extends AbstractController
 
     /**
      * @Route("/priority", name="priority")
+     * @Security("is_granted('ADMIN_CLINIC_ADD')")
      *
      * @param Request $request
      *

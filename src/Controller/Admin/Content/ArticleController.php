@@ -3,7 +3,6 @@
 namespace App\Controller\Admin\Content;
 
 use App\Entity\Contents\Article;
-use App\Entity\Settings\Role;
 use App\Form\Content\ArticleType;
 use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Slugger\SluggerInterface;
@@ -194,6 +193,7 @@ class ArticleController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_ARTICLE_DELETE', article)")
      *
      * @param Article $article
      *
