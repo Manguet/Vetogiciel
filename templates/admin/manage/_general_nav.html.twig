@@ -69,7 +69,7 @@
             </button>
         {% endif %}
 
-        {% if is_granted('ADMIN_SETTINGS_ACCESS') %}
+        {% if is_granted('ADMIN_SETTINGS_ACCESS') or is_granted('ADMIN_AUTHORIZATION_ACCESS') or is_granted('ADMIN_ROLE_ACCESS') %}
             <button type="button" class="btn down-button" data-toggle="tooltip" data-placement="top" title="Outils">
                 <a href="{{ path('settings_index') }}">
                     <i class="fas fa-cog"></i>

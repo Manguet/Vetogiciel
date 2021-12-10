@@ -12,9 +12,11 @@
                 <i class="fas fa-backspace"></i> Retour
             </button>
         </a>
-        <button class="custom-button generateAjax" href="{{ path('authorization_generate') }}">
-            <i class="fas fa-upload"></i> Générer les autorisations
-        </button>
+        {% if is_granted('ADMIN_AUTHORIZATION_ADD') %}
+            <button class="custom-button generateAjax" href="{{ path('authorization_generate') }}">
+                <i class="fas fa-upload"></i> Générer les autorisations
+            </button>
+        {% endif %}
     </div>
 
     <div id="my-tab">

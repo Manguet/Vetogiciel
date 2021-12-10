@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/admin/settings/", name="settings_")
  *
- * @Security("is_granted('ADMIN_SETTINGS_ACCESS')")
+ * @Security("is_granted('ADMIN_SETTINGS_ACCESS') or is_granted('ADMIN_AUTHORIZATION_ACCESS') or is_granted('ADMIN_ROLE_ACCESS')")
  */
 class SettingsController extends AbstractController
 {
