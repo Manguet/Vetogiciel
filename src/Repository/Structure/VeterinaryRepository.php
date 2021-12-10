@@ -39,7 +39,7 @@ class VeterinaryRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get all Sectors ordered by name
+     * Get all Veterinaries ordered by name
      * @param null $q
      *
      * @return int|mixed|string
@@ -47,7 +47,7 @@ class VeterinaryRepository extends ServiceEntityRepository
     public function findAllByNameResults($q = null)
     {
         $qb = $this->createQueryBuilder('s')
-            ->orderBy('s.name', 'ASC');
+            ->orderBy('s.lastname', 'ASC');
 
         if ($q) {
             $qb

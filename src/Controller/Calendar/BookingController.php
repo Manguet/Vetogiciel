@@ -17,10 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class BookingController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * BookingController constructor.

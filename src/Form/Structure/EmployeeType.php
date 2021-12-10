@@ -4,6 +4,7 @@ namespace App\Form\Structure;
 
 use App\Entity\Structure\Employee;
 use App\Entity\Structure\Sector;
+use App\Traits\Role\AddRoleTrait;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -21,6 +22,8 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
  */
 class EmployeeType extends AbstractType
 {
+    use AddRoleTrait;
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -162,6 +165,8 @@ class EmployeeType extends AbstractType
                 ])
             ;
         }
+
+        $this->addRoleField($builder, $options);
 
         $builder
             ->add('save', SubmitType::class, [

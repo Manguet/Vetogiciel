@@ -4,7 +4,6 @@ namespace App\Entity\Settings;
 
 use App\Repository\Settings\ConfigurationRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 /**
  * @ORM\Entity(repositoryClass=ConfigurationRepository::class)
@@ -18,42 +17,42 @@ class Configuration
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=80)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $datas = [];
+    private ?array $datas = [];
 
     /**
      * @ORM\Column(type="string", length=80, nullable=true)
      */
-    private $fieldType;
+    private ?string $fieldType;
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $settings = [];
+    private ?array $settings = [];
 
     /**
      * @ORM\Column(type="enumConfigurationTypes")
      */
-    private $configurationType;
+    private string $configurationType;
 
     /**
      * @ORM\Column(type="string", length=60)
      */
-    private $onglet;
+    private string $onglet;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $position;
+    private int $position;
 
     public function getId(): ?int
     {

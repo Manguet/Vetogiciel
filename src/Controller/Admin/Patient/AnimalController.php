@@ -6,9 +6,9 @@ use App\Entity\Patients\Animal;
 use App\Entity\Patients\Client;
 use App\Form\Animal\AnimalType;
 use App\Service\Dates\DateServices;
-use DateInterval;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,18 +19,14 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/animal", name="admin_animal_")
+ *
+ * @Security("is_granted('ADMIN_ANIMAL_ACCESS')")
  */
 class AnimalController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var DateServices
-     */
-    private $dateServices;
+    private DateServices $dateServices;
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -44,6 +40,7 @@ class AnimalController extends AbstractController
 
     /**
      * @Route("/new/{id}", name="new", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_ANIMAL_ADD')")
      *
      * @param Client $client
      * @param Request $request
@@ -90,6 +87,7 @@ class AnimalController extends AbstractController
 
     /**
      * @Route("/edit/{id}/animal/{animal}", name="edit", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_ANIMAL_EDIT', animal)")
      *
      * @param Client $client
      * @param Animal $animal
@@ -134,6 +132,7 @@ class AnimalController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_ANIMAL_DELETE', animal)")
      *
      * @param Animal $animal
      *

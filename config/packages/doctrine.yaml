@@ -5,6 +5,8 @@ doctrine:
             enumStructureTypes: App\DBAL\Types\Structures\StructureTypeEnum
             enumVeterinaryTypes: App\DBAL\Types\Structures\VeterinaryEnum
             enumConfigurationTypes: App\DBAL\Types\Configuration\ConfigurationTypeEnum
+            enumRoleLevel: App\DBAL\Types\Configuration\RoleLevelEnum
+            enumRoleType: App\DBAL\Types\Configuration\RoleTypeEnum
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)

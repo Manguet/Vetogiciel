@@ -3,7 +3,9 @@
 namespace App\Entity\Structure;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,26 +16,27 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Sector implements EntityDateInterface
+class Sector implements EntityDateInterface, CreatedByInterface
 {
     use EntityDateTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=120)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Structure\Veterinary", mappedBy="sector")
@@ -48,7 +51,7 @@ class Sector implements EntityDateInterface
     /**
      * @ORM\Column(type="string", length=120, nullable=true)
      */
-    private $icon;
+    private ?string $icon;
 
     public function __construct()
     {

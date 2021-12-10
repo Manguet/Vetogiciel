@@ -14,32 +14,32 @@ trait AddressTrait
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $address;
+    private ?string $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $address2;
+    private ?string $address2;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $postalCode;
+    private ?int $postalCode;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $city;
+    private ?string $city;
 
     /**
      * @ORM\Column(type="string", length=25, nullable=true)
      */
-    private $phone;
+    private ?string $phone;
 
     /**
      * @ORM\Column(type="string", length=25, nullable=true)
      */
-    private $phone2;
+    private ?string $phone2;
 
     public function getAddress(): ?string
     {

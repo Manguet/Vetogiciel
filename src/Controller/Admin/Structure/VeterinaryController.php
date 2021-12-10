@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Structure;
 
 use App\Entity\Structure\Veterinary;
 use App\Form\Structure\VeterinaryFormType;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Slugger\SluggerInterface;
 use App\Security\EmailVerifier;
 use App\Service\User\PasswordEncoderServices;
@@ -11,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,33 +27,20 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/veterinary", name="admin_veterinary_")
+ *
+ * @Security("is_granted('ADMIN_VETERINARY_ACCESS')")
  */
 class VeterinaryController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var PasswordEncoderServices
-     */
-    private $encoderServices;
+    private PasswordEncoderServices $encoderServices;
 
-    /**
-     * @var EmailVerifier
-     */
-    private $emailVerifier;
+    private EmailVerifier $emailVerifier;
 
-    /**
-     * @var FlashBagInterface
-     */
-    private $flashBag;
+    private FlashBagInterface $flashBag;
 
-    /**
-     * @var SluggerInterface
-     */
-    private $slugger;
+    private SluggerInterface $slugger;
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -76,22 +65,21 @@ class VeterinaryController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('firstname', TextColumn::class, [
-                'label'     => 'Nom du vétérinaire',
-                'orderable' => true,
-                'render'    => function ($value, $veterinary) {
+        $table = $dataTableFactory->create();
 
-                    $veterinaryName = 'Dr. ' . $value . ' ' . $veterinary->getLastname();
-
-                    return '<a href="/admin/veterinary/edit/' . $veterinary->getId() . '">' . $veterinaryName . '</a>';
-                }
-            ])
+        $datatableField
+            ->addFieldWithEditField($table, 'firstname',
+                'Nom du vétérinaire',
+                'veterinary',
+                'ADMIN_VETERINARY_EDIT'
+            )
             ->add('lastname', TextColumn::class, [
                 'visible'   => false,
             ])
@@ -135,20 +123,18 @@ class VeterinaryController extends AbstractController
 
                     return '';
                 }
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'   => 'Supprimer ?',
-                'render'  => function($value, $veterinary) {
-                    return $this->renderView('admin/veterinary/include/_delete-button.html.twig', [
-                        'veterinary' => $veterinary,
-                    ]);
-                }
+            ]);
+
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/veterinary/include/_delete-button.html.twig', [
+                'entity'         => 'veterinary',
+                'authorizations' => 'ADMIN_VETERINARY_DELETE'
             ])
             ->addOrderBy('firstname')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => Veterinary::class
-            ])
         ;
+
+        $datatableField->createDatatableAdapter($table, Veterinary::class);
 
         $table->handleRequest($request);
 
@@ -163,6 +149,8 @@ class VeterinaryController extends AbstractController
 
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_VETERINARY_ADD')")
+     *
      * @param Request $request
      *
      * @return Response
@@ -184,6 +172,10 @@ class VeterinaryController extends AbstractController
 
             /** Manually encode password */
             $this->encoderServices->encodePassword($form, $veterinary);
+
+            if (isset($request->request->get('veterinary_form')['roles'])) {
+                $veterinary->setRoles([$request->request->get('veterinary_form')['roles']]);
+            }
 
             $veterinary->setFullNameSlugiffied(
                 $this->slugger->generateSlugUrl(
@@ -220,6 +212,7 @@ class VeterinaryController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_VETERINARY_EDIT', veterinary)")
      *
      * @param Request $request
      * @param Veterinary $veterinary
@@ -240,6 +233,10 @@ class VeterinaryController extends AbstractController
             /** Manually encode password */
             $this->encoderServices->encodePassword($form, $veterinary);
 
+            if (isset($request->request->get('veterinary_form')['roles'])) {
+                $veterinary->setRoles([$request->request->get('veterinary_form')['roles']]);
+            }
+
             $this->entityManager->persist($veterinary);
             $this->entityManager->flush();
 
@@ -255,6 +252,7 @@ class VeterinaryController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_VETERINARY_DELETE', veterinary)")
      *
      * @param Veterinary $veterinary
      *

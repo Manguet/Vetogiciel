@@ -25,15 +25,9 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  */
 class RegistrationFormType extends AbstractType
 {
-    /**
-     * @var StructurePropertyToTransform
-     */
-    private $structurePropertyToTransform;
+     private StructurePropertyToTransform $structurePropertyToTransform;
 
-    /**
-     * @var SectorPropertyToTransform
-     */
-    private $sectorPropertyToTransform;
+    private SectorPropertyToTransform $sectorPropertyToTransform;
 
     /**
      * @param StructurePropertyToTransform $structurePropertyToTransform

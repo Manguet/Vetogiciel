@@ -7,11 +7,13 @@
 
 {% block body %}
     <div class="mt-5">
-        <a href="{{ path('admin_user_new') }}">
-            <button class="custom-button mb-3">
-                <i class="fas fa-user-plus"></i> Créer un client
-            </button>
-        </a>
+        {% if is_granted('ADMIN_CLIENT_ADD') %}
+            <a href="{{ path('admin_user_new') }}">
+                <button class="custom-button mb-3">
+                    <i class="fas fa-user-plus"></i> Créer un client
+                </button>
+            </a>
+        {% endif %}
     </div>
 
     <div id="my-tab">

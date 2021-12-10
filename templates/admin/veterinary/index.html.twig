@@ -7,11 +7,13 @@
 
 {% block body %}
     <div class="mt-5">
-        <a href="{{ path('admin_veterinary_new') }}">
-            <button class="custom-button mb-3">
-                <i class="fas fa-user-md"></i> Ajouter un vétérinaire
-            </button>
-        </a>
+        {% if is_granted('ADMIN_VETERINARY_ADD') %}
+            <a href="{{ path('admin_veterinary_new') }}">
+                <button class="custom-button mb-3">
+                    <i class="fas fa-user-md"></i> Ajouter un vétérinaire
+                </button>
+            </a>
+        {% endif %}
     </div>
 
     <div id="my-tab">

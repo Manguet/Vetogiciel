@@ -5,6 +5,7 @@ namespace App\Traits\DateTime;
 
 use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,12 +18,12 @@ trait EntityDateTrait
     /**
      * @ORM\Column(type="datetime_immutable", nullable=false)
      */
-    protected $dateCreation;
+    protected DateTimeImmutable $dateCreation;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    protected $dateUpdate;
+    protected DateTimeInterface $dateUpdate;
 
     /**
      * @return DateTimeImmutable

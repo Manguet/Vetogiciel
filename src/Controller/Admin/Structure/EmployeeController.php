@@ -4,13 +4,14 @@ namespace App\Controller\Admin\Structure;
 
 use App\Entity\Structure\Employee;
 use App\Form\Structure\EmployeeType;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Slugger\SluggerInterface;
 use App\Security\EmailVerifier;
 use App\Service\User\PasswordEncoderServices;
 use Doctrine\ORM\EntityManagerInterface;
-use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,33 +26,20 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/employee", name="admin_employee_")
+ *
+ * @Security("is_granted('ADMIN_EMPLOYEE_ACCESS')")
  */
 class EmployeeController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var PasswordEncoderServices
-     */
-    private $encoderServices;
+    private PasswordEncoderServices $encoderServices;
 
-    /**
-     * @var FlashBagInterface
-     */
-    private $flashBag;
+    private FlashBagInterface $flashBag;
 
-    /**
-     * @var EmailVerifier
-     */
-    private $emailVerifier;
+    private EmailVerifier $emailVerifier;
 
-    /**
-     * @var SluggerInterface
-     */
-    private $slugger;
+    private SluggerInterface $slugger;
 
     /**
      * EmployeeController constructor.
@@ -78,22 +66,21 @@ class EmployeeController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('firstname', TextColumn::class, [
-                'label'     => 'Nom de l\'employé',
-                'orderable' => true,
-                'render'    => function ($value, $employee) {
+        $table = $dataTableFactory->create();
 
-                    $employeeName = $value . ' ' . $employee->getLastname();
-
-                    return '<a href="/admin/employee/edit/' . $employee->getId() . '">' . $employeeName . '</a>';
-                }
-            ])
+        $datatableField
+            ->addFieldWithEditField($table, 'firstname',
+                'Nom de l\'employé',
+                'employee',
+                'ADMIN_EMPLOYEE_EDIT'
+            )
             ->add('lastname', TextColumn::class, [
                 'visible'   => false,
             ])
@@ -134,20 +121,18 @@ class EmployeeController extends AbstractController
                     return '';
                 }
 
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'   => 'Supprimer ?',
-                'render'  => function($value, $employee) {
-                    return $this->renderView('admin/employee/include/_delete-button.html.twig', [
-                        'employee' => $employee,
-                    ]);
-                }
+            ]);
+
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/employee/include/_delete-button.html.twig', [
+                'entity'         => 'employee',
+                'authorizations' => 'ADMIN_EMPLOYEE_DELETE'
             ])
             ->addOrderBy('lastname')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => Employee::class
-            ])
         ;
+
+        $datatableField->createDatatableAdapter($table, Employee::class);
 
         $table->handleRequest($request);
 
@@ -162,6 +147,8 @@ class EmployeeController extends AbstractController
 
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_EMPLOYEE_ADD')")
+     *
      * @param Request $request
      *
      * @return Response
@@ -183,6 +170,10 @@ class EmployeeController extends AbstractController
 
             /** Manually encode password */
             $this->encoderServices->encodePassword($form, $employee);
+
+            if (isset($request->request->get('employee')['roles'])) {
+                $employee->setRoles([$request->request->get('employee')['roles']]);
+            }
 
             $employee->setFullNameSlugiffied(
                 $this->slugger->generateSlugUrl(
@@ -220,6 +211,7 @@ class EmployeeController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_EMPLOYEE_EDIT', employee)")
      *
      * @param Request $request
      * @param Employee $employee
@@ -240,6 +232,10 @@ class EmployeeController extends AbstractController
             /** Manually encode password */
             $this->encoderServices->encodePassword($form, $employee);
 
+            if (isset($request->request->get('employee')['roles'])) {
+                $employee->setRoles([$request->request->get('employee')['roles']]);
+            }
+
             $this->entityManager->persist($employee);
             $this->entityManager->flush();
 
@@ -255,6 +251,7 @@ class EmployeeController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_EMPLOYEE_DELETE', employee)")
      *
      * @param Employee $employee
      *

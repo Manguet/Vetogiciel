@@ -3,7 +3,9 @@
 namespace App\Entity\Structure;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Structure\VatRepository;
@@ -14,31 +16,32 @@ use App\Repository\Structure\VatRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Vat implements EntityDateInterface
+class Vat implements EntityDateInterface, CreatedByInterface
 {
     use EntityDateTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=120)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $code;
+    private ?string $code;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $value;
+    private ?float $value;
 
     public function getId(): ?int
     {

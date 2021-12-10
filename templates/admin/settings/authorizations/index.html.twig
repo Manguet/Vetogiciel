@@ -1,0 +1,92 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block morestylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/datatables.bootstrap.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.24/rr-1.2.7/datatables.min.css"/>
+{% endblock %}
+
+{% block body %}
+    <div class="my-3 d-flex justify-content-between">
+        <a href="{{ path('settings_index') }}">
+            <button class="custom-button">
+                <i class="fas fa-backspace"></i> Retour
+            </button>
+        </a>
+        {% if is_granted('ADMIN_AUTHORIZATION_ADD') %}
+            <button class="custom-button generateAjax" href="{{ path('authorization_generate') }}">
+                <i class="fas fa-upload"></i> Générer les autorisations
+            </button>
+        {% endif %}
+    </div>
+
+    <div id="my-tab">
+
+    </div>
+{% endblock %}
+
+{% block endjavascript %}
+    <script src="{{ asset('bundles/datatables/js/datatables.js') }}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.24/rr-1.2.7/datatables.min.js"></script>
+    <script>
+        $(function() {
+            $('#my-tab').initDataTables({{ datatable_settings(table) }}, {
+                searching: true,
+                dom:'lTfgtpi',
+                language: {
+                    "url": "https://cdn.datatables.net/plug-ins/1.10.21/i18n/French.json"
+                },
+                pageLength: 25,
+            }).then(function (dt) {
+
+                /** Ajax delete */
+                $('#my-tab tbody').on('click', '.deleteAjax', function (e) {
+                    e.preventDefault();
+
+                    let url = $(this).attr('href');
+                    swal({
+                        title      : 'ATTENTION',
+                        text       : 'Voulez-vous vraiment supprimer cette autorisation ?',
+                        icon       : 'warning',
+                        buttons    : true,
+                        dangerMode : true,
+                    }).then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                type      : 'POST',
+                                url       : url,
+                                data_type : 'json',
+                                data      : {}
+                            }).done(function () {
+                                dt.ajax.reload();
+                            })
+                        }
+                    })
+                })
+                /** Generate */
+                $(document).on('click', '.generateAjax', function (e) {
+                    e.preventDefault();
+
+                    let url = $(this).attr('href');
+                    swal({
+                        title      : 'ATTENTION',
+                        text       : 'Voulez-vous vraiment importer les autorisations ?',
+                        icon       : 'warning',
+                        buttons    : true,
+                        dangerMode : true,
+                    }).then((willGenerate) => {
+                        if (willGenerate) {
+                            $.ajax({
+                                type      : 'POST',
+                                url       : url,
+                                data_type : 'json',
+                                data      : {}
+                            }).done(function () {
+                                dt.ajax.reload();
+                            })
+                        }
+                    })
+                })
+            })
+        });
+    </script>
+{% endblock %}

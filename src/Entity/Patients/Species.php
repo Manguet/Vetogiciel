@@ -3,7 +3,9 @@
 namespace App\Entity\Patients;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Patients\SpeciesRepository;
@@ -14,27 +16,28 @@ use App\Repository\Patients\SpeciesRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Species implements EntityDateInterface
+class Species implements EntityDateInterface, CreatedByInterface
 {
     use EntityDateTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=Race::class, inversedBy="species")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $race;
+    private ?Race $race;
 
     public function getId(): ?int
     {

@@ -1,12 +1,14 @@
-{% macro card(title, icon, description, col, link, linkOptionValue) %}
+{% macro card(title, icon, description, col, link, linkOptionValue, authorization) %}
     <div class="col-sm-{{ col }}">
-        <div class="card settings-card">
-            <div class="card-body text-center">
-                <a href="{% if link is same as '' %}#{% elseif linkOptionValue is same as null %}{{ path(link) }}{% else %}{{ path(link, {'type' : linkOptionValue}) }}{% endif %}">
-                    <h5 class="card-title d-flex align-items-center justify-content-center"><i class="{{ icon }} mr-2 settings-icon"></i> {{ title }}</h5>
-                    <p class="card-text">{{ description }}</p>
-                </a>
+        {% if authorization == '' or is_granted(authorization) %}
+            <div class="card settings-card">
+                <div class="card-body text-center">
+                    <a href="{% if link is same as '' %}#{% elseif linkOptionValue is same as null %}{{ path(link) }}{% else %}{{ path(link, {'type' : linkOptionValue}) }}{% endif %}">
+                        <h5 class="card-title d-flex align-items-center justify-content-center"><i class="{{ icon }} mr-2 settings-icon"></i> {{ title }}</h5>
+                        <p class="card-text">{{ description }}</p>
+                    </a>
+                </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 {% endmacro %}

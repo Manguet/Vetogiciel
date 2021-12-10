@@ -5,8 +5,6 @@ namespace App\Traits\User;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Trait for Client, Veterinary and Employee
- *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 trait UserEntityTrait
@@ -16,38 +14,38 @@ trait UserEntityTrait
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    protected ?int $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    protected $email;
+    protected ?string $email;
 
     /**
      * @ORM\Column(type="json")
      */
-    protected $roles = [];
+    protected ?array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    protected $password;
+    protected string $password;
 
     /**
      * @ORM\Column(type="string", length=80, nullable=true)
      */
-    protected $firstname;
+    protected ?string $firstname;
 
     /**
      * @ORM\Column(type="string", length=120)
      */
-    protected $lastname;
+    protected ?string $lastname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $fullNameSlugiffied;
+    protected ?string $fullNameSlugiffied;
 
     public function getId(): ?int
     {
@@ -84,7 +82,9 @@ trait UserEntityTrait
         $roles = $this->roles;
 
         /** guarantee every user at least has ROLE_USER */
-        $roles[] = 'ROLE_USER';
+        if (empty($roles)) {
+            $roles[] = 'ROLE_USER';
+        }
 
         return array_unique($roles);
     }
@@ -101,7 +101,7 @@ trait UserEntityTrait
      */
     public function getPassword(): string
     {
-        return (string)$this->password;
+        return $this->password;
     }
 
     public function setPassword(string $password): self

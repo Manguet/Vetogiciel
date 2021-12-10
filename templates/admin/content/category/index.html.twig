@@ -12,11 +12,13 @@
                 <i class="fas fa-backspace"></i> Retour
             </button>
         </a>
-        <a href="{{ path('admin_article_category_new') }}">
-            <button class="custom-button mb-3">
-                <i class="fas fa-hashtag"></i> Créer une categorie
-            </button>
-        </a>
+        {% if is_granted('ADMIN_ARTICLECATEGORY_ADD') %}
+            <a href="{{ path('admin_article_category_new') }}">
+                <button class="custom-button mb-3">
+                    <i class="fas fa-hashtag"></i> Créer une categorie
+                </button>
+            </a>
+        {% endif %}
     </div>
 
     <div id="my-tab">

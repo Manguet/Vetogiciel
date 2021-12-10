@@ -3,7 +3,9 @@
 namespace App\Entity\Structure;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Structure\NoteRepository;
@@ -14,26 +16,27 @@ use App\Repository\Structure\NoteRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Note implements EntityDateInterface
+class Note implements EntityDateInterface, CreatedByInterface
 {
     use EntityDateTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=120)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     public function getId(): ?int
     {

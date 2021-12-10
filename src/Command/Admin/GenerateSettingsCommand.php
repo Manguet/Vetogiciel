@@ -18,15 +18,9 @@ use Symfony\Component\Yaml\Yaml;
  */
 class GenerateSettingsCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
+    private KernelInterface $kernel;
 
     /**
      * @param EntityManagerInterface $entityManager

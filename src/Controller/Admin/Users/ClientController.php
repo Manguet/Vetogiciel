@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Users;
 
 use App\Entity\Patients\Animal;
 use App\Entity\Patients\Client;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Service\User\PasswordEncoderServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -11,6 +12,7 @@ use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\DateTimeColumn;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,18 +24,14 @@ use App\Form\Client\ClientFormType;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/user", name="admin_user_")
+ *
+ * @Security("is_granted('ADMIN_CLIENT_ACCESS')")
  */
 class ClientController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var PasswordEncoderServices
-     */
-    private $encoderServices;
+    private PasswordEncoderServices $encoderServices;
 
     /**
      * ClientController constructor.
@@ -52,60 +50,51 @@ class ClientController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('lastname', TextColumn::class, [
-                'label'     => 'Nom',
-                'orderable' => true,
-                'render'    => function ($value, $client) {
-                    return '<a href="/admin/user/show/' . $client->getId() . '">' . $value . '</a>';
-                }
-            ])
+        $table = $dataTableFactory->create();
+
+        $datatableField
+            ->addFieldWithEditField($table, 'lastname',
+                'Nom',
+                'user',
+                'ADMIN_CLIENT_EDIT'
+            )
             ->add('firstname', TextColumn::class, [
                 'label'     => 'Prénom',
                 'orderable' => true,
-                'render'    => function ($value, $client) {
-                    return '<a href="/admin/user/show/' . $client->getId() . '">' . $value . '</a>';
-                }
             ])
             ->add('city', TextColumn::class, [
                 'label'     => 'Ville',
                 'orderable' => true,
-                'render'    => function ($value, $client) {
-                    return '<a href="/admin/user/show/' . $client->getId() . '">' . $value . '</a>';
-                }
             ])
             ->add('lastVisit', DateTimeColumn::class, [
                 'label'     => 'Dernière visite le',
                 'format'    => 'd/m/Y',
                 'orderable' => true,
-                'render'    => function ($value, $client) {
-                    return '<a href="/admin/user/show/' . $client->getId() . '">' . $value . '</a>';
-                }
             ])
             ->add('animals', TextColumn::class, [
                 'label'     => 'Nombre d\'animaux',
                 'render'    => function ($value, $client) {
                     return count($client->getAnimals());
                 }
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'   => 'Supprimer ?',
-                'render'  => function($value, $client) {
-                    return $this->renderView('admin/user/include/_delete-button.html.twig', [
-                        'client' => $client,
-                    ]);
-                }
+            ]);
+
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/user/include/_delete-button.html.twig', [
+                'entity'         => 'client',
+                'authorizations' => 'ADMIN_CLIENT_DELETE'
             ])
             ->addOrderBy('lastname')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => Client::class
-            ])
         ;
+
+        $datatableField->createDatatableAdapter($table, Client::class);
 
         $table->handleRequest($request);
 
@@ -120,6 +109,8 @@ class ClientController extends AbstractController
 
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_CLIENT_ADD')")
+     *
      * @param Request $request
      *
      * @return Response
@@ -139,6 +130,10 @@ class ClientController extends AbstractController
             /** Manually encode password */
             $this->encoderServices->encodePassword($form, $client);
 
+            if (isset($request->request->get('client_form')['roles'])) {
+                $client->setRoles([$request->request->get('client_form')['roles']]);
+            }
+
             $this->entityManager->persist($client);
             $this->entityManager->flush();
 
@@ -155,22 +150,26 @@ class ClientController extends AbstractController
 
     /**
      * @Route("/show/{id}", name="show", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_CLIENT_SHOW', client)")
+     *
      * @param Client $client
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function show(Client $client, Request $request, DataTableFactory $dataTableFactory): Response
+    public function show(Client $client, Request $request, DataTableFactory $dataTableFactory,
+                         DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('name', TextColumn::class, [
-                'label'     => 'Nom',
-                'orderable' => true,
-                'render'    => function ($value, $animal) {
-                    return '<a href="/admin/animal/edit/' . $animal->getClient()->getId() . '/animal/' . $animal->getId() . '">' . $value . '</a>';
-                }
-            ])
+        $table = $dataTableFactory->create();
+
+        $datatableField
+            ->addFieldWithEditField($table, 'name',
+                'Nom',
+                'animal',
+                'ADMIN_ANIMAL_EDIT'
+            )
             ->add('age', TextColumn::class, [
                 'label'     => 'Age',
                 'orderable' => true,
@@ -200,16 +199,18 @@ class ClientController extends AbstractController
 
                     return '';
                 }
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'   => 'Supprimer ?',
-                'render'  => function($value, $animal) {
-                    return $this->renderView('admin/animal/include/_delete-button.html.twig', [
-                        'animal' => $animal,
-                    ]);
-                }
+            ]);
+
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/animal/include/_delete-button.html.twig', [
+                'entity'         => 'animal',
+                'authorizations' => 'ADMIN_ANIMAL_DELETE'
             ])
             ->addOrderBy('name')
+        ;
+
+        $table
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Animal::class,
                 'query'  => function (QueryBuilder $builder) use ($client){
@@ -237,6 +238,8 @@ class ClientController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_CLIENT_EDIT', client)")
+     *
      * @param Client $client
      * @param Request $request
      *
@@ -251,6 +254,10 @@ class ClientController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if (isset($request->request->get('client_form')['roles'])) {
+                $client->setRoles([$request->request->get('client_form')['roles']]);
+            }
 
             $this->entityManager->flush();
 
@@ -268,6 +275,7 @@ class ClientController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_CLIENT_DELETE', client)")
      *
      * @param Client $client
      *

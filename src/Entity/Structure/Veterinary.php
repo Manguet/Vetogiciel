@@ -8,16 +8,19 @@ use App\Interfaces\Socials\SocialInterface;
 use App\Interfaces\Structure\ClinicInterface;
 use App\Interfaces\Structure\PhotoInterface;
 use App\Interfaces\Structure\PresentationInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Interfaces\User\UserEntityInterface;
 use App\Traits\DateTime\EntityDateTrait;
 use App\Traits\Socials\SocialTrait;
 use App\Traits\Structure\ClinicTrait;
 use App\Traits\Structure\PhotoTrait;
 use App\Traits\Structure\PresentationTrait;
+use App\Traits\User\CreatedByTrait;
 use App\Traits\User\UserEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 use App\Repository\Structure\VeterinaryRepository;
@@ -29,29 +32,31 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\HasLifecycleCallbacks
  * @Vich\Uploadable()
  *
- * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ *
+ * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Veterinary implements EntityDateInterface, UserEntityInterface, UserInterface,
+class Veterinary implements EntityDateInterface, UserInterface,
                             ClinicInterface, PhotoInterface, PresentationInterface,
-                            SocialInterface
+                            SocialInterface, UserEntityInterface, CreatedByInterface
 {
     use EntityDateTrait;
-    use UserEntityTrait;
     use ClinicTrait;
     use PhotoTrait;
     use PresentationTrait;
     use SocialTrait;
+    use UserEntityTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private $color;
+    private ?string $color;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private $number;
+    private ?string $number;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Structure\Sector", inversedBy="veterinaries")
@@ -61,21 +66,18 @@ class Veterinary implements EntityDateInterface, UserEntityInterface, UserInterf
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isVerified = false;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="createdBy")
-     */
-    private $articles;
+    private ?bool $isVerified = false;
 
     /**
      * @ORM\Column(type="enumVeterinaryTypes", nullable=true)
      */
-    private $type;
+    private ?string $type;
 
     /**
-     * Veterinary constructor.
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="createdByVeterinary")
      */
+    private $articles;
+
     public function __construct()
     {
         $this->sector   = new ArrayCollection();
@@ -208,6 +210,18 @@ class Veterinary implements EntityDateInterface, UserEntityInterface, UserInterf
         return $this;
     }
 
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Article[]
      */
@@ -220,7 +234,7 @@ class Veterinary implements EntityDateInterface, UserEntityInterface, UserInterf
     {
         if (!$this->articles->contains($article)) {
             $this->articles[] = $article;
-            $article->setCreatedBy($this);
+            $article->setCreatedByVeterinary($this);
         }
 
         return $this;
@@ -231,22 +245,10 @@ class Veterinary implements EntityDateInterface, UserEntityInterface, UserInterf
         if ($this->articles->contains($article)) {
             $this->articles->removeElement($article);
             // set the owning side to null (unless already changed)
-            if ($article->getCreatedBy() === $this) {
-                $article->setCreatedBy(null);
+            if ($article->getCreatedByVeterinary() === $this) {
+                $article->setCreatedByVeterinary(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(?string $type): self
-    {
-        $this->type = $type;
 
         return $this;
     }

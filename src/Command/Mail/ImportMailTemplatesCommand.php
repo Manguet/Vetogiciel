@@ -17,15 +17,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class ImportMailTemplatesCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
+    private KernelInterface $kernel;
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -69,8 +63,7 @@ class ImportMailTemplatesCommand extends Command
         $io->createProgressBar(count($files));
         $io->progressStart();
         foreach ($files as $file) {
-
-            $this->importTemplate($file->getPathname(), $file->getFilename());
+            $this->importTemplate( $file->getFilename());
             $io->progressAdvance();
         }
 
@@ -88,7 +81,10 @@ class ImportMailTemplatesCommand extends Command
     {
         $finder = new Finder();
 
-        $finder->files()->in($this->kernel->getProjectDir() . '/templates/email/');
+        $finder->files()
+            ->in($this->kernel->getProjectDir() . '/templates/email/')
+            ->exclude('demo')
+        ;
 
         if (!$finder->hasResults()) {
             throw new FileNotFoundException('Aucun template dans le dossier templates/email');
@@ -98,16 +94,25 @@ class ImportMailTemplatesCommand extends Command
     }
 
     /**
-     * @param string $pathName
      * @param string $fileName
      */
-    private function importTemplate(string $pathName, string $fileName): void
+    private function importTemplate(string $fileName): void
     {
+        $isEmailInBDD = $this->entityManager->getRepository(Email::class)
+            ->findOneBy(['template' => $fileName]);
+
+        if ($isEmailInBDD) {
+            return;
+        }
+
         $email = new Email();
 
+        $titles = explode('/', $fileName);
+        $title  = end($titles);
+
         $email
-            ->setTitle($fileName)
-            ->setTemplate(file_get_contents($pathName))
+            ->setTitle(str_replace('.html.twig', '', $title))
+            ->setTemplate($fileName)
         ;
 
         $this->entityManager->persist($email);

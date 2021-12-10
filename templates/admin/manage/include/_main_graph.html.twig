@@ -1,6 +1,6 @@
 <div class="mt-5 graph-zone">
-    <div class="dashboard-titles">
-        <h2><i class="fas fa-cash-register"></i> Chiffre d'affaire</h2>
+    <div class="dashboard-titles d-flex align-items-center">
+        <h2><i class="fas fa-money-bill-wave"></i> Chiffre d'affaire</h2>
     </div>
     <div class="d-flex justify-content-between">
         <div id="div_graph" class="graph"></div>
@@ -13,7 +13,8 @@
                         <div class="d-flex justify-content-between align-items-center seller">
                             <i class="fas fa-user-circle client" style="color: {% if loop.index is odd %}#FFF{% else %}#5499C7{% endif %} !important;"></i>
                             <div>
-                                <div class="user-info">{{ client.firstName }} {{ client.lastName }} {{ random(1000, 2200) }} €</div>
+                                <div class="user-info">{{ client.firstName }} {{ client.lastName }}</div>
+                                <div class="user-info mb-2">{{ random(1000, 2200) }} €</div>
                                 <div class="text-right user-extra">Visite le 15/03/2021 à 13h</div>
                                 <div class="text-right user-extra">Avec Dr. John Do</div>
                             </div>

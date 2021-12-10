@@ -3,8 +3,10 @@
 namespace App\Entity\Mail;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Repository\Mail\EmailRepository;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,61 +16,62 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\HasLifecycleCallbacks
  */
-class Email implements EntityDateInterface
+class Email implements EntityDateInterface, CreatedByInterface
 {
     use EntityDateTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=120, unique=true)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $subject;
+    private ?string $subject;
 
     /**
      * @ORM\Column(type="string", length=180, nullable=false)
      */
-    private $template;
+    private ?string $template;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isExpeditorCurrentUser;
+    private ?bool $isExpeditorCurrentUser;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $expeditor;
+    private ?string $expeditor;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isDestinatorCurrentUser;
+    private ?bool $isDestinatorCurrentUser;
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $destinators = [];
+    private ?array $destinators = [];
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isActivated;
+    private ?bool $isActivated;
 
     public function getId(): ?int
     {

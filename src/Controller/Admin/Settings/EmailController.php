@@ -4,14 +4,22 @@ namespace App\Controller\Admin\Settings;
 
 use App\Entity\Mail\Email;
 use App\Form\Settings\EmailType;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\BoolColumn;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -21,18 +29,14 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/email/", name="email_")
+ *
+ * @Security("is_granted('ADMIN_EMAIL_ACCESS')")
  */
 class EmailController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
+    private KernelInterface $kernel;
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -49,28 +53,29 @@ class EmailController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('title', TextColumn::class, [
-                'label'     => 'Titre',
-                'orderable' => true,
-                'render'    => function ($value, $email) {
-                    return '<a href="/admin/email/edit/' . $email->getId() . '">' . $value . '</a>';
-                }
-            ])
+        $table = $dataTableFactory->create();
+
+        $datatableField
+            ->addFieldWithEditField($table, 'title',
+                'Titre',
+                'email',
+            'ADMIN_EMAIL_EDIT')
             ->add('description', TextColumn::class, [
                 'label'     => 'Description',
                 'orderable' => true,
                 'render'    => function ($value) {
-                    if (strlen($value) <= 60) {
+                    if (strlen($value) <= 30) {
                         return $value;
                     }
 
-                    return substr($value,0,60) . ' ...';
+                    return substr($value,0,30) . ' ...';
                 }
             ])
             ->add('template', TextColumn::class, [
@@ -83,20 +88,19 @@ class EmailController extends AbstractController
                 'trueValue'  => '<i class="fas fa-check"></i>',
                 'falseValue' => '<i class="fas fa-times"></i>',
                 'nullValue'  => '<i class="fas fa-times"></i>',
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'   => 'Supprimer ?',
-                'render'  => function($value, $email) {
-                    return $this->renderView('admin/settings/email/include/_delete-button.html.twig', [
-                        'email' => $email,
-                    ]);
-                }
+            ]);
+
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/settings/email/include/_delete-button.html.twig', [
+                'entity'         => 'email',
+                'authorizations' => 'ADMIN_EMAIL_DELETE'
             ])
             ->addOrderBy('title')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => Email::class
-            ])
         ;
+
+        $datatableField
+            ->createDatatableAdapter($table, Email::class);
 
         $table->handleRequest($request);
 
@@ -111,6 +115,7 @@ class EmailController extends AbstractController
 
     /**
      * @Route ("new", name="new")
+     * @Security("is_granted('ADMIN_EMAIL_ADD')")
      *
      * @param Request $request
      *
@@ -129,11 +134,6 @@ class EmailController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $template = "{% apply inky_to_html|inline_css(source('@styles/email.css')) %}
-                <container>" . $email->getTemplate() . "</container>{% endapply %}";
-
-            $email->setTemplate($template);
-
             $this->entityManager->persist($email);
             $this->entityManager->flush();
 
@@ -148,6 +148,7 @@ class EmailController extends AbstractController
 
     /**
      * @Route ("edit/{id}", name="edit")
+     * @Security("is_granted('ADMIN_EMAIL_ADD')")
      *
      * @param Request $request
      * @param mixed $id
@@ -187,7 +188,10 @@ class EmailController extends AbstractController
     {
         $finder = new Finder();
 
-        $finder->files()->in($this->kernel->getProjectDir() . '/templates/email');
+        $finder->files()
+            ->in($this->kernel->getProjectDir() . '/templates/email')
+            ->exclude('demo')
+        ;
 
         if (!$finder->hasResults()) {
             throw new FileNotFoundException(
@@ -201,5 +205,48 @@ class EmailController extends AbstractController
         }
 
         return $files;
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_EMAIL_DELETE', email)")
+     *
+     * @param Email $email
+     *
+     * @return JsonResponse
+     */
+    public function delete(Email $email): JsonResponse
+    {
+        if (!$email instanceof Email) {
+            return new JsonResponse('Email Not Found', 404);
+        }
+
+        $this->entityManager->remove($email);
+        $this->entityManager->flush();
+
+        return new JsonResponse('Email deleted with success', 200);
+    }
+
+    /**
+     * @Route("generate", name="generate")
+     * @Security("is_granted('ADMIN_EMAIL_ADD')")
+     *
+     * @return JsonResponse
+     *
+     * @throws Exception
+     */
+    public function generate(): JsonResponse
+    {
+        $command = new Application($this->kernel);
+        $command->setAutoExit(false);
+
+        $input = new ArrayInput([
+            'command' => 'import:mail:templates',
+        ]);
+
+        $output = new NullOutput();
+        $command->run($input, $output);
+
+        return new JsonResponse('Template mail importés');
     }
 }

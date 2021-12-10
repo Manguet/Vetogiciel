@@ -1,0 +1,12 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <div class="mb-5">
+        <a href="{{ path('authorization_index') }}">
+            <button class="custom-button">
+                <i class="fas fa-backspace"></i> Retour
+            </button>
+        </a>
+    </div>
+    {{ include('admin/settings/authorizations/include/_form.html.twig') }}
+{% endblock %}

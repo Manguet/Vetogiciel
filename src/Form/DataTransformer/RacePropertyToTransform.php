@@ -12,7 +12,7 @@ class RacePropertyToTransform implements DataTransformerInterface
     /**
      * @param mixed $race
      *
-     * @return mixed|string
+     * @return array|string
      */
     public function transform($race)
     {

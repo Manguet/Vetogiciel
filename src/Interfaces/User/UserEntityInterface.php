@@ -3,8 +3,6 @@
 namespace App\Interfaces\User;
 
 /**
- * Interface for Entites look like User
- *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
 interface UserEntityInterface
@@ -56,5 +54,5 @@ interface UserEntityInterface
 
     public function getFullNameSlugiffied(): ?string;
 
-    public function setFullNameSlugiffied(string $fullNameSlugiffied): self;
+    public function setFullNameSlugiffied(?string $fullNameSlugiffied): self;
 }

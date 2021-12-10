@@ -32,11 +32,14 @@
             <li class="nav-item mx-3">
                 <a class="nav-link" href="#">Vétérinaire</a>
             </li>
-            <li class="justify-content-end"><span class="border-nav"></span></li>
 
-            <li class="nav-item mx-3">
-                <a class="nav-link" href="{{ path('admin_manage') }}">Gestion</a>
-            </li>
+            {% if is_granted('ADMIN_ADMIN_ACCESS') %}
+                <li class="justify-content-end"><span class="border-nav"></span></li>
+
+                <li class="nav-item mx-3">
+                    <a class="nav-link" href="{{ path('admin_manage') }}">Gestion</a>
+                </li>
+            {% endif %}
 
             {% if app.user %}
                 <li class="justify-content-end"><span class="border-nav"></span></li>

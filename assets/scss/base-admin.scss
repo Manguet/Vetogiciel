@@ -83,10 +83,20 @@
 }
 
 .dashboard-titles {
-  padding: 10px;
-  font-size: 30px;
+  padding: 10px 20px;
+  font-size: 26px;
   color: $grey-shadow;
-  font-style: italic
+
+  h2 {
+    margin-bottom: 0;
+    display: flex;
+    align-items: end;
+    margin-left: 15px;
+
+    svg {
+      margin-right: 15px;
+    }
+  }
 }
 
 .graph-zone {
@@ -103,13 +113,12 @@
   border-left: 1px solid $grey-shadow;
 
   .trophy {
-    font-size: 12px !important;
+    font-size: 23px !important;
   }
 
   .sell {
-    padding-left: 10px;
-    padding-right: 10px;
     border-top: 1px solid $light-grey;
+    padding: 8px 10px;
 
     .seller {
       font-size: 15px;
@@ -121,16 +130,17 @@
       }
 
       .user-info {
-        font-weight: bold;
-        font-style: italic;
+        font-weight: 500;
         font-size: 20px;
-        color: $grey-shadow !important;
+        color: $white !important;
+        text-align: right;
       }
 
       .user-extra {
         font-style: italic;
         color: $white;
         font-size: 12px;
+        line-height: 18px;
       }
     }
   }

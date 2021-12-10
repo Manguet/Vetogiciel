@@ -4,10 +4,12 @@ namespace App\Controller\Admin\Structure;
 
 use App\Entity\Structure\Sector;
 use App\Form\Structure\SectorFormType;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,13 +20,12 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/sector", name="admin_sector_")
+ *
+ * @Security("is_granted('ADMIN_SECTOR_ACCESS')")
  */
 class SectorController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -39,20 +40,21 @@ class SectorController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('name', TextColumn::class, [
-                'label'     => 'Nom du secteur',
-                'orderable' => true,
-                'render'    => function ($value, $sector) {
+        $table = $dataTableFactory->create();
 
-                    return '<a href="/admin/sector/edit/' . $sector->getId() . '">' . $value . '</a>';
-                }
-            ])
+        $datatableField
+            ->addFieldWithEditField($table, 'name',
+                'Nom du secteur',
+                'sector',
+                'ADMIN_SECTOR_EDIT'
+            )
             ->add('veterinaries', TextColumn::class, [
                 'label'     => 'Nombre de vétérinaires',
                 'orderable' => true,
@@ -76,20 +78,18 @@ class SectorController extends AbstractController
 
                     return 0;
                 }
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'   => 'Supprimer ?',
-                'render'  => function($value, $sector) {
-                    return $this->renderView('admin/sector/include/_delete-button.html.twig', [
-                        'sector' => $sector,
-                    ]);
-                }
+            ]);
+
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/sector/include/_delete-button.html.twig', [
+                'entity'         => 'sector',
+                'authorizations' => 'ADMIN_SECTOR_DELETE'
             ])
             ->addOrderBy('name')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => Sector::class
-            ])
         ;
+
+        $datatableField->createDatatableAdapter($table, Sector::class);
 
         $table->handleRequest($request);
 
@@ -104,6 +104,8 @@ class SectorController extends AbstractController
 
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_SECTOR_ADD')")
+     *
      * @param Request $request
      *
      * @return Response
@@ -131,6 +133,7 @@ class SectorController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_SECTOR_EDIT', sector)")
      *
      * @param Request $request
      * @param Sector $sector
@@ -158,6 +161,7 @@ class SectorController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_SECTOR_DELETE', sector)")
      *
      * @param Sector $sector
      *

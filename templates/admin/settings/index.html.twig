@@ -5,70 +5,88 @@
 {% block body %}
     <h1 class="text-center">Settings</h1>
     <hr>
+    {% if is_granted('ADMIN_SETTINGS_ACCESS') %}
+        <h2 class="text-center dashboard-titles mt-3">Configurations</h2>
+        <div class="row mt-5">
 
-    <h2 class="text-center dashboard-titles mt-3">Configurations</h2>
-    <div class="row mt-5">
+            {{ macroCard.card('Configurations générales',
+                'fas fa-cogs',
+                'Vous permet de configurer les informations générales de tous les sites (Titre site, description, annonces, settings, ...)',
+                4,
+                'settings_configuration',
+                'general',
+                'ADMIN_SETTINGS_ACCESS'
+            ) }}
+            {{ macroCard.card('Configurations spéficiques',
+                'fas fa-sliders-h',
+                'Vous permet de configurer les informations spécifiques des sites',
+                4,
+                '',
+                '',
+                'ADMIN_SETTINGS_ACCESS'
+            ) }}
+            {{ macroCard.card('Configurations avancées',
+                'fas fa-toolbox',
+                'Vous permet de configurer les informations avancées des sites',
+                4,
+                '',
+                '',
+                'ADMIN_SETTINGS_ACCESS'
+            ) }}
+        </div>
+        <br>
+        <hr>
+    {% endif %}
 
-        {{ macroCard.card('Configurations générales',
-            'fas fa-cogs',
-            'Vous permet de configurer les informations générales de tous les sites (Titre site, description, annonces, settings, ...)',
-            4,
-            'settings_configuration',
-            'general'
-        ) }}
-        {{ macroCard.card('Configurations spéficiques',
-            'fas fa-sliders-h',
-            'Vous permet de configurer les informations spécifiques des sites',
-            4,
-            ''
-        ) }}
-        {{ macroCard.card('Configurations avancées',
-            'fas fa-toolbox',
-            'Vous permet de configurer les informations avancées des sites',
-            4,
-            ''
-        ) }}
-    </div>
+    {% if is_granted('ADMIN_AUTHORIZATION_ACCESS') or is_granted('ADMIN_ROLE_ACCESS') %}
+        <h2 class="text-center dashboard-titles mt-3">Autorisations</h2>
+        <div class="row mt-3">
+            {{ macroCard.card('Autorisations',
+                'fas fa-ruler-combined',
+                'Vous pouvez gérer les autorisations des utilisateurs et les générer. Il faut jumeler les autorisations et les rôles',
+                6,
+                'authorization_index',
+                '',
+                'ADMIN_AUTHORIZATION_ACCESS'
+            ) }}
+            {{ macroCard.card('Roles',
+                'fas fa-user-tag',
+                'Vous pouvez gérer les rôles des utilisateurs. Il faut jumeler les autorisations et les rôles',
+                6,
+                'role_index',
+                '',
+                'ADMIN_ROLE_ACCESS'
+            ) }}
+        </div>
+    {% endif %}
+
     <br>
     <hr>
-
-    <h2 class="text-center dashboard-titles mt-3">Autorisations</h2>
-    <div class="row mt-3">
-        {{ macroCard.card('Autorisations',
-            'fas fa-ruler-combined',
-            'Vous pouvez gérer les autorisations des utilisateurs',
-            6,
-            ''
-        ) }}
-        {{ macroCard.card('Roles',
-            'fas fa-user-tag',
-            'Vous pouvez gérer les rôles des utilisateurs',
-            6,
-            ''
-        ) }}
-    </div>
-
-    <br>
-    <hr>
-    <h2 class="text-center dashboard-titles mt-3">Mailing</h2>
-    <div class="row mt-3 mb-5">
-        {{ macroCard.card('Email',
-            'fas fa-envelope-open-text',
-            'Vous permet de créer et de configurer des emails pour les envoies',
-            4,
-            'email_index'
-        ) }}
-        {{ macroCard.card('SMS',
-            'far fa-comment-dots',
-            'Vous pouvez gérer les SMS du site',
-            4,
-            ''
-        ) }}
-        {{ macroCard.card('Chat',
-            'far fa-comments',
-            'Vous pouvez gérer le chat du site',
-            4,
-            ''
-        ) }}
-    </div>
+    {% if is_granted('ADMIN_EMAIL_ACCESS') %}
+        <h2 class="text-center dashboard-titles mt-3">Mailing</h2>
+        <div class="row mt-3 mb-5">
+            {{ macroCard.card('Email',
+                'fas fa-envelope-open-text',
+                'Vous permet de créer et de configurer des emails pour les envoies',
+                4,
+                'email_index',
+                '',
+                'ADMIN_EMAIL_ACCESS'
+            ) }}
+            {{ macroCard.card('SMS',
+                'far fa-comment-dots',
+                'Vous pouvez gérer les SMS du site',
+                4,
+                '',
+                ''
+            ) }}
+            {{ macroCard.card('Chat',
+                'far fa-comments',
+                'Vous pouvez gérer le chat du site',
+                4,
+                '',
+                ''
+            ) }}
+        </div>
+    {% endif %}
 {% endblock %}

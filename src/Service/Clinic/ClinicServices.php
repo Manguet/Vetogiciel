@@ -10,10 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class ClinicServices
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * ClinicServices constructor.

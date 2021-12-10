@@ -2,6 +2,7 @@
 
 namespace App\Entity\Contents;
 
+use App\Entity\Structure\Employee;
 use App\Entity\Structure\Veterinary;
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Interfaces\Priority\PriorityInterface;
@@ -12,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,33 +34,33 @@ class Article implements EntityDateInterface, PriorityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $titleUrl;
+    private ?string $titleUrl;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isActivated;
+    private ?bool $isActivated;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @var string|null
      */
-    private $image;
+    private ?string $image;
 
     /**
      * @Vich\UploadableField(mapping="articles", fileNameProperty="image")
@@ -73,19 +75,24 @@ class Article implements EntityDateInterface, PriorityInterface
     private $imageFile;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Veterinary::class, inversedBy="articles")
-     */
-    private $createdBy;
-
-    /**
      * @ORM\ManyToOne(targetEntity=ArticleCategory::class, inversedBy="article", cascade={"persist"})
      */
-    private $articleCategory;
+    private ?ArticleCategory $articleCategory;
 
     /**
      * @ORM\OneToMany(targetEntity=Commentary::class, mappedBy="article")
      */
     private $comments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Veterinary::class, inversedBy="articles")
+     */
+    private $createdByVeterinary;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Employee::class, inversedBy="articles")
+     */
+    private $createdByEmployee;
 
     public function __construct()
     {
@@ -185,18 +192,6 @@ class Article implements EntityDateInterface, PriorityInterface
         return $this->image;
     }
 
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(?Veterinary $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
     public function getArticleCategory(): ?ArticleCategory
     {
         return $this->articleCategory;
@@ -235,6 +230,48 @@ class Article implements EntityDateInterface, PriorityInterface
             if ($comment->getArticle() === $this) {
                 $comment->setArticle(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getCreatedByVeterinary(): ?Veterinary
+    {
+        return $this->createdByVeterinary;
+    }
+
+    public function setCreatedByVeterinary(?Veterinary $createdByVeterinary): self
+    {
+        $this->createdByVeterinary = $createdByVeterinary;
+
+        return $this;
+    }
+
+    public function getCreatedByEmployee(): ?Employee
+    {
+        return $this->createdByEmployee;
+    }
+
+    public function setCreatedByEmployee(?Employee $createdByEmployee): self
+    {
+        $this->createdByEmployee = $createdByEmployee;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?UserInterface
+    {
+        return $this->createdByVeterinary ?? $this->createdByEmployee;
+    }
+
+    public function setCreatedBy(UserInterface $user): self
+    {
+        if ($user instanceof Veterinary) {
+            $this->createdByVeterinary = $user;
+        }
+
+        if ($user instanceof Employee) {
+            $this->createdByEmployee = $user;
         }
 
         return $this;

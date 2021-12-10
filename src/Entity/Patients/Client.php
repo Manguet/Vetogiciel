@@ -4,8 +4,10 @@ namespace App\Entity\Patients;
 
 use App\Entity\Structure\Clinic;
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByWithUserInterface;
 use App\Interfaces\User\UserEntityInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByWithUserTrait;
 use App\Traits\User\UserEntityTrait;
 use DateTime;
 use DateTimeInterface;
@@ -22,50 +24,51 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Client implements EntityDateInterface, UserEntityInterface, UserInterface
+class Client implements EntityDateInterface, UserInterface, UserEntityInterface, CreatedByWithUserInterface
 {
     use EntityDateTrait;
     use UserEntityTrait;
+    use CreatedByWithUserTrait;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $address;
+    private ?string $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $address2;
+    private ?string $address2;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
      */
-    private $postalCode;
+    private ?string $postalCode;
 
     /**
      * @ORM\Column(type="string", length=80, nullable=true)
      */
-    private $city;
+    private ?string $city;
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
      */
-    private $phoneNumber;
+    private ?string $phoneNumber;
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
      */
-    private $phoneNumber2;
+    private ?string $phoneNumber2;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Patients\Comment")
      */
-    private $comment;
+    private ?Comment $comment;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isInDebt;
+    private ?bool $isInDebt;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Patients\Animal", mappedBy="client")
@@ -75,7 +78,7 @@ class Client implements EntityDateInterface, UserEntityInterface, UserInterface
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $lastVisit;
+    private ?DateTimeInterface $lastVisit;
 
     /**
      * @ORM\ManyToMany(targetEntity=Clinic::class)
@@ -85,15 +88,15 @@ class Client implements EntityDateInterface, UserEntityInterface, UserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isVerified = false;
+    private bool $isVerified = false;
 
     /**
      * @return void
      */
     public function __construct()
     {
-        $this->animals = new ArrayCollection();
-        $this->clinic = new ArrayCollection();
+        $this->animals  = new ArrayCollection();
+        $this->clinic   = new ArrayCollection();
     }
 
     /**

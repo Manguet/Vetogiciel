@@ -1,0 +1,7 @@
+{% if role.type == 'custom' %}
+    <a class="d-flex justify-content-center align-items-center">
+        <button href="{{ path('role_delete', { 'id' : role.id }) }}" class="datatable-button deleteAjax">
+            <i class="fas fa-times"></i>
+        </button>
+    </a>
+{% endif %}

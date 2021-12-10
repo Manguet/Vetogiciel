@@ -26,15 +26,9 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  */
 class AnimalType extends AbstractType
 {
-    /**
-     * @var RacePropertyToTransform
-     */
-    private $racePropertyTransform;
+    private RacePropertyToTransform $racePropertyTransform;
 
-    /**
-     * @var SpeciesPropertyTranform
-     */
-    private $speciesPropertyTransform;
+    private SpeciesPropertyTranform $speciesPropertyTransform;
 
 
     /**

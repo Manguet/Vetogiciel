@@ -4,12 +4,13 @@ namespace App\Controller\Admin\Structure;
 
 use App\Entity\Structure\Clinic;
 use App\Form\Structure\ClinicType;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Slugger\SluggerInterface;
 use App\Service\Priority\PriorityServices;
 use Doctrine\ORM\EntityManagerInterface;
-use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,23 +21,16 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/clinic", name="admin_clinic_")
+ *
+ * @Security("is_granted('ADMIN_CLINIC_ACCESS')")
  */
 class ClinicController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var PriorityServices
-     */
-    private $priorityServices;
+    private PriorityServices $priorityServices;
 
-    /**
-     * @var SluggerInterface
-     */
-    private $slugger;
+    private SluggerInterface $slugger;
 
     /**
      * ClinicController constructor.
@@ -58,19 +52,21 @@ class ClinicController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('name', TextColumn::class, [
-                'label'     => 'Nom de la structure',
-                'orderable' => true,
-                'render'    => function ($value, $clinic) {
-                    return '<a href="/admin/clinic/edit/' . $clinic->getId() . '">' . $value . '</a>';
-                }
-            ])
+        $table = $dataTableFactory->create();
+
+        $datatableField
+            ->addFieldWithEditField($table, 'name',
+                'Nom de la structure',
+                'clinic',
+                'ADMIN_CLINIC_EDIT'
+            )
             ->add('city', TextColumn::class, [
                 'label'     => 'Ville de la structure',
                 'orderable' => true,
@@ -82,12 +78,16 @@ class ClinicController extends AbstractController
             ->add('priority', TextColumn::class, [
                 'label'     => 'Priorité d\'affichage',
                 'orderable' => true,
-            ])
+            ]);
+
+        $datatableField
+            ->addCreatedBy($table);
+
+        $table
             ->addOrderBy('priority')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => Clinic::class
-            ])
         ;
+
+        $datatableField->createDatatableAdapter($table, Clinic::class);
 
         $table->handleRequest($request);
 
@@ -102,6 +102,7 @@ class ClinicController extends AbstractController
 
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_CLINIC_ADD')")
      *
      * @param Request $request
      *
@@ -139,6 +140,7 @@ class ClinicController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_CLINIC_EDIT', clinic)")
      *
      * @param Clinic $clinic
      * @param Request $request
@@ -165,6 +167,7 @@ class ClinicController extends AbstractController
 
     /**
      * @Route("/priority", name="priority")
+     * @Security("is_granted('ADMIN_CLINIC_ADD')")
      *
      * @param Request $request
      *

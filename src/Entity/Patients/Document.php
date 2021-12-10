@@ -3,7 +3,9 @@
 namespace App\Entity\Patients;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\Patients\DocumentRepository;
@@ -14,31 +16,32 @@ use App\Repository\Patients\DocumentRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Document implements EntityDateInterface
+class Document implements EntityDateInterface, CreatedByInterface
 {
     use EntityDateTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Patients\Folder", inversedBy="documents")
      */
-    private $folder;
+    private ?Folder $folder;
 
     public function getId(): ?int
     {

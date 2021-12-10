@@ -19,9 +19,8 @@ trait PhotoTrait
 {
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @var string|null
      */
-    private $photo;
+    private ?string $photo;
 
     /**
      * @Vich\UploadableField(mapping="photos", fileNameProperty="photo")
@@ -31,7 +30,6 @@ trait PhotoTrait
      *      mimeTypes={"image/png", "image/jpeg", "image/jpg", "image/gif"},
      *      mimeTypesMessage= "formats autorisés: png, jpeg, jpg, gif"
      * )
-     * @var null|File
      */
     private $photoFile;
 

@@ -26,20 +26,11 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
  */
 class RegistrationController extends AbstractController
 {
-    /**
-     * @var EmailVerifier
-     */
-    private $emailVerifier;
+    private EmailVerifier $emailVerifier;
 
-    /**
-     * @var FlashBagInterface
-     */
-    private $flashBag;
+    private FlashBagInterface $flashBag;
 
-    /**
-     * @var MessageBusInterface
-     */
-    private $bus;
+    private MessageBusInterface $bus;
 
     /**
      * @param EmailVerifier $emailVerifier

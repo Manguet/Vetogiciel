@@ -3,7 +3,9 @@
 namespace App\Entity\External;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\External\LaboratoryRepository;
@@ -14,56 +16,57 @@ use App\Repository\External\LaboratoryRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Laboratory implements EntityDateInterface
+class Laboratory implements EntityDateInterface, CreatedByInterface
 {
     use EntityDateTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=150)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $address;
+    private ?string $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $address2;
+    private ?string $address2;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $postalCode;
+    private ?int $postalCode;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $city;
+    private ?string $city;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private $phone;
+    private ?string $phone;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private $phone2;
+    private ?string $phone2;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $email;
+    private ?string $email;
 
     public function getId(): ?int
     {

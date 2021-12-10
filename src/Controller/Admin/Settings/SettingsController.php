@@ -5,8 +5,8 @@ namespace App\Controller\Admin\Settings;
 use App\Entity\Settings\Configuration;
 use App\Form\Settings\ConfigurationType;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,13 +15,12 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/settings/", name="settings_")
+ *
+ * @Security("is_granted('ADMIN_SETTINGS_ACCESS') or is_granted('ADMIN_AUTHORIZATION_ACCESS') or is_granted('ADMIN_ROLE_ACCESS')")
  */
 class SettingsController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * SettingsController constructor.
@@ -45,6 +44,7 @@ class SettingsController extends AbstractController
 
     /**
      * @Route ("configuration/{type}", name="configuration")
+     * @Security("is_granted('ADMIN_SETTINGS_ADD')")
      *
      * @param Request $request
      * @param string $type

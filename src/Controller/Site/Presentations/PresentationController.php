@@ -19,14 +19,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PresentationController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
-     * PresentationController constructor.
-     *
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)

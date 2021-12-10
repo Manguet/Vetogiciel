@@ -1,0 +1,98 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block morestylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <div class="mb-5">
+        <a href="{{ path('role_index') }}">
+            <button class="custom-button">
+                <i class="fas fa-backspace"></i> Retour
+            </button>
+        </a>
+    </div>
+    {{ include('admin/settings/roles/include/_form.html.twig') }}
+{% endblock %}
+
+{% block endjavascript %}
+    <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script>
+        $(".AjaxAuthorization").on('click', function () {
+
+            let authorization        = $(this).attr('id');
+            let checkedAuthorization = false;
+            let roleId               = "{{ role.id }}";
+
+            if ($(this).prop('checked')) {
+                checkedAuthorization = true;
+            }
+
+            let url = "{{ path('role_add_authorization', {'id' : '5'}) }}"
+            url = url.replace('5', roleId)
+
+            $.ajax({
+                type      : 'POST',
+                url       : url,
+                data_type : 'json',
+                data      : {
+                    'authorization' : authorization,
+                    'checked'       : checkedAuthorization,
+                }
+            })
+        })
+
+        $(".AllAuthorizationSector").on('click', function () {
+            let line = $(this).closest('tr');
+            let checkedManager = $(this).prop('checked')
+
+            if (!checkedManager) {
+                let mainInput = line.closest('table').find('thead').find('input');
+                mainInput.prop("checked", false)
+            }
+
+            $(line).find('input').each (function() {
+
+                if (checkedManager) {
+                    $(this).prop( "checked", true );
+                } else {
+                    $(this).prop( "checked", false );}
+            });
+        })
+
+        $(".AjaxMainAuthorization").on('click', function () {
+            let table = $(this).closest('table');
+            let checkedManager = $(this).prop('checked')
+
+            $(table).find('input').each (function() {
+                if (checkedManager) {
+                    $(this).prop( "checked", true );
+                } else {
+                    $(this).prop( "checked", false );
+                }
+
+            });
+        })
+
+        $('.AjaxMinorAuthorization').on('click', function () {
+            let line = $(this).closest('tr');
+            let manage = $(line).find('.AllAuthorizationSector');
+
+            if (!$(this).prop('checked')) {
+                let mainInput = line.closest('table').find('thead').find('input');
+                mainInput.prop("checked", false)
+            }
+
+            if (manage.prop('checked')) {
+                manage.prop('checked', false)
+                $(line).find('input').each (function() {
+                    $(this).prop( "checked", false );
+                });
+
+                $(this).prop("checked", true)
+            }
+
+        })
+    </script>
+{% endblock %}

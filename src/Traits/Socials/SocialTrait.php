@@ -12,39 +12,29 @@ use Doctrine\ORM\Mapping as ORM;
 trait SocialTrait
 {
     /**
-     * @var string|null
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $facebook;
+    private ?string $facebook;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $instagram;
+    private ?string $instagram;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $linkedin;
+    private ?string $linkedin;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $twitter;
+    private ?string $twitter;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $youtube;
+    private ?string $youtube;
 
     /**
      * @return string|null

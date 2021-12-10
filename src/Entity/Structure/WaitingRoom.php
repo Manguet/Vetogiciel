@@ -3,7 +3,9 @@
 namespace App\Entity\Structure;
 
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,31 +19,32 @@ use App\Repository\Structure\WaitingRoomRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class WaitingRoom implements EntityDateInterface
+class WaitingRoom implements EntityDateInterface, CreatedByInterface
 {
     use EntityDateTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=80, nullable=true)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Patients\Animal", mappedBy="waitingRoom")
      */
-    private $animals;
+    private ArrayCollection $animals;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $capacity;
+    private ?int $capacity;
 
     public function __construct()
     {

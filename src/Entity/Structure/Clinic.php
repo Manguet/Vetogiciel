@@ -7,12 +7,14 @@ use App\Interfaces\Priority\PriorityInterface;
 use App\Interfaces\Socials\SocialInterface;
 use App\Interfaces\Structure\AddressInterface;
 use App\Interfaces\Structure\PhotoInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Repository\Structure\ClinicRepository;
 use App\Traits\DateTime\EntityDateTrait;
 use App\Traits\Priority\PriorityTrait;
 use App\Traits\Socials\SocialTrait;
 use App\Traits\Structure\AddressTrait;
 use App\Traits\Structure\PhotoTrait;
+use App\Traits\User\CreatedByTrait;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -24,60 +26,62 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface, AddressInterface, SocialInterface
+class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface, AddressInterface, SocialInterface,
+                        CreatedByInterface
 {
     use EntityDateTrait;
     use PriorityTrait;
     use PhotoTrait;
     use AddressTrait;
     use SocialTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $nameSlugiffied;
+    protected ?string $nameSlugiffied;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $fiscalDate;
+    private ?DateTimeInterface $fiscalDate;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $status;
+    private ?string $status;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $email;
+    private ?string $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $siren;
+    private ?string $siren;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $siret;
+    private ?string $siret;
 
     /**
      * @ORM\Column(type="enumStructureTypes", nullable=true)
      */
-    private $type;
+    private ?string $type;
 
     public function getId(): ?int
     {

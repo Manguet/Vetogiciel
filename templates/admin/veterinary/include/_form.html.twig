@@ -7,6 +7,7 @@
         <li class="tab-link" data-tab="tab-5">Réseaux Sociaux</li>
         <li class="tab-link" data-tab="tab-3">Photos</li>
         <li class="tab-link" data-tab="tab-4">Présentation</li>
+        <li class="tab-link" data-tab="tab-6">Rôles</li>
     </ul>
 
     <div id="tab-1" class="tab-content current">
@@ -113,6 +114,13 @@
         <div>
             {{ form_label(form.youtube) }}
             {{ form_widget(form.youtube) }}
+        </div>
+    </div>
+
+    <div id="tab-6" class="tab-content">
+        <div>
+            {{ form_label(form.roles) }}
+            {{ form_widget(form.roles) }}
         </div>
     </div>
 

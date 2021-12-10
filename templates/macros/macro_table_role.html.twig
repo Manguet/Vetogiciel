@@ -1,0 +1,121 @@
+{% macro tableRole (sector, authorizations, role) %}
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Entité</th>
+            <th scope="col">Accès</th>
+            <th scope="col">Création</th>
+            <th scope="col">Détail</th>
+            <th scope="col">Edition</th>
+            <th scope="col">Suppression</th>
+            <th scope="col">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input AjaxMainAuthorization AjaxAuthorization" id="{{ sector }}_FULL_ACCESS"
+                            {% if sector ~ "_FULL_ACCESS"  in role.authorizations %}
+                                checked="checked"
+                            {% endif %}
+                    >
+                    <label class="custom-control-label" for="{{ sector }}_FULL_ACCESS">Tous les droits</label>
+                </div>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for authorization in authorizations %}
+            <tr>
+                <td>
+                    {{ authorization.relatedEntity }}
+                </td>
+                <td>
+                    {% if authorization.canAccess is not null %}
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input AjaxMinorAuthorization AjaxAuthorization" id="{{ sector }}_{{ authorization.canAccess }}"
+                                {% if sector ~ "_" ~ authorization.canAccess  in role.authorizations
+                                    or sector ~ "_" ~ authorization.relatedEntity|upper ~ "_MANAGE"  in role.authorizations
+                                    or sector ~ "_FULL_ACCESS"  in role.authorizations
+                                %}
+                                    checked="checked"
+                                {% endif %}
+                            >
+                            <label class="custom-control-label" for="{{ sector }}_{{ authorization.canAccess }}"></label>
+                        </div>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if authorization.canAdd is not null %}
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input AjaxMinorAuthorization AjaxAuthorization" id="{{ sector }}_{{ authorization.canAdd }}"
+                                {% if sector ~ "_" ~ authorization.canAdd  in role.authorizations
+                                    or sector ~ "_" ~ authorization.relatedEntity|upper ~ "_MANAGE"  in role.authorizations
+                                    or sector ~ "_FULL_ACCESS"  in role.authorizations
+                                %}
+                                    checked="checked"
+                                {% endif %}
+                            >
+                            <label class="custom-control-label" for="{{ sector }}_{{ authorization.canAdd }}"></label>
+                        </div>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if authorization.canShow is not null %}
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input AjaxMinorAuthorization AjaxAuthorization" id="{{ sector }}_{{ authorization.canShow }}"
+                                {% if sector ~ "_" ~ authorization.canShow  in role.authorizations
+                                    or sector ~ "_" ~ authorization.relatedEntity|upper ~ "_MANAGE"  in role.authorizations
+                                    or sector ~ "_FULL_ACCESS"  in role.authorizations
+                                %}
+                                    checked="checked"
+                                {% endif %}
+                            >
+                            <label class="custom-control-label" for="{{ sector }}_{{ authorization.canShow }}"></label>
+                        </div>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if authorization.canEdit is not null %}
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input AjaxMinorAuthorization AjaxAuthorization" id="{{ sector }}_{{ authorization.canEdit }}"
+                                {% if sector ~ "_" ~ authorization.canEdit  in role.authorizations
+                                    or sector ~ "_" ~ authorization.relatedEntity|upper ~ "_MANAGE"  in role.authorizations
+                                    or sector ~ "_FULL_ACCESS"  in role.authorizations
+                                %}
+                                    checked="checked"
+                                {% endif %}
+                            >
+                            <label class="custom-control-label" for="{{ sector }}_{{ authorization.canEdit }}"></label>
+                        </div>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if authorization.canEdit is not null %}
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input AjaxMinorAuthorization AjaxAuthorization" id="{{ sector }}_{{ authorization.canDelete }}"
+                                {% if sector ~ "_" ~ authorization.canDelete  in role.authorizations
+                                    or sector ~ "_" ~ authorization.relatedEntity|upper ~ "_MANAGE"  in role.authorizations
+                                    or sector ~ "_FULL_ACCESS"  in role.authorizations
+                                %}
+                                    checked="checked"
+                                {% endif %}
+                            >
+                            <label class="custom-control-label" for="{{ sector }}_{{ authorization.canDelete }}"></label>
+                        </div>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input AllAuthorizationSector AjaxAuthorization" id="{{ sector }}_{{ authorization.relatedEntity|upper }}_MANAGE"
+                                {% if sector ~ "_" ~ authorization.relatedEntity|upper ~ "_MANAGE"  in role.authorizations
+                                    or sector ~ "_FULL_ACCESS"  in role.authorizations
+                                %}
+                                    checked="checked"
+                                {% endif %}
+                        >
+                        <label class="custom-control-label" for="{{ sector }}_{{ authorization.relatedEntity|upper }}_MANAGE">Tout</label>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endmacro %}

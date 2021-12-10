@@ -12,7 +12,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Message;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -20,20 +19,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class StartMailHandler implements MessageHandlerInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var EmailVerifier
-     */
-    private $emailVerifier;
+    private EmailVerifier $emailVerifier;
 
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
+    private KernelInterface $kernel;
 
     /**
      * @param EntityManagerInterface $entityManager

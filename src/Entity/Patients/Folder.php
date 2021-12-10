@@ -4,7 +4,9 @@ namespace App\Entity\Patients;
 
 use App\Entity\Structure\Bill;
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,32 +19,33 @@ use App\Repository\Patients\FolderRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Folder implements EntityDateInterface
+class Folder implements EntityDateInterface, CreatedByInterface
 {
     use EntityDateTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=20)
      */
-    private $number;
+    private ?string $number;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Patients\Animal", inversedBy="folder", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $animal;
+    private ?Animal $animal;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Patients\Document", mappedBy="folder", cascade={"persist", "remove"})

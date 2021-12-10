@@ -9,15 +9,9 @@ use App\Interfaces\Message\StartMailInterface;
  */
 class StartMail implements StartMailInterface
 {
-    /**
-     * @var string
-     */
-    private $mailTitle;
+    private string $mailTitle;
 
-    /**
-     * @var null|int
-     */
-    private $userId;
+    private ?int $userId;
 
     /**
      * @param $mailTitle

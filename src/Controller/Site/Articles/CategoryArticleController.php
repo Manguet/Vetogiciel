@@ -16,10 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CategoryArticleController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * @param EntityManagerInterface $entityManager

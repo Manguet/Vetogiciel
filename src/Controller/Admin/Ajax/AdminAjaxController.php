@@ -3,8 +3,10 @@
 namespace App\Controller\Admin\Ajax;
 
 use App\Entity\Contents\ArticleCategory;
+use App\Entity\Patients\Client;
 use App\Entity\Patients\Race;
 use App\Entity\Patients\Species;
+use App\Entity\Settings\Role;
 use App\Entity\Structure\Clinic;
 use App\Entity\Structure\Employee;
 use App\Entity\Structure\Sector;
@@ -22,10 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminAjaxController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * AdminAjaxController constructor.
@@ -211,5 +210,30 @@ class AdminAjaxController extends AbstractController
         }
 
         return new JsonResponse($employeeResults);
+    }
+
+    /**
+     * @Route("role", name="role")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function autoCompleteRole(Request $request): JsonResponse
+    {
+        $query = $request->get('q');
+
+        $roles = $this->entityManager->getRepository(Role::class)
+            ->findAllByNameResults($query);
+
+        $roleResults = [];
+        foreach ($roles as $role) {
+            $roleResults[] = [
+                'id'   => $role->getId(),
+                'text' => $role->getName(),
+            ];
+        }
+
+        return new JsonResponse($roleResults);
     }
 }

@@ -4,7 +4,9 @@ namespace App\Entity\Structure;
 
 use App\Entity\Patients\Consultation;
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,51 +19,52 @@ use App\Repository\Structure\PrestationRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Prestation implements EntityDateInterface
+class Prestation implements EntityDateInterface, CreatedByInterface
 {
     use EntityDateTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=120)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $code;
+    private ?string $code;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $quantity;
+    private ?int $quantity;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $PriceHT;
+    private ?float $PriceHT;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $PriceTTC;
+    private ?float $PriceTTC;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $reduction;
+    private ?float $reduction;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Patients\Consultation", inversedBy="prestations")
@@ -71,12 +74,12 @@ class Prestation implements EntityDateInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Structure\Vat")
      */
-    private $vat;
+    private ?Vat $vat;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isMedecine;
+    private ?bool $isMedecine;
 
     public function __construct()
     {

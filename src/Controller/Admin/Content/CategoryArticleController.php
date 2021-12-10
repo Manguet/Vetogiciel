@@ -5,11 +5,11 @@ namespace App\Controller\Admin\Content;
 use App\Entity\Contents\Article;
 use App\Entity\Contents\ArticleCategory;
 use App\Form\Content\ArticleCategoryType;
+use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Slugger\SluggerInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
-use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,18 +20,14 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  *
  * @Route("/admin/article-category", name="admin_article_category_")
+ *
+ * @Security("is_granted('ADMIN_ARTICLECATEGORY_ACCESS')")
  */
 class CategoryArticleController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var SluggerInterface
-     */
-    private $slugger;
+    private SluggerInterface $slugger;
 
     /**
      * CategoryArticleController constructor.
@@ -50,31 +46,32 @@ class CategoryArticleController extends AbstractController
      *
      * @param Request $request
      * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
      *
      * @return Response
      */
-    public function index(Request $request, DataTableFactory $dataTableFactory): Response
+    public function index(Request $request, DataTableFactory $dataTableFactory,
+                          DatatableFieldInterface $datatableField): Response
     {
-        $table = $dataTableFactory->create()
-            ->add('title', TextColumn::class, [
-                'label'     => 'Titre de la catégorie',
-                'orderable' => true,
-                'render'    => function ($value, $category) {
-                    return '<a href="/admin/article-category/edit/' . $category->getId() . '">' . $value . '</a>';
-                }
-            ])
-            ->add('delete', TextColumn::class, [
-                'label'  => 'Supprimer ?',
-                'render' => function ($value, $category) {
-                    return $this->renderView('admin/content/category/include/_delete-button.html.twig', [
-                        'category' => $category,
-                    ]);
-                }
+        $table = $dataTableFactory->create();
+
+        $datatableField
+            ->addFieldWithEditField($table, 'title',
+                'Titre de la catégorie',
+                'article-category',
+                'ADMIN_ARTICLECATEGORY_EDIT'
+            );
+
+        $datatableField
+            ->addCreatedBy($table)
+            ->addDeleteField($table, 'admin/content/category/include/_delete-button.html.twig', [
+                'entity'         => 'category',
+                'authorizations' => 'ADMIN_ARTICLECATEGORY_DELETE'
             ])
             ->addOrderBy('title')
-            ->createAdapter(ORMAdapter::class, [
-                'entity' => ArticleCategory::class
-            ]);
+        ;
+
+        $datatableField->createDatatableAdapter($table, ArticleCategory::class);
 
         $table->handleRequest($request);
 
@@ -89,6 +86,7 @@ class CategoryArticleController extends AbstractController
 
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_ARTICLECATEGORY_ADD')")
      *
      * @param Request $request
      *
@@ -123,6 +121,7 @@ class CategoryArticleController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
+     * @Security("is_granted('ADMIN_ARTICLECATEGORY_EDIT', category)")
      *
      * @param ArticleCategory $category
      * @param Request $request
@@ -149,6 +148,7 @@ class CategoryArticleController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", methods={"POST"})
+     * @Security("is_granted('ADMIN_ARTICLECATEGORY_DELETE', category)")
      *
      * @param ArticleCategory $category
      *

@@ -5,7 +5,9 @@ namespace App\Entity\Patients;
 use App\Entity\Structure\Prestation;
 use App\Entity\Structure\Veterinary;
 use App\Interfaces\DateTime\EntityDateInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Traits\DateTime\EntityDateTrait;
+use App\Traits\User\CreatedByTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,41 +20,42 @@ use App\Repository\Patients\ConsultationRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Consultation implements EntityDateInterface
+class Consultation implements EntityDateInterface, CreatedByInterface
 {
     use EntityDateTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Patients\Folder", inversedBy="consultations")
      */
-    private $folder;
+    private ?Folder $folder;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Structure\Veterinary")
      */
-    private $veterinary;
+    private ?Veterinary $veterinary;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Structure\Prestation", mappedBy="consultation")
      */
-    private $prestations;
+    private ArrayCollection $prestations;
 
     public function __construct()
     {

@@ -60,7 +60,7 @@ class EmployeeFixtures extends Fixture implements DependentFixtureInterface
      */
     public const EMPLOYEE_THREE = [
         'email'        => 'armelle@hotmail.fr',
-        'roles'        => ['ROLE_USER'],
+        'roles'        => ['ROLE_MANAGER'],
         'password'     => 'armelleDoucet',
         'firstname'    => 'Armelle',
         'lastname'     => 'Doucet',
