@@ -1,0 +1,13 @@
+{% if annonce is defined and annonce is not null %}
+    <div id="annonce" class="text-center">
+        {{ annonce }} <span id="close-annonce"><i class="far fa-times-circle"></i></span>
+    </div>
+{% endif %}
+{% if annonceClinic is defined and annonceClinic is not null %}
+    <div id="annonce-clinic"
+         style="top: {% if isAnnonce is defined and isAnnonce %}137{% else %}107{% endif %}px;"
+         class="text-center"
+    >
+        {{ annonceClinic }} <span id="close-annonce-clinic"><i class="far fa-times-circle"></i></span>
+    </div>
+{% endif %}

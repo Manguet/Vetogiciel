@@ -23,10 +23,34 @@
             )) }}
         {% endblock %}
 
+        {{ render(controller(
+            'App\\Controller\\DefaultController::annonceAction',
+            { 'clinic' : twigClinic.getActualClinic.id }
+        )) }}
+
         {% block body %}{% endblock %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
+            <script>
+
+                let annonce       = $("#annonce");
+                let annonceClinic = $('#annonce-clinic');
+
+                $('#close-annonce').on('click', function () {
+                    annonce.animate({opacity:0}, 700)
+                    if (annonceClinic) {
+                        annonceClinic.animate({'top' : 107}, 700, function() {
+                            annonce.css('display', 'none');
+                        })
+                    }
+                })
+                $('#close-annonce-clinic').on('click', function () {
+                    annonceClinic.animate({opacity:0}, 700, function () {
+                        annonceClinic.css('display', 'none');
+                    })
+                })
+            </script>
         {% endblock %}
 
         {% block endjavascript %}
