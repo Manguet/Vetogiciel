@@ -2,6 +2,7 @@
 
 namespace App\Entity\Structure;
 
+use App\Entity\Settings\Configuration;
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Interfaces\Priority\PriorityInterface;
 use App\Interfaces\Socials\SocialInterface;
@@ -16,6 +17,8 @@ use App\Traits\Structure\AddressTrait;
 use App\Traits\Structure\PhotoTrait;
 use App\Traits\User\CreatedByTrait;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -26,15 +29,13 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface, AddressInterface, SocialInterface,
-                        CreatedByInterface
+class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface, AddressInterface, SocialInterface
 {
     use EntityDateTrait;
     use PriorityTrait;
     use PhotoTrait;
     use AddressTrait;
     use SocialTrait;
-    use CreatedByTrait;
 
     /**
      * @ORM\Id
@@ -82,6 +83,16 @@ class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface, 
      * @ORM\Column(type="enumStructureTypes", nullable=true)
      */
     private ?string $type;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Configuration::class, mappedBy="clinic", orphanRemoval=true)
+     */
+    private $configurations;
+
+    public function __construct()
+    {
+        $this->configurations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -180,6 +191,37 @@ class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface, 
     public function setType(?string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Configuration[]
+     */
+    public function getConfigurations(): Collection
+    {
+        return $this->configurations;
+    }
+
+    public function addConfiguration(Configuration $configuration): self
+    {
+        if (!$this->configurations->contains($configuration)) {
+            $this->configurations[] = $configuration;
+            $configuration->setClinic($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConfiguration(Configuration $configuration): self
+    {
+        if ($this->configurations->contains($configuration)) {
+            $this->configurations->removeElement($configuration);
+            // set the owning side to null (unless already changed)
+            if ($configuration->getClinic() === $this) {
+                $configuration->setClinic(null);
+            }
+        }
 
         return $this;
     }

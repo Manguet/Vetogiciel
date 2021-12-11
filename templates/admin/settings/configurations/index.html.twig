@@ -2,12 +2,23 @@
 
 {% block body %}
     <div>
-        <div class="mb-5">
+        <div class="mb-5 d-flex justify-content-between align-items-center">
             <a href="{{ path('settings_index') }}">
                 <button class="custom-button">
                     <i class="fas fa-backspace"></i> Retour
                 </button>
             </a>
+
+            {% if type is same as('specific') %}
+                <div class="form-group">
+                    <label for="clinic-select"></label>
+                    <select class="form-control" name="clinics" id="clinic-select">
+                        {% for clinic in clinics %}
+                            <option value="{{ clinic.id }}">{{ clinic.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
         </div>
         {{ form_start(form) }}
 
@@ -36,4 +47,45 @@
 
         {{ form_end(form) }}
     </div>
+{% endblock %}
+
+{% block endjavascript %}
+    <script>
+        let select = $('#clinic-select');
+        let selectedClinic = select.val();
+
+        let inputs = $('input');
+
+        inputs.each(function () {
+            let inputId   = $(this).attr('id');
+            let parentDiv = $(this).closest('div')
+
+            if (inputId !== 'configuration__token') {
+                if (inputId.endsWith(selectedClinic)) {
+                    parentDiv.css('display', 'block')
+                } else {
+                    parentDiv.css('display', 'none')
+                }
+            }
+        })
+
+        select.on('change', function () {
+            let selectedClinic = select.val();
+
+            let inputs = $('input');
+
+            inputs.each(function () {
+                let inputId   = $(this).attr('id');
+                let parentDiv = $(this).closest('div')
+
+                if (inputId !== 'configuration__token') {
+                    if (inputId.endsWith(selectedClinic)) {
+                        parentDiv.css('display', 'block')
+                    } else {
+                        parentDiv.css('display', 'none')
+                    }
+                }
+            })
+        })
+    </script>
 {% endblock %}

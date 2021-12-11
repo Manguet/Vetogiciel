@@ -26,7 +26,7 @@ generals:
     onglet: Annonce
     position: 1
 
-  site_annonce_cookie:
+  annonce_cookie:
     fieldType: Symfony\Component\Form\Extension\Core\Type\TextType
     settings:
       label: "Id du cookie de l'annonce"
@@ -57,4 +57,23 @@ generals:
       label: "Activer le chat ?"
       required: false
     onglet: Options
+    position: 2
+
+specifics:
+  site_annonce:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\TextType
+    settings:
+      label: 'Créer une annonce pour la clinique'
+      placeholder: 'Créer une annonce pour la clinique'
+      required: false
+    onglet: Annonce
+    position: 1
+
+  annonce_cookie:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\TextType
+    settings:
+      label: "Id du cookie de l'annonce"
+      placeholder: "Id du cookie de l'annonce"
+      required: false
+    onglet: Annonce
     position: 2

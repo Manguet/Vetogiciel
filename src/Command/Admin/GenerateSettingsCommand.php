@@ -4,6 +4,7 @@ namespace App\Command\Admin;
 
 use App\DBAL\Types\Configuration\ConfigurationTypeEnum;
 use App\Entity\Settings\Configuration;
+use App\Entity\Structure\Clinic;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -62,6 +63,8 @@ class GenerateSettingsCommand extends Command
         $mapping = $this->getSettingsMapping();
 
         $this->generateGeneralSettings($io, $mapping);
+
+        $this->generateSpecificSettings($io, $mapping);
 
         $io->success('Fin des imports de settings');
 
@@ -123,6 +126,54 @@ class GenerateSettingsCommand extends Command
         }
 
         $io->note('Import avec succès des configurations générales');
+
+        $this->entityManager->flush();
+    }
+
+    public function generateSpecificSettings(SymfonyStyle $io, array $mapping)
+    {
+        $io->text('Début de l\'import des Specific Settings');
+        $io->newLine();
+
+        if (!isset($mapping['specifics'])) {
+
+            $io->note('Le fichier de mapping ne comprend pas specifics');
+
+            return;
+        }
+
+        $clinics = $this->entityManager->getRepository(Clinic::class)
+            ->findAll();
+
+        foreach ($mapping['specifics'] as $settingTitle => $settingDatas) {
+
+            foreach ($clinics as $clinic) {
+
+                $isSettingExist = $this->entityManager->getRepository(Configuration::class)
+                    ->findOneBy(['name' => $settingTitle  . '_' . $clinic->getId()]);
+
+
+                if (!$isSettingExist) {
+
+                    $configuration = new Configuration();
+
+                    $configuration->setName($settingTitle  . '_' . $clinic->getId());
+
+                    foreach ($settingDatas as $title => $settingData) {
+
+                        $configuration->{'set' . ucfirst($title)}($settingData);
+                    }
+
+                    $configuration->setConfigurationType(ConfigurationTypeEnum::SPECIFIC);
+                    $configuration->setClinic($clinic);
+
+                    $this->entityManager->persist($configuration);
+                }
+            }
+
+        }
+
+        $io->note('Import avec succès des configurations spécifiques');
 
         $this->entityManager->flush();
     }

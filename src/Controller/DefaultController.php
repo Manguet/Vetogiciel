@@ -3,15 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\Contents\Article;
+use App\Entity\Settings\Configuration;
 use App\Entity\Structure\Clinic;
 use App\Entity\Structure\Sector;
 use App\Entity\Structure\Veterinary;
+use App\Service\Site\Annonce\AnnonceServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * @Route("/", name="")
@@ -106,5 +111,23 @@ class DefaultController extends AbstractController
         }
 
         return $sectorsByThree;
+    }
+
+    /**
+     * @param Request $request
+     * @param Clinic|null $clinic
+     * @param AnnonceServices $annonceServices
+     *
+     * @return Response
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function annonceAction(Request $request, ?Clinic $clinic, AnnonceServices $annonceServices): Response
+    {
+        $response = new Response();
+
+        return $annonceServices->getAnnoncesContent($response, $clinic, $request);
     }
 }

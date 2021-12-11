@@ -78,12 +78,7 @@ class ClinicController extends AbstractController
             ->add('priority', TextColumn::class, [
                 'label'     => 'Priorité d\'affichage',
                 'orderable' => true,
-            ]);
-
-        $datatableField
-            ->addCreatedBy($table);
-
-        $table
+            ])
             ->addOrderBy('priority')
         ;
 

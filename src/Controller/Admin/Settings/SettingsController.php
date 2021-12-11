@@ -3,6 +3,8 @@
 namespace App\Controller\Admin\Settings;
 
 use App\Entity\Settings\Configuration;
+use App\Entity\Settings\Role;
+use App\Entity\Structure\Clinic;
 use App\Form\Settings\ConfigurationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -56,6 +58,31 @@ class SettingsController extends AbstractController
         $configurations = $this->entityManager->getRepository(Configuration::class)
             ->findByConfigurationInOrder($type);
 
+        $user            = $this->getUser();
+        $permissionLevel = $clinics = null;
+
+        if ($user) {
+            $role = $user->getRoles();
+
+            $role = $this->entityManager->getRepository(Role::class)
+                ->findOneBy(['name' => $role]);
+
+            $permissionLevel = $role->getPermissionLevel();
+        }
+
+        if ($permissionLevel === 'group') {
+            $clinics = $this->entityManager->getRepository(Clinic::class)
+                ->findAll();
+        }
+
+        if ($permissionLevel === 'society') {
+            $clinics = [$user->getClinic()];
+        }
+
+        if (null === $clinics) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createForm(ConfigurationType::class, null, [
             'configurations' => $configurations
         ]);
@@ -84,9 +111,10 @@ class SettingsController extends AbstractController
         }
 
         return $this->render('admin/settings/configurations/index.html.twig', [
-            'form'           => $form->createView(),
-            'onglets'        => $onglets,
-            'type'           => $type,
+            'form'    => $form->createView(),
+            'onglets' => $onglets,
+            'type'    => $type,
+            'clinics' => $clinics,
         ]);
     }
 }

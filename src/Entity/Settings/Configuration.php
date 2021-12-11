@@ -2,7 +2,10 @@
 
 namespace App\Entity\Settings;
 
+use App\Entity\Structure\Clinic;
 use App\Repository\Settings\ConfigurationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -53,6 +56,12 @@ class Configuration
      * @ORM\Column(type="integer")
      */
     private int $position;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Clinic::class, inversedBy="configurations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $clinic;
 
     public function getId(): ?int
     {
@@ -139,6 +148,18 @@ class Configuration
     public function setPosition(int $position): self
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    public function getClinic(): ?Clinic
+    {
+        return $this->clinic;
+    }
+
+    public function setClinic(?Clinic $clinic): self
+    {
+        $this->clinic = $clinic;
 
         return $this;
     }
