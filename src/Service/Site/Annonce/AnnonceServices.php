@@ -107,8 +107,6 @@ class AnnonceServices
     private function getContentAnnonce(?string $generalCookieId, Request $request,
                                        string $annonceTitle, string $title, ?bool $isAnnonce = false): ?string
     {
-        $request->getSession()->remove($generalCookieId);
-
         if ($generalCookieId && !$request->getSession()->get($generalCookieId)) {
 
             $generalAnnonce = $this->entityManager->getRepository(Configuration::class)
