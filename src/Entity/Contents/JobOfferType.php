@@ -29,7 +29,12 @@ class JobOfferType implements EntityDateInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $title;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private ?string $titleUrl;
 
     /**
      * @ORM\OneToMany(targetEntity=JobOffer::class, mappedBy="type", orphanRemoval=true)
@@ -46,14 +51,14 @@ class JobOfferType implements EntityDateInterface
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getTitle(): ?string
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function setName(string $name): self
+    public function setTitle(string $title): self
     {
-        $this->name = $name;
+        $this->title = $title;
 
         return $this;
     }
@@ -85,6 +90,18 @@ class JobOfferType implements EntityDateInterface
                 $jobOffer->setType(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTitleUrl(): ?string
+    {
+        return $this->titleUrl;
+    }
+
+    public function setTitleUrl(string $titleUrl): self
+    {
+        $this->titleUrl = $titleUrl;
 
         return $this;
     }

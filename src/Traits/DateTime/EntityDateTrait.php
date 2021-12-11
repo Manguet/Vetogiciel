@@ -18,12 +18,12 @@ trait EntityDateTrait
     /**
      * @ORM\Column(type="datetime_immutable", nullable=false)
      */
-    protected DateTimeImmutable $dateCreation;
+    protected $dateCreation;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    protected DateTimeInterface $dateUpdate;
+    protected $dateUpdate;
 
     /**
      * @return DateTimeImmutable
