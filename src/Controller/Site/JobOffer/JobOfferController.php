@@ -129,6 +129,9 @@ class JobOfferController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $candidate->setJoboffer($job);
+
             $this->entityManager->persist($candidate);
             $this->entityManager->flush();
 

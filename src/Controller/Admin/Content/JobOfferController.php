@@ -2,12 +2,15 @@
 
 namespace App\Controller\Admin\Content;
 
+use App\Entity\Contents\Candidate;
 use App\Entity\Contents\JobOffer;
 use App\Form\Content\JobType;
 use App\Interfaces\Datatable\DatatableFieldInterface;
 use App\Interfaces\Slugger\SluggerInterface;
 use App\Service\Priority\PriorityServices;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
+use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -163,13 +166,69 @@ class JobOfferController extends AbstractController
      * @Security("is_granted('ADMIN_JOBOFFER_SHOW', job)")
      *
      * @param JobOffer $job
+     * @param DataTableFactory $dataTableFactory
+     * @param DatatableFieldInterface $datatableField
+     * @param Request $request
      *
      * @return Response
      */
-    public function show(JobOffer $job): Response
+    public function show(JobOffer $job, DataTableFactory $dataTableFactory,
+                         DatatableFieldInterface $datatableField, Request $request): Response
     {
+        $table = $dataTableFactory->create();
+
+        $datatableField
+            ->addFieldWithEditField($table, 'lastName',
+                'Nom',
+                'candidate',
+                'ADMIN_CANDIDATE_SHOW',
+            true
+            )
+            ->add('firstName', TextColumn::class, [
+                'label'     => 'Prénom',
+                'orderable' => true,
+            ])
+            ->add('email', TextColumn::class, [
+                'label'     => 'Email',
+                'orderable' => true,
+            ])
+            ->add('isResponseSend', TextColumn::class, [
+                'label'     => 'Réponse envoyée ?',
+                'orderable' => false,
+                'render'    => function ($value) {
+                    if ($value) {
+                        return '<i class="far fa-thumbs-up"></i>';
+                    }
+                    return '';
+                }
+            ])
+        ;
+        $datatableField
+            ->addDeleteField($table, 'admin/content/candidate/include/_delete-button.html.twig', [
+                'entity'         => 'candidate',
+                'authorizations' => 'ADMIN_CANDIDATE_DELETE'
+            ])
+            ->addOrderBy('firstName')
+            ->createAdapter(ORMAdapter::class, [
+                'entity' => Candidate::class,
+                'query'  => function (QueryBuilder $builder) use ($job) {
+                    $builder
+                        ->select('c')
+                        ->from(Candidate::class, 'c')
+                        ->where('c.joboffer = :job')
+                        ->setParameter('job', $job);
+                }
+            ]);
+
+        $table->handleRequest($request);
+
+        if ($table->isCallback()) {
+            return $table->getResponse();
+        }
+
         return $this->render('admin/content/joboffer/show.html.twig', [
-            'job' => $job,
+            'job'   => $job,
+            'table' => $table,
         ]);
     }
 

@@ -54,6 +54,11 @@ class Candidate implements EntityDateInterface, PresentationInterface
      */
     private $joboffer;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isResponseSend;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -115,6 +120,18 @@ class Candidate implements EntityDateInterface, PresentationInterface
     public function setJoboffer(?JobOffer $joboffer): self
     {
         $this->joboffer = $joboffer;
+
+        return $this;
+    }
+
+    public function getIsResponseSend(): ?bool
+    {
+        return $this->isResponseSend;
+    }
+
+    public function setIsResponseSend(?bool $isResponseSend): self
+    {
+        $this->isResponseSend = $isResponseSend;
 
         return $this;
     }
