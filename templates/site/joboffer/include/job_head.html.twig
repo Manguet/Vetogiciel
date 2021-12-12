@@ -1,0 +1,10 @@
+<div class="text-center">
+
+    <h1 class="main-color">{{ job.title }}</h1>
+
+    <p class="mb-5 undertitle">Publié le {{ job.dateCreation|date('d/m/Y') }}</p>
+
+    <div class="mb-5">
+        <img src="{{ asset('build/images/carousel-1.jpg')|imagine_filter('large') }}" alt="{{ job.title }}" title="image de {{ job.title }}">
+    </div>
+</div>

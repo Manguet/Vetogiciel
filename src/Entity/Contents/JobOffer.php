@@ -11,6 +11,8 @@ use App\Traits\DateTime\EntityDateTrait;
 use App\Traits\Priority\PriorityTrait;
 use App\Traits\Structure\ClinicTrait;
 use App\Traits\User\CreatedByTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -61,6 +63,16 @@ class JobOffer implements EntityDateInterface, PriorityInterface, ClinicInterfac
      */
     private $type;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Candidate::class, mappedBy="joboffer")
+     */
+    private $candidates;
+
+    public function __construct()
+    {
+        $this->candidates = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -102,6 +114,22 @@ class JobOffer implements EntityDateInterface, PriorityInterface, ClinicInterfac
         return $this;
     }
 
+    /**
+     * @return string|string[]
+     *
+     * use to decode in front without twig extension and raw ect
+     */
+    public function getDescriptionDecode()
+    {
+        $withoutHtml = strip_tags($this->description);
+
+        $baseHtml = ['&agrave;', '&nbsp;', '&#39;', '&eacute;', '&quot;', '&rsquo;', '&egrave;', '&ecirc;', '&acirc;', '&ccedil;', '&hellip;', '&ndash;', '&oelig;', '&Eacute;'];
+
+        $result = ['à', ' ', '\'', 'é', '"', '\'', 'è', 'ê', 'â', 'ç', '...', '-', 'oe', 'E'];
+
+        return str_replace($baseHtml, $result, $withoutHtml);
+    }
+
     public function getIsActivated(): ?bool
     {
         return $this->isActivated;
@@ -122,6 +150,37 @@ class JobOffer implements EntityDateInterface, PriorityInterface, ClinicInterfac
     public function setType(?JobOfferType $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Candidate[]
+     */
+    public function getCandidates(): Collection
+    {
+        return $this->candidates;
+    }
+
+    public function addCandidate(Candidate $candidate): self
+    {
+        if (!$this->candidates->contains($candidate)) {
+            $this->candidates[] = $candidate;
+            $candidate->setJoboffer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidate(Candidate $candidate): self
+    {
+        if ($this->candidates->contains($candidate)) {
+            $this->candidates->removeElement($candidate);
+            // set the owning side to null (unless already changed)
+            if ($candidate->getJoboffer() === $this) {
+                $candidate->setJoboffer(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,19 @@
+<div class="article-content">
+    <div class="wrapper">
+        <div class="sidebar">
+            <h3 class="main-color text-center mt-3">Parcourir les catégories</h3>
+            <ul>
+                {% for category in categories %}
+                    {% if category.jobOffers|length > 0 %}
+                        <li class="d-flex justify-content-between">
+                            <a href="{{ path('job_show', {'clinicName' : clinicName, 'category' : category.titleUrl}) }}" class="{% if app.request.get('_route') starts with 'job_' ~ category.titleUrl %}actual-link{% endif %}">
+                                {{ category.title }}
+                            </a>
+                            <span class="main-color"><i class="fas fa-chevron-right"></i></span>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>

@@ -19,13 +19,15 @@
 
     <span class="border-footer"></span>
 
-    <div>
-        <a href="#">
-            <span class="uppertext">Recrutement</span>
-        </a>
-    </div>
+    {% if twigClinic.getActualClinic %}
+        <div>
+            <a href="{{ path('job_index', { 'clinicName' : twigClinic.getActualClinic.nameSlugiffied }) }}">
+                <span class="uppertext">Recrutement</span>
+            </a>
+        </div>
 
-    <span class="border-footer"></span>
+        <span class="border-footer"></span>
+    {% endif %}
 
     <div>
         <a href="#">

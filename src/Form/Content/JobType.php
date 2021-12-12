@@ -4,6 +4,7 @@ namespace App\Form\Content;
 
 use App\Entity\Contents\JobOffer;
 use App\Entity\Contents\JobOfferType;
+use App\Entity\Structure\Clinic;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -65,6 +66,21 @@ class JobType extends AbstractType
                     'new_tag_text'   => ' <i>(...créer...)</i>',
                     'new_tag_prefix' => '__',
                     'tag_separators' => '[",", " "]'
+                ],
+            ])
+            ->add('clinic', Select2EntityType::class, [
+                'label'         => 'Rattacher à une clinique',
+                'required'      => true,
+                'placeholder'   => 'Rattacher à une clinique',
+                'class'         => Clinic::class,
+                'multiple'      => false,
+                'remote_route'  => 'admin_ajax_structure',
+                'language'      => 'fr',
+                'scroll'        => true,
+                'allow_clear'   => true,
+                'text_property' => 'name',
+                'attr' => [
+                    'style' => 'width: 100%'
                 ],
             ])
             ->add('save', SubmitType::class, [

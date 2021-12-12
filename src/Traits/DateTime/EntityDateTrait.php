@@ -59,7 +59,7 @@ trait EntityDateTrait
      */
     public function prePersist(): void
     {
-        if (!$this->dateCreation) {
+        if (null === $this->dateCreation) {
             $this->dateCreation = new DateTimeImmutable();
         }
 
