@@ -77,3 +77,21 @@ specifics:
       required: false
     onglet: Annonce
     position: 2
+
+  photograph:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\TextType
+    settings:
+      label: "Lien vers le site photographe"
+      placeholder: "Lien vers le site photographe"
+      required: false
+    onglet: Liens Externes
+    position: 1
+
+  photo_author:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\TextType
+    settings:
+      label: "Nom du photographe"
+      placeholder: "Nom du photographe"
+      required: false
+    onglet: Liens Externes
+    position: 2

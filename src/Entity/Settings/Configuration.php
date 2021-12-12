@@ -57,12 +57,6 @@ class Configuration
      */
     private int $position;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Clinic::class, inversedBy="configurations")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $clinic;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -148,18 +142,6 @@ class Configuration
     public function setPosition(int $position): self
     {
         $this->position = $position;
-
-        return $this;
-    }
-
-    public function getClinic(): ?Clinic
-    {
-        return $this->clinic;
-    }
-
-    public function setClinic(?Clinic $clinic): self
-    {
-        $this->clinic = $clinic;
 
         return $this;
     }

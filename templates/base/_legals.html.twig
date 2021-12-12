@@ -17,13 +17,19 @@
 
     <span class="border-footer"></span>
 
-    <div>
-        <a href="#">
-            Photos : John Doe
-        </a>
-    </div>
+    {% if twigClinic.getActualClinic and twigSettings.getPhotographSite(twigClinic.getActualClinic) %}
+        <div>
+            {% if twigSettings.getPhotographSite(twigClinic.getActualClinic)  %}
+                <a href="{{ twigSettings.getPhotographSite(twigClinic.getActualClinic) }}" target="_blank">
+            {% else %}
+                <a href="#">
+            {% endif %}
+                Photos : {{ twigSettings.getPhotograph(twigClinic.getActualClinic) }}
+            </a>
+        </div>
 
-    <span class="border-footer"></span>
+        <span class="border-footer"></span>
+    {% endif %}
 
     <div>
         <a href="{{ path('index') }}">
