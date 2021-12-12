@@ -3,6 +3,7 @@
 namespace App\Service\Settings;
 
 use App\Entity\Settings\Configuration;
+use App\Entity\Structure\Clinic;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -63,5 +64,43 @@ class SettingServices
         }
 
         return $isActivated->getDatas()['values'] ?? false;
+    }
+
+    /**
+     * @param Clinic $clinic
+     *
+     * @return null|string
+     */
+    public function getPhotograph(Clinic $clinic): ?string
+    {
+        $photograph = $this->entityManager->getRepository(Configuration::class)
+            ->findOneBy([
+                'name'   => 'photo_author_' . $clinic->getId(),
+            ]);
+
+        if (!$photograph) {
+            return null;
+        }
+
+        return $photograph->getDatas()['values'] ?? null;
+    }
+
+    /**
+     * @param Clinic $clinic
+     *
+     * @return string|null
+     */
+    public function getPhotographSite(Clinic $clinic): ?string
+    {
+        $photographSite = $this->entityManager->getRepository(Configuration::class)
+            ->findOneBy([
+                'name'   => 'photograph_' . $clinic->getId(),
+            ]);
+
+        if (!$photographSite) {
+            return null;
+        }
+
+        return $photographSite->getDatas()['values'] ?? null;
     }
 }
