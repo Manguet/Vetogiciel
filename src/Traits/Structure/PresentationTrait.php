@@ -25,7 +25,7 @@ trait PresentationTrait
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $cv;
+    private $cv;
 
     /**
      * @Vich\UploadableField(mapping="cvs", fileNameProperty="cv")
@@ -36,7 +36,7 @@ trait PresentationTrait
      *      mimeTypesMessage= "formats autorisés: png, jpeg, jpg, pdf"
      * )
      */
-    private ?File $cvFile;
+    private $cvFile;
 
     /**
      * @return string|null

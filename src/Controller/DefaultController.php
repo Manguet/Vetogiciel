@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Contents\Article;
-use App\Entity\Settings\Configuration;
 use App\Entity\Structure\Clinic;
 use App\Entity\Structure\Sector;
 use App\Entity\Structure\Veterinary;

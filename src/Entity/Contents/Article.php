@@ -61,9 +61,8 @@ class Article implements EntityDateInterface, PriorityInterface, ClinicInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @var string|null
      */
-    private ?string $image;
+    private $image;
 
     /**
      * @Vich\UploadableField(mapping="articles", fileNameProperty="image")

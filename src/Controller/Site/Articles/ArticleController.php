@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
@@ -110,7 +111,7 @@ class ArticleController extends AbstractController
 
         if (null !== $article && $this->getUser()) {
 
-            $createdBy = $this->getUser()->getLastName() . ' ' . $this->getUser()->getFirstName();
+            $createdBy = $this->getUser();
 
             $canPost = $this->checkPostAvailableServices($createdBy, $article);
 
@@ -124,7 +125,7 @@ class ArticleController extends AbstractController
 
             $commentary = new Commentary();
             $commentary
-                ->setCreatedBy($createdBy)
+                ->setCreatedBy($this->getUser())
                 ->setDescription($comment['description'])
                 ->setArticle($article)
             ;
@@ -133,7 +134,7 @@ class ArticleController extends AbstractController
             $this->entityManager->flush();
 
             return $this->redirectToRoute('article_show', [
-                'id'        => $article->getId(),
+                'article'   => $article->getTitleUrl(),
                 'category'  => $article->getArticleCategory()->getTitleUrl(),
                 '_fragment' => 'comment-zone',
             ]);
@@ -146,12 +147,12 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @param string $createdBy
+     * @param UserInterface $createdBy
      * @param Article $article
      *
      * @return bool
      */
-    private function checkPostAvailableServices(string $createdBy, Article $article): bool
+    private function checkPostAvailableServices(UserInterface $createdBy, Article $article): bool
     {
         $comments = $this->entityManager->getRepository(Commentary::class)
             ->findLastHourCommentary($createdBy, $article);

@@ -20,7 +20,7 @@ trait PhotoTrait
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $photo;
+    private $photo;
 
     /**
      * @Vich\UploadableField(mapping="photos", fileNameProperty="photo")

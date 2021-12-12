@@ -56,24 +56,7 @@
 
         let inputs = $('input');
 
-        inputs.each(function () {
-            let inputId   = $(this).attr('id');
-            let parentDiv = $(this).closest('div')
-
-            if (inputId !== 'configuration__token') {
-                if (inputId.endsWith(selectedClinic)) {
-                    parentDiv.css('display', 'block')
-                } else {
-                    parentDiv.css('display', 'none')
-                }
-            }
-        })
-
-        select.on('change', function () {
-            let selectedClinic = select.val();
-
-            let inputs = $('input');
-
+        if (typeof selectedClinic != 'undefined') {
             inputs.each(function () {
                 let inputId   = $(this).attr('id');
                 let parentDiv = $(this).closest('div')
@@ -86,6 +69,25 @@
                     }
                 }
             })
-        })
+
+            select.on('change', function () {
+                let selectedClinic = select.val();
+
+                let inputs = $('input');
+
+                inputs.each(function () {
+                    let inputId   = $(this).attr('id');
+                    let parentDiv = $(this).closest('div')
+
+                    if (inputId !== 'configuration__token') {
+                        if (inputId.endsWith(selectedClinic)) {
+                            parentDiv.css('display', 'block')
+                        } else {
+                            parentDiv.css('display', 'none')
+                        }
+                    }
+                })
+            })
+        }
     </script>
 {% endblock %}

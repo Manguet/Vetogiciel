@@ -35,6 +35,8 @@ class DatatableServices implements DatatableFieldInterface
 
     private ?string $url;
 
+    private ?bool $isShow;
+
     private $role;
 
     /**
@@ -158,14 +160,16 @@ class DatatableServices implements DatatableFieldInterface
      * @param string $label
      * @param string $url
      * @param string|null $authorization
+     * @param bool|null $isShow
      *
      * @return DataTable
      */
     public function addFieldWithEditField(DataTable $table, string $fieldName, string $label,
-                                          string $url, ?string $authorization = null): DataTable
+                                          string $url, ?string $authorization = null, ?bool $isShow = false): DataTable
     {
         $this->authorizations = $authorization;
         $this->url            = $url;
+        $this->isShow         = $isShow;
 
         $table
             ->add($fieldName, TextColumn::class, [
@@ -195,7 +199,12 @@ class DatatableServices implements DatatableFieldInterface
                             ))
                     )
                     {
-                        return '<a href="/admin/' . $this->url . '/edit/' . $context->getId() . '">' . $value . '</a>';
+                        $path = 'edit';
+
+                        if ($this->isShow) {
+                            $path = 'show';
+                        }
+                        return '<a href="/admin/' . $this->url . '/' . $path . '/' . $context->getId() . '">' . $value . '</a>';
                     }
 
                     return $value;

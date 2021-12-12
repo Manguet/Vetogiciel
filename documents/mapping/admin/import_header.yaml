@@ -1,6 +1,6 @@
 Contenu:
   icon: 'fas fa-paste'
-  authorizations: ['ADMIN_ARTICLE_ACCESS', 'ADMIN_EMAIL_ACCESS']
+  authorizations: ['ADMIN_ARTICLE_ACCESS', 'ADMIN_EMAIL_ACCESS', 'ADMIN_JOBOFFER_ACCESS']
   childs:
     Page:
       path:
@@ -10,8 +10,9 @@ Contenu:
       icon:
       authorizations: ['ADMIN_ARTICLE_ACCESS']
     Offre d'emploi:
-      path:
+      path: 'admin_joboffer_index'
       icon:
+      authorizations: ['ADMIN_JOBOFFER_ACCESS']
     Email:
       path: 'email_index'
       icon:

@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="index-margin-top mb-5">
+
+        <div class="d-flex">
+
+            <div>
+                {{ include('site/joboffer/lateral_menu.html.twig')}}
+            </div>
+
+            <div class="article-margin">
+
+                {% if twigSettings.isBreadcrumbsActivated %}
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ path('job_index', { 'clinicName' : clinicName }) }}"><i class="fas fa-angle-double-right"></i> Offres d'emploi</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ category.title }}</li>
+                        </ol>
+                    </nav>
+                {% endif %}
+
+                <h1 class="text-center main-color">{{ category.title }}</h1>
+                <div>
+                    {% if category.joboffers|length > 0 %}
+                        <div>
+                            <div class="card-deck mt-5">
+                                {% for job in category.joboffers %}
+                                    {% if job.isActivated and job.clinic == clinic %}
+
+                                        <div class="card">
+
+                                            <img src="{{ asset('build/images/carousel-1.jpg')|imagine_filter('thumb') }}" alt="{{ job.title }}" title="image de {{ job.title }}">
+
+                                            <div class="card-body text-center">
+                                                <button class="custom-button card-title" href="{{ path('job_show_details', { 'clinicName' : clinicName, 'category' : job.type.titleUrl, 'job' : job.titleUrl}) }}"
+                                                        onclick="window.location.href=$(this).attr('href')">
+
+                                                    <a href="{{ path('job_show_details', { 'clinicName' : clinicName, 'category' : job.type.titleUrl, 'job' : job.titleUrl}) }}">
+                                                        {% if job.title|length > 15 %}
+                                                            {{ job.title|slice(0, 15) ~ ' ...' }}
+                                                        {% else %}
+                                                            {{ job.title }}
+                                                        {% endif %}
+                                                    </a>
+                                                </button>
+                                                {% if job.description %}
+                                                    <p class="card-text">
+                                                        {{ job.descriptionDecode|slice(0, 80) ~ ' ...' }}
+                                                    </p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="mt-5">
+        {{ include('base/_footer.html.twig') }}
+    </div>
+{% endblock %}

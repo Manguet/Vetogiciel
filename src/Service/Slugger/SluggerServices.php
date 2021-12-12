@@ -2,8 +2,12 @@
 
 namespace App\Service\Slugger;
 
+use App\Entity\Patients\Client;
+use App\Entity\Structure\Employee;
+use App\Entity\Structure\Veterinary;
 use App\Interfaces\Slugger\SluggerInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
@@ -68,8 +72,7 @@ class SluggerServices implements SluggerInterface
     {
         $slugiffyTitle = $this->replaceCaracters($title);
 
-        $entity = $this->entityManager->getRepository($class)
-            ->findOneBy(['title' => $slugiffyTitle]);
+        $entity = $this->getEntity($class, $slugiffyTitle);
 
         if ($entity) {
 
@@ -102,5 +105,27 @@ class SluggerServices implements SluggerInterface
         $b = self::COMMON_CARAC;
 
         return str_replace($a, $b, strtolower(trim(strip_tags($title))));
+    }
+
+    /**
+     * @param string $class
+     * @param string $slugiffyTitle
+     *
+     * @return null|mixed
+     */
+    private function getEntity(string $class, string $slugiffyTitle)
+    {
+        if (method_exists($class, 'getTitle')) {
+            return $this->entityManager->getRepository($class)
+                ->findOneBy(['title' => $slugiffyTitle]);
+        }
+
+        if (in_array($class, [Veterinary::class, Employee::class, Client::class])) {
+            return $this->entityManager->getRepository($class)
+                ->findOneBy(['lastname' => $slugiffyTitle]);
+        }
+
+        return $this->entityManager->getRepository($class)
+                ->findOneBy(['name' => $slugiffyTitle]);
     }
 }

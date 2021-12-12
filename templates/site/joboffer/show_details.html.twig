@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="index-margin-top">
+        <div class="d-flex">
+
+            <div>
+                {{ include('site/joboffer/lateral_menu.html.twig')}}
+            </div>
+
+            <div class="article-margin">
+
+                {% if twigSettings.isBreadcrumbsActivated %}
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ path('job_index', { 'clinicName': clinicName }) }}"><i class="fas fa-angle-double-right"></i> Articles</a></li>
+                            <li class="breadcrumb-item"><a href="{{ path('job_show', { 'clinicName': clinicName, 'category' : job.type.titleUrl}) }}">{{ job.type.title }}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ job.title }}</li>
+                        </ol>
+                    </nav>
+                {% endif %}
+
+                {{ include('site/joboffer/include/job_head.html.twig') }}
+
+                {{ include('site/joboffer/include/job_description.html.twig') }}
+
+                {{ include('site/joboffer/include/job_newsletter.html.twig') }}
+
+                <div class="text-center main-color">
+                    <h2>Postuler</h2>
+                </div>
+                <hr>
+                {{ form_start(form) }}
+                <div>
+                    <h3 class="undertitle">Coordonnées</h3>
+                    <hr>
+                    <div class="row">
+                        <div class="col-2">
+                            {{ form_label(form.gender) }}
+                            {{ form_widget(form.gender) }}
+                        </div>
+                        <div class="col-5">
+                            {{ form_label(form.firstname) }}
+                            {{ form_widget(form.firstname) }}
+                        </div>
+                        <div class="col-5">
+                            {{ form_label(form.lastname) }}
+                            {{ form_widget(form.lastname) }}
+                        </div>
+                    </div>
+                    <div>
+                        {{ form_label(form.email) }}
+                        {{ form_widget(form.email) }}
+                    </div>
+                    <h3 class="undertitle">Documents</h3>
+                    <hr>
+                    <div>
+                        {{ form_label(form.presentation) }}
+                        {{ form_widget(form.presentation) }}
+                    </div>
+                    <div>
+                        {{ form_label(form.cvFile) }}
+                        {{ form_widget(form.cvFile) }}
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center align-items-center m-5">
+                    {{ form_widget(form.save) }}
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+        <br>
+        <br>
+
+        <div>
+            {{ include('base/_footer.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

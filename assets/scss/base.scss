@@ -262,6 +262,10 @@ body {
       color: $main-color;
       text-decoration: none;
       font-size: 1.5em;
+
+      &:hover {
+        color: $main-color !important;
+      }
     }
 
     span {
