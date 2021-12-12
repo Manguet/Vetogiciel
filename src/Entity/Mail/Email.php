@@ -49,7 +49,7 @@ class Email implements EntityDateInterface, CreatedByInterface, ClinicInterface
     /**
      * @ORM\Column(type="string", length=180, nullable=false)
      */
-    private ?string $template;
+    private $template;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)

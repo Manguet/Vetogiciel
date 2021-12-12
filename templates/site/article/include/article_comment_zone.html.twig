@@ -5,7 +5,7 @@
         {% for comment in comments %}
             <hr>
             <div>
-                <p><span class="created-by">{{ comment.createdBy }}</span> <span class="undertitle"> à commenté le {{ comment.dateCreation|date('d/m/Y H:i') }}</span></p>
+                <p><span class="created-by">{{ comment.createdBy.firstname }} {{ comment.createdBy.lastname }}</span> <span class="undertitle"> à commenté le {{ comment.dateCreation|date('d/m/Y H:i') }}</span></p>
                 <p class="pl-5">{{ comment.description }}</p>
             </div>
             <hr>

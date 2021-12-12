@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Ajax;
 
 use App\Entity\Contents\ArticleCategory;
+use App\Entity\Contents\JobOfferType;
 use App\Entity\Patients\Client;
 use App\Entity\Patients\Race;
 use App\Entity\Patients\Species;
@@ -149,6 +150,31 @@ class AdminAjaxController extends AbstractController
         $query = $request->get('q');
 
         $categories = $this->entityManager->getRepository(ArticleCategory::class)
+            ->findAllByTitleResults($query);
+
+        $categoryResults = [];
+        foreach ($categories as $category) {
+            $categoryResults[] = [
+                'id'   => $category->getId(),
+                'text' => $category->getTitle(),
+            ];
+        }
+
+        return new JsonResponse($categoryResults);
+    }
+
+    /**
+     * @Route("offer-category", name="joboffer_category")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function autoCompleteOfferCategory(Request $request): JsonResponse
+    {
+        $query = $request->get('q');
+
+        $categories = $this->entityManager->getRepository(JobOfferType::class)
             ->findAllByTitleResults($query);
 
         $categoryResults = [];

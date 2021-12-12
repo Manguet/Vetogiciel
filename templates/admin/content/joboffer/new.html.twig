@@ -1,0 +1,21 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block morestylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <div class="mb-5">
+        <a href="{{ path('admin_joboffer_index') }}">
+            <button class="custom-button">
+                <i class="fas fa-backspace"></i> Retour
+            </button>
+        </a>
+    </div>
+    {{ include('admin/content/joboffer/include/_form.html.twig') }}
+{% endblock %}
+
+{% block endjavascript %}
+    <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+{% endblock %}

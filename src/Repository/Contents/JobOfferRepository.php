@@ -15,4 +15,16 @@ class JobOfferRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, JobOffer::class);
     }
+
+    /**
+     * @return int|mixed|string
+     */
+    public function findByOfferPriority()
+    {
+        return $this->createQueryBuilder('j')
+            ->orderBy('j.priority', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

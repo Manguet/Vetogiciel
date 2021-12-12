@@ -1,0 +1,52 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block morestylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <div class="mb-5 d-flex justify-content-between align-items-center">
+        <a href="{{ path('admin_joboffer_index') }}">
+            <button class="custom-button">
+                <i class="fas fa-backspace"></i> Retour
+            </button>
+        </a>
+
+        {% if is_granted('ADMIN_JOBOFFER_EDIT', job) %}
+            <a href="{{ path('admin_joboffer_edit', { 'id' : job.id}) }}">
+                <button class="custom-button">
+                    <i class="far fa-edit"></i> Editer
+                </button>
+            </a>
+        {% endif %}
+    </div>
+
+    <div>
+        <ul class="tabs">
+            <li class="tab-link current" data-tab="tab-1">Informations Générales</li>
+            <li class="tab-link" data-tab="tab-2">Options</li>
+            <li class="tab-link" data-tab="tab-3">Candidatures</li>
+        </ul>
+    </div>
+
+    <div id="tab-1" class="tab-content current">
+        <p><span class="dashboard-titles">Titre :</span> {{ job.title }}</p>
+
+        <p class="dashboard-titles">Detail de l'offre :</p>
+        <div class="m-4">{{ job.description|raw }}</div>
+    </div>
+
+    <div id="tab-2" class="tab-content">
+        <p><span class="dashboard-titles">Catégorie de l'offre : </span>{{ job.type.title }}</p>
+        <p><span class="dashboard-titles">Status d'activation : </span>{% if job.isActivated %}Activé{% else %}Désactivé{% endif %}</p>
+    </div>
+
+    <div id="tab-3" class="tab-content">
+        <p class="dashboard-titles">Liste des Candidatures :</p>
+    </div>
+{% endblock %}
+
+{% block endjavascript %}
+    <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+{% endblock %}

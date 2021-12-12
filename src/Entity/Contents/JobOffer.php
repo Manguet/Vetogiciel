@@ -5,12 +5,12 @@ namespace App\Entity\Contents;
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Interfaces\Priority\PriorityInterface;
 use App\Interfaces\Structure\ClinicInterface;
-use App\Interfaces\Structure\PresentationInterface;
+use App\Interfaces\User\CreatedByInterface;
 use App\Repository\Contents\JobOfferRepository;
 use App\Traits\DateTime\EntityDateTrait;
 use App\Traits\Priority\PriorityTrait;
 use App\Traits\Structure\ClinicTrait;
-use App\Traits\Structure\PresentationTrait;
+use App\Traits\User\CreatedByTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -21,12 +21,12 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class JobOffer implements EntityDateInterface, PriorityInterface, ClinicInterface, PresentationInterface
+class JobOffer implements EntityDateInterface, PriorityInterface, ClinicInterface, CreatedByInterface
 {
     use EntityDateTrait;
     use PriorityTrait;
     use ClinicTrait;
-    use PresentationTrait;
+    use CreatedByTrait;
 
     /**
      * @ORM\Id
@@ -44,6 +44,11 @@ class JobOffer implements EntityDateInterface, PriorityInterface, ClinicInterfac
      * @ORM\Column(type="string", length=255)
      */
     private ?string $titleUrl;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $description;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -81,6 +86,18 @@ class JobOffer implements EntityDateInterface, PriorityInterface, ClinicInterfac
     public function setTitleUrl(string $titleUrl): self
     {
         $this->titleUrl = $titleUrl;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

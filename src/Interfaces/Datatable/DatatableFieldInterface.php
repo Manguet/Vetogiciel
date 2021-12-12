@@ -39,11 +39,12 @@ interface DatatableFieldInterface
      * @param string $label
      * @param string $url
      * @param string|null $authorization
+     * @param bool|null $isShow
      *
      * @return DataTable
      */
     public function addFieldWithEditField(DataTable $table, string $fieldName, string $label,
-                                          string $url, ?string $authorization = null): DataTable;
+                                          string $url, ?string $authorization = null, ?bool $isShow = false): DataTable;
 
     /**
      * @param DataTable $table

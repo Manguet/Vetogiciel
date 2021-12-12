@@ -36,7 +36,7 @@ class Race implements EntityDateInterface, CreatedByInterface
     /**
      * @ORM\OneToMany(targetEntity=Species::class, mappedBy="race", orphanRemoval=true)
      */
-    private ArrayCollection $species;
+    private $species;
 
     public function __construct()
     {

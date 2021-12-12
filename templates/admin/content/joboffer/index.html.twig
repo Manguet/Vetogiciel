@@ -8,7 +8,7 @@
 {% block body %}
     <div class="mt-5 d-flex justify-content-between">
         {% if is_granted('ADMIN_JOBOFFERTYPE_ADD') %}
-            <a href="{{ path('admin_joboffer_type_index') }}">
+            <a href="{{ path('admin_joboffer_new') }}">
                 <button class="custom-button mb-3">
                     <i class="fas fa-user-plus"></i> Créer un offre d'emploi
                 </button>
@@ -48,18 +48,18 @@
 
                 dt.on('row-reorder', function (e, diff, edit) {
                     e.preventDefault();
-                    let movedArticles = [];
-                    let newArticles = [];
+                    let movedJobs = [];
+                    let newJobs = [];
                     $(diff).each(function (e) {
-                        movedArticles.push($(this).prop('oldData'));
-                        newArticles.push($(this).prop('newData'))
+                        movedJobs.push($(this).prop('oldData'));
+                        newJobs.push($(this).prop('newData'))
                     });
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ path('admin_content_priority') }}',
+                        url: '{{ path('admin_joboffer_priority') }}',
                         data_type: 'json',
-                        data: {movedArticles: movedArticles, newArticles: newArticles}
+                        data: {movedJobs: movedJobs, newJobs: newJobs}
                     }).done(function (data) {
                         dt.ajax.reload();
                     });
@@ -73,7 +73,7 @@
                     let url = $(this).attr('href');
                     swal({
                         title      : 'ATTENTION',
-                        text       : 'Voulez-vous vraiment supprimer cet article ?',
+                        text       : 'Voulez-vous vraiment supprimer cette offre ?',
                         icon       : 'warning',
                         buttons    : true,
                         dangerMode : true,
