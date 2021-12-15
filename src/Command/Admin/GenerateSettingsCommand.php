@@ -165,7 +165,6 @@ class GenerateSettingsCommand extends Command
                     }
 
                     $configuration->setConfigurationType(ConfigurationTypeEnum::SPECIFIC);
-                    $configuration->setClinic($clinic);
 
                     $this->entityManager->persist($configuration);
                 }

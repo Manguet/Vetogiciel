@@ -40,9 +40,12 @@
                             <br>
                         </p>
                     {% endif %}
-                    <button class="custom-button">
-                        Voir la plan d'acces
-                    </button>
+
+                    {% if twigClinic.getActualClinic %}
+                        <a href="{{ path('map_access', { 'clinicName' : twigClinic.getActualClinic.nameSlugiffied }) }}">
+                            <button class="custom-button">Voir le plan d'acces</button>
+                        </a>
+                    {% endif %}
                 </div>
             </div>
             <div class="card">

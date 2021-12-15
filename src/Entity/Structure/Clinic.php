@@ -89,6 +89,16 @@ class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface, 
      */
     private $configurations;
 
+    /**
+     * @ORM\Column(type="string", length=15, nullable=true)
+     */
+    private $latitude;
+
+    /**
+     * @ORM\Column(type="string", length=15, nullable=true)
+     */
+    private $longitude;
+
     public function __construct()
     {
         $this->configurations = new ArrayCollection();
@@ -222,6 +232,30 @@ class Clinic implements EntityDateInterface, PriorityInterface, PhotoInterface, 
                 $configuration->setClinic(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?string $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?string $longitude): self
+    {
+        $this->longitude = $longitude;
 
         return $this;
     }
