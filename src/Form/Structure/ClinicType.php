@@ -180,6 +180,20 @@ class ClinicType extends AbstractType
                     'placeholder' => 'Lien vers le Youtube'
                 ]
             ])
+            ->add('latitude', TextType::class, [
+                'label'      => 'Latitude pour la carte',
+                'required'   => false,
+                'attr'       => [
+                    'placeholder' => 'Latitude pour la carte'
+                ]
+            ])
+            ->add('longitude', TextType::class, [
+                'label'      => 'Longitude pour la carte',
+                'required'   => false,
+                'attr'       => [
+                    'placeholder' => 'Longitude pour la carte'
+                ]
+            ])
             ->add('save', SubmitType::class, [
                 'label' => 'Valider',
                 'attr'  => [

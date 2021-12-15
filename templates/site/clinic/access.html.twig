@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block morestylesheets %}
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css" type="text/css">
+    <style>
+        #map { height: 500px; width: 50%; }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="index-margin-top">
+        <h1 class="text-center main-color">{{ clinic.name }}</h1>
+        <div class="d-flex">
+            <div class="col-1"></div>
+            <div id="map" class="col-8 my-5 px-5" style="padding: 10px; background-color: lightblue; border: 1px solid lightblue"></div>
+            <div class="col-3 my-5 px-5">
+                <div>
+                    <i class="fas fa-map-marker-alt"></i> : {{ clinic.address }}
+                </div>
+                {% if clinic.address2 %}
+                    <div>
+                        {{ clinic.address2 }}
+                    </div>
+                {% endif %}
+                <div>
+                    {{ clinic.postalCode }} {{ clinic.city }}
+                </div>
+                <div>
+                    <i class="fas fa-phone"></i> : {{ clinic.phone }}
+                </div>
+                {% if clinic.phone2 %}
+                    <div>
+                        <i class="fas fa-moon"></i> : {{ clinic.phone2 }}
+                    </div>
+                {% endif %}
+
+                <button class="custom-button mt-5" id="all-markers">
+                    Voir toutes les cliniques
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block endjavascript %}
+    <script>
+        let latitude = "{{ clinic.latitude }}";
+        let longitude = "{{ clinic.longitude }}";
+
+        mapboxgl.accessToken = 'pk.eyJ1IjoibWFuZ3VldCIsImEiOiJja3g2Nm0wZXIycTNkMnZwOHRjYnV3bG5sIn0.Ewg8gLs_UduC5wGWARb4TQ';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [longitude, latitude],
+            zoom: 13,
+            doubleClickZoom: true,
+            logoPosition: 'top-left',
+            language: 'fr'
+        });
+
+        const nav = new mapboxgl.NavigationControl({
+            visualizePitch: true
+        });
+        map.addControl(nav, 'bottom-right');
+
+        map.addControl(new mapboxgl.FullscreenControl({container: document.querySelector('body')}));
+
+        map.addControl(new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true,
+            showUserHeading: true
+        }));
+
+        map.addControl(
+            new MapboxDirections({
+                accessToken: mapboxgl.accessToken,
+                language: 'fr',
+                unit: 'metric',
+                placeholderDestination: "Choisissez la direction.",
+                placeholderOrigin: "Choisissez le départ."
+            }),
+            'top-left'
+        );
+
+        // Create a default Marker and add it to the map.
+        const marker1 = new mapboxgl.Marker({
+            color: "#1DB5FF"
+        }).setLngLat([longitude, latitude])
+            .setPopup(new mapboxgl.Popup().setHTML("<h5 style='color: #1DB5FF'>{{ clinic.name }}</h3>"))
+            .addTo(map);
+
+        $('#all-markers').on('click', function () {
+
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: [longitude, latitude],
+                zoom: 5,
+                doubleClickZoom: true,
+                logoPosition: 'top-left',
+                language: 'fr'
+            });
+
+            {% for clinicId, clinicItem in clinics %}
+                const marker{{ clinicId }} = new mapboxgl.Marker({
+                    color: "#1DB5FF"
+                }).setLngLat(["{{ clinicItem.longitude }}", "{{ clinicItem.latitude }}"])
+                    .setPopup(new mapboxgl.Popup().setHTML("<h5 style='color: #1DB5FF'>{{ clinicItem.name }}</h3>"))
+                    .addTo(map);
+            {% endfor %}
+        })
+    </script>
+{% endblock %}

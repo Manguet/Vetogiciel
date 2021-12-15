@@ -59,6 +59,22 @@ generals:
     onglet: Options
     position: 2
 
+  map_counter:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\NumberType
+    settings:
+      label: 'Nombre de visite sur la page plan d''acces'
+      required: false
+    onglet: Comptabilité
+    position: 1
+
+  map_max_counter:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\NumberType
+    settings:
+      label: 'Nombre maximum de visite autorisées sur la page plan d''acces (50 000 gratuites par mois)'
+      required: false
+    onglet: Comptabilité
+    position: 2
+
 specifics:
   site_annonce:
     fieldType: Symfony\Component\Form\Extension\Core\Type\TextType
