@@ -259,7 +259,7 @@ class DatatableServices implements DatatableFieldInterface
                     $user = $this->security->getUser();
 
                     if (null === $user) {
-                        return '';
+                        return;
                     }
 
                     $role = $user->getRoles()[0];
@@ -312,7 +312,7 @@ class DatatableServices implements DatatableFieldInterface
 
         $authorizations = explode('_', $authorization);
 
-        [$sector, $entity, $level] = $authorizations;
+        [$sector, $entity] = $authorizations;
 
         return [
             $sector . '_FULL_ACCESS',

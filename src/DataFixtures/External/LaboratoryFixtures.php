@@ -2,15 +2,17 @@
 
 namespace App\DataFixtures\External;
 
+use App\DataFixtures\Structure\VeterinaryAndSectorFixtures;
 use App\Entity\Contents\Article;
 use App\Entity\External\Laboratory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class LaboratoryFixtures extends Fixture
+class LaboratoryFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
      * First laboratory
@@ -62,9 +64,22 @@ class LaboratoryFixtures extends Fixture
                 $laboratory->{'set' . ucfirst($setField)}($value);
             }
 
+            $laboratory->setCreatedBy($this->getReference('veterinary_0'));
+
             $manager->persist($laboratory);
         }
 
         $manager->flush();
+    }
+
+
+    /**
+     * @return string[]
+     */
+    public function getDependencies(): array
+    {
+        return [
+            VeterinaryAndSectorFixtures::class,
+        ];
     }
 }

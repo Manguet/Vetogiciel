@@ -59,9 +59,10 @@ Etablissement:
 
 Gestion:
   icon: 'far fa-calendar-check'
+  authorizations: ['ADMIN_CALENDAR_ACCESS', 'ADMIN_BOOKING_ACCESS']
   childs:
     Agenda:
-      path:
+      path: 'admin_calendar_booking_index'
       icon:
     Comptabilité:
       path:

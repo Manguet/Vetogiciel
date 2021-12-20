@@ -46,6 +46,13 @@ class DefaultController extends AbstractController
                  'isVerified' => true,
             ]);
 
+        $clinic = $this->entityManager->getRepository(Clinic::class)
+            ->findOneBy([]);
+
+        if (null === $clinic) {
+            return $this->redirectToRoute('vetogiciel');
+        }
+
         return $this->render('index.html.twig', [
             'sectors'       => $sectors,
             'articles'      => $articles,
@@ -128,5 +135,13 @@ class DefaultController extends AbstractController
         $response = new Response();
 
         return $annonceServices->getAnnoncesContent($response, $clinic, $request);
+    }
+
+    /**
+     * @Route("/welcome", name="vetogiciel")
+     */
+    public function vetogiciel(): Response
+    {
+        return $this->render('site/services/vetogiciel.html.twig');
     }
 }

@@ -66,6 +66,8 @@ class SpeciesFixtures extends Fixture implements DependentFixtureInterface
                 $specie->{'set' . ucfirst($setField)}($value);
             }
 
+            $specie->setCreatedBy($this->getReference('veterinary_0'));
+
             $this->addReference('species_' . $key, $specie);
 
             $manager->persist($specie);

@@ -37,6 +37,7 @@
         "symfony/http-client": "4.4.*",
         "symfony/intl": "4.4.*",
         "symfony/mailer": "4.4.*",
+        "symfony/mercure-bundle": "^0.3.3",
         "symfony/messenger": "4.4.*",
         "symfony/monolog-bundle": "^3.1",
         "symfony/process": "4.4.*",
@@ -56,8 +57,10 @@
         "twig/cssinliner-extra": "^3.2",
         "twig/extra-bundle": "^3.2",
         "twig/inky-extra": "^3.2",
-        "twig/twig": "^3.2",
-        "vich/uploader-bundle": "^1.18"
+        "twig/twig": "3.*",
+        "vich/uploader-bundle": "^1.18",
+        "wandi/color-picker-bundle": "dev-master",
+        "ext-json": "*"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",

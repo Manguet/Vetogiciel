@@ -1,0 +1,39 @@
+<div class="modal fade" id="recurrent-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title main-color">Ajouter un Evènement Récurrent</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="new-event" action="{{ path('admin_calendar_booking_submit') }}">
+                    <div class="form-group">
+                        <label for="motif">Motif</label>
+                        <input type="text" class="form-control" id="motif" placeholder="Motif" name="motif" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="choiceDuration">Toutes les</label>
+                        <select class="form-control" id="choiceDuration" name="duration">
+                            <option value="30">30 minutes</option>
+                            <option value="45">45 minutes</option>
+                            <option value="1">1 heure</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="choiceLength">Pour</label>
+                        <select class="form-control" id="choiceLength" name="length">
+                            <option value="today">Ajourd'hui seulement</option>
+                            <option value="week">Pour la semaine</option>
+                            <option value="month">Pour le mois</option>
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn custom-button">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

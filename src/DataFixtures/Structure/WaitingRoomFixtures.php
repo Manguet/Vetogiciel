@@ -27,7 +27,6 @@ class WaitingRoomFixtures extends Fixture implements DependentFixtureInterface
     public const ROOM_TWO = [
         'name'     => 'Salle félins',
         'capacity' => 6,
-        'animal'   => '',
     ];
 
     /**
@@ -53,15 +52,10 @@ class WaitingRoomFixtures extends Fixture implements DependentFixtureInterface
 
                 $setterType = 'set';
 
-                if (0 === strpos($setField, 'animal')) {
-
-                    $setterType = 'add';
-
-                    $value = $this->getReference('animal_1');
-                }
-
                 $room->{$setterType . ucfirst($setField)}($value);
             }
+
+            $room->addAnimal($this->getReference('animal_1'));
 
             $manager->persist($room);
         }

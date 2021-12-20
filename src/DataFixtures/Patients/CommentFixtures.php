@@ -2,14 +2,16 @@
 
 namespace App\DataFixtures\Patients;
 
+use App\DataFixtures\Structure\VeterinaryAndSectorFixtures;
 use App\Entity\Patients\Comment;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class CommentFixtures extends Fixture
+class CommentFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
      * First comment
@@ -65,10 +67,21 @@ class CommentFixtures extends Fixture
             }
 
             $this->addReference('comment_' . $key, $comment);
+            $comment->setCreatedBy($this->getReference('veterinary_0'));
 
             $manager->persist($comment);
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDependencies(): array
+    {
+        return [
+            VeterinaryAndSectorFixtures::class,
+        ];
     }
 }

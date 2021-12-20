@@ -4,12 +4,13 @@ namespace App\DataFixtures\Structure;
 
 use App\Entity\Structure\Note;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class NoteFixtures extends Fixture
+class NoteFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
      * First note
@@ -64,9 +65,22 @@ class NoteFixtures extends Fixture
                 $note->{'set' . ucfirst($setField)}($value);
             }
 
+            $note->setCreatedBy($this->getReference('veterinary_0'));
+
             $manager->persist($note);
         }
 
         $manager->flush();
+    }
+
+
+    /**
+     * @return string[]
+     */
+    public function getDependencies(): array
+    {
+        return [
+            VeterinaryAndSectorFixtures::class,
+        ];
     }
 }

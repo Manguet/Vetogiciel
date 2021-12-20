@@ -4,12 +4,13 @@ namespace App\DataFixtures\Structure;
 
 use App\Entity\Structure\Vat;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class VatFixtures extends Fixture
+class VatFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
      * First vat
@@ -63,11 +64,22 @@ class VatFixtures extends Fixture
                 $vat->{'set' . ucfirst($setField)}($value);
             }
 
+            $vat->setCreatedBy($this->getReference('veterinary_0'));
             $this->addReference('vat_' . $key, $vat);
 
             $manager->persist($vat);
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDependencies(): array
+    {
+        return [
+            VeterinaryAndSectorFixtures::class,
+        ];
     }
 }

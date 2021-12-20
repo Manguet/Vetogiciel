@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Ajax;
 
 use App\Entity\Contents\ArticleCategory;
 use App\Entity\Contents\JobOfferType;
+use App\Entity\Patients\Animal;
 use App\Entity\Patients\Client;
 use App\Entity\Patients\Race;
 use App\Entity\Patients\Species;
@@ -211,6 +212,60 @@ class AdminAjaxController extends AbstractController
         }
 
         return new JsonResponse($veterinaryResults);
+    }
+
+    /**
+     * @Route("client", name="client")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function autoCompleteClient(Request $request): JsonResponse
+    {
+        $query        = $request->get('q');
+        $veterinaryId = $request->get('veterinary');
+        $veterinary   = $this->entityManager->getRepository(Veterinary::class)
+            ->find($veterinaryId);
+
+        $clients = $this->entityManager->getRepository(Client::class)
+            ->findAllByNameResults($query, $veterinary->getClinic());
+
+        $clientResults = [];
+        foreach ($clients as $client) {
+            $clientResults[] = [
+                'id'   => $client->getId(),
+                'text' => $client->getLastName() . ' ' . $client->getFirstName(),
+            ];
+        }
+
+        return new JsonResponse($clientResults);
+    }
+
+    /**
+     * @Route("animal", name="animal")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function autoCompleteAnimal(Request $request): JsonResponse
+    {
+        $query        = $request->get('q');
+        $client       = $request->get('client');
+
+        $animals = $this->entityManager->getRepository(Animal::class)
+            ->findAllByNameResults($query, $client);
+
+        $animalResults = [];
+        foreach ($animals as $animal) {
+            $animalResults[] = [
+                'id'   => $animal->getId(),
+                'text' => $animal->getName(),
+            ];
+        }
+
+        return new JsonResponse($animalResults);
     }
 
     /**

@@ -19,10 +19,9 @@ use App\Repository\Patients\FolderRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class Folder implements EntityDateInterface, CreatedByInterface
+class Folder implements EntityDateInterface
 {
     use EntityDateTrait;
-    use CreatedByTrait;
 
     /**
      * @ORM\Id()

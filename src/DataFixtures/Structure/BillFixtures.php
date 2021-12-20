@@ -63,6 +63,8 @@ class BillFixtures extends Fixture implements DependentFixtureInterface
                 $bill->{'set' . ucfirst($setField)}($value);
             }
 
+            $bill->setCreatedBy($this->getReference('veterinary_' . $key));
+
             $this->addReference('bill_' . $key, $bill);
 
             $manager->persist($bill);
@@ -78,6 +80,7 @@ class BillFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             FolderFixtures::class,
+            VeterinaryAndSectorFixtures::class
         ];
     }
 }

@@ -16,7 +16,7 @@ interface ClinicInterface
     /**
      * @param $clinic Clinic
      *
-     * @return void
+     * @return $this
      */
-    public function setClinic(Clinic $clinic): void;
+    public function setClinic(Clinic $clinic): self;
 }

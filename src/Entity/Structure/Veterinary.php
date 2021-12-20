@@ -2,6 +2,7 @@
 
 namespace App\Entity\Structure;
 
+use App\Entity\Calendar\Booking;
 use App\Entity\Contents\Article;
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Interfaces\Socials\SocialInterface;
@@ -20,7 +21,6 @@ use App\Traits\User\UserEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 use App\Repository\Structure\VeterinaryRepository;
@@ -78,10 +78,16 @@ class Veterinary implements EntityDateInterface, UserInterface,
      */
     private $articles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Booking::class, mappedBy="veterinary", orphanRemoval=true)
+     */
+    private $bookings;
+
     public function __construct()
     {
         $this->sector   = new ArrayCollection();
         $this->articles = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     /**
@@ -247,6 +253,36 @@ class Veterinary implements EntityDateInterface, UserInterface,
             // set the owning side to null (unless already changed)
             if ($article->getCreatedByVeterinary() === $this) {
                 $article->setCreatedByVeterinary(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setVeterinary($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getVeterinary() === $this) {
+                $booking->setVeterinary(null);
             }
         }
 

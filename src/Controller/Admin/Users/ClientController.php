@@ -69,9 +69,19 @@ class ClientController extends AbstractController
                 'label'     => 'Prénom',
                 'orderable' => true,
             ])
-            ->add('city', TextColumn::class, [
-                'label'     => 'Ville',
+            ->add('clinic', TextColumn::class, [
+                'label'     => 'Clinique',
                 'orderable' => true,
+                'render'    => function ($value, $client) {
+
+                    if ($client->getClinic()->isEmpty()) {
+                        return '';
+                    }
+                    foreach ($client->getClinic() as $clinic) {
+                        $clinics[] = $clinic->getName();
+                    }
+                    return implode(', ', $clinics ?? []);
+                }
             ])
             ->add('lastVisit', DateTimeColumn::class, [
                 'label'     => 'Dernière visite le',

@@ -55,7 +55,7 @@ class Consultation implements EntityDateInterface, CreatedByInterface
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Structure\Prestation", mappedBy="consultation")
      */
-    private ArrayCollection $prestations;
+    private $prestations;
 
     public function __construct()
     {

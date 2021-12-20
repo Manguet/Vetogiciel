@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures\Patients;
 
-use App\DataFixtures\Structure\VeterinaryFixtures;
+use App\DataFixtures\Structure\VeterinaryAndSectorFixtures;
 use App\Entity\Patients\Consultation;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -89,6 +89,8 @@ class ConsultationFixtures extends Fixture implements DependentFixtureInterface
                 }
             }
 
+            $consultation->setCreatedBy($this->getReference('veterinary_' . $key));
+
             $manager->persist($consultation);
         }
 
@@ -102,7 +104,7 @@ class ConsultationFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             FolderFixtures::class,
-            VeterinaryFixtures::class,
+            VeterinaryAndSectorFixtures::class,
         ];
     }
 }

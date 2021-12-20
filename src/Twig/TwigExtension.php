@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use ReflectionClass;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigTest;
@@ -20,6 +21,7 @@ class TwigExtension extends AbstractExtension
     {
         return [
             new TwigFilter('phone', [$this, 'formatPhone']),
+            new TwigFilter('getClass', [$this, 'getClass'])
         ];
     }
 
@@ -60,5 +62,15 @@ class TwigExtension extends AbstractExtension
         $chunks = str_split($phone, 2);
 
         return implode('.', $chunks);
+    }
+
+    /**
+     * @param $object
+     *
+     * @return string
+     */
+    public function getClass($object): string
+    {
+        return (new ReflectionClass($object))->getShortName();
     }
 }
