@@ -83,6 +83,8 @@ class PrestationFixtures extends Fixture implements DependentFixtureInterface
                 $prestation->{'set' . ucfirst($setField)}($value);
             }
 
+            $prestation->setCreatedBy($this->getReference('veterinary_' . $key));
+
             $this->addReference('prestation_' . $key, $prestation);
 
             $manager->persist($prestation);
@@ -98,6 +100,7 @@ class PrestationFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             VatFixtures::class,
+            VeterinaryAndSectorFixtures::class
         ];
     }
 }

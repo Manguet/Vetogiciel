@@ -3,6 +3,7 @@
 namespace App\Repository\Patients;
 
 use App\Entity\Patients\Client;
+use App\Entity\Structure\Clinic;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -44,7 +45,7 @@ class ClientRepository extends ServiceEntityRepository
      *
      * @return int|mixed|string
      */
-    public function findAllByNameResults($q = null)
+    public function findAllByNameResults($q = null, ?Clinic $clinic = null)
     {
         $qb = $this->createQueryBuilder('s')
             ->orderBy('s.lastname', 'ASC');
@@ -52,9 +53,15 @@ class ClientRepository extends ServiceEntityRepository
         if ($q) {
             $qb
                 ->orWhere('s.lastname LIKE :q')
-                ->orWhere('s.firstname LIKE :s')
-                ->orWhere('s.email LIKE :s')
+                ->orWhere('s.firstname LIKE :q')
+                ->orWhere('s.email LIKE :q')
                 ->setParameter('q', '%' . $q . '%');
+        }
+
+        if ($clinic) {
+            $qb
+                ->andWhere(':clinic MEMBER OF s.clinic')
+                ->setParameter('clinic', $clinic);
         }
 
         return $qb->getQuery()->getResult();

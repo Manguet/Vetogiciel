@@ -18,10 +18,4 @@
 {% block endjavascript %}
     <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <script>
-        $(document).on('change', '.custom-file-input', function () {
-            let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
-            $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
-        });
-    </script>
 {% endblock %}

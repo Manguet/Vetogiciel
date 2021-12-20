@@ -14,7 +14,7 @@ trait UserEntityTrait
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    protected ?int $id;
+    protected ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)

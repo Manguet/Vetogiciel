@@ -1,5 +1,12 @@
 .text-show {
 
+  a {
+    color: $black;
+    &:hover {
+      color: $second-color;
+    }
+  }
+
   span {
     font-weight: bold;
   }

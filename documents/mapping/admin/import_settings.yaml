@@ -111,3 +111,39 @@ specifics:
       required: false
     onglet: Liens Externes
     position: 2
+
+  calendar_exeptions:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\TextType
+    settings:
+      label: "Motifs non remontés dans l'administration"
+      placeholder: "Motifs non remontés dans l'administration (plusieurs choix possibles séparés par des vigules)"
+      required: false
+    onglet: Calendrier
+    position: 1
+
+  days_working_hours:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\TextType
+    settings:
+      label: "Horaires d'ouverture en semaine (Lundi au vendredi)"
+      placeholder: "Horaires d'ouverture en semaine (format xx:xx - xx:xx)"
+      required: false
+    onglet: Calendrier
+    position: 3
+
+  saturday_working_hours:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\TextType
+    settings:
+      label: "Horaires d'ouverture le samedi"
+      placeholder: "Horaires d'ouverture le samedi (format xx:xx - xx:xx)"
+      required: false
+    onglet: Calendrier
+    position: 4
+
+  sunday_working_hours:
+    fieldType: Symfony\Component\Form\Extension\Core\Type\TextType
+    settings:
+      label: "Horaires d'ouverture le dimanche"
+      placeholder: "Horaires d'ouverture le dimanche (format xx:xx - xx:xx)"
+      required: false
+    onglet: Calendrier
+    position: 5

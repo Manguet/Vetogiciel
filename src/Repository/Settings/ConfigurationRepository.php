@@ -3,7 +3,9 @@
 namespace App\Repository\Settings;
 
 use App\Entity\Settings\Configuration;
+use App\Entity\Structure\Clinic;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\QueryException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -31,6 +33,33 @@ class ConfigurationRepository extends ServiceEntityRepository
             ->orderBy('c.onglet', 'ASC')
             ->addOrderBy('c.position', 'ASC')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @param Clinic $clinic
+     *
+     * @return int|mixed|string
+     *
+     * @throws QueryException
+     */
+    public function getClinicCalendarSettings(Clinic $clinic)
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.name LIKE :day')
+            ->orWhere('c.name LIKE :saturday')
+            ->orWhere('c.name LIKE :sunday')
+            ->andWhere('c.name LIKE :clinicId')
+            ->setParameters([
+                'day'      => 'days_%',
+                'saturday' => 'saturday_%',
+                'sunday'   => 'sunday_%',
+                'clinicId' => '%_' . $clinic->getId()
+            ])
+            ->indexBy('c', 'c.name')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

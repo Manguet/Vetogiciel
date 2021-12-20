@@ -2,17 +2,20 @@
 
 namespace App\DataFixtures\Calendar;
 
+use App\DataFixtures\Patients\ClientFixtures;
+use App\DataFixtures\Structure\VeterinaryAndSectorFixtures;
 use App\Entity\Calendar\Booking;
 use DateInterval;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class BookingFixtures extends Fixture
+class BookingFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
      * First booking
@@ -21,6 +24,7 @@ class BookingFixtures extends Fixture
         'beginAt' => 'P1D',
         'endAt'   => 'P1DT30M',
         'title'   => 'Vaccin',
+        'color'   => '#5DADE2'
     ];
 
     /**
@@ -30,6 +34,7 @@ class BookingFixtures extends Fixture
         'beginAt' => 'P1DT1H',
         'endAt'   => 'P1DT1H30M',
         'title'   => 'Vaccin',
+        'color'   => '#5DADE2'
     ];
 
     /**
@@ -39,6 +44,7 @@ class BookingFixtures extends Fixture
         'beginAt' => 'PT1H',
         'endAt'   => 'PT1H30M',
         'title'   => 'Vomissements',
+        'color'   => '#2ECC71'
     ];
 
     /**
@@ -86,9 +92,26 @@ class BookingFixtures extends Fixture
                 $booking->{'set' . ucfirst($setField)}($value);
             }
 
+            $booking
+                ->setCreatedBy($this->getReference('veterinary_0'))
+                ->setClient($this->getReference('client_' . $key))
+                ->setVeterinary($this->getReference('veterinary_0'))
+            ;
+
             $manager->persist($booking);
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDependencies(): array
+    {
+        return [
+            VeterinaryAndSectorFixtures::class,
+            ClientFixtures::class
+        ];
     }
 }

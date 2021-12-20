@@ -21,10 +21,9 @@ use App\Repository\Structure\WaitingRoomRepository;
  *
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class WaitingRoom implements EntityDateInterface, CreatedByInterface, ClinicInterface
+class WaitingRoom implements EntityDateInterface, ClinicInterface
 {
     use EntityDateTrait;
-    use CreatedByTrait;
     use ClinicTrait;
 
     /**
@@ -42,7 +41,7 @@ class WaitingRoom implements EntityDateInterface, CreatedByInterface, ClinicInte
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Patients\Animal", mappedBy="waitingRoom")
      */
-    private ArrayCollection $animals;
+    private $animals;
 
     /**
      * @ORM\Column(type="integer", nullable=true)

@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\Patients;
 
+use App\DataFixtures\Structure\VeterinaryAndSectorFixtures;
 use App\Entity\Patients\Animal;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -121,6 +122,8 @@ class AnimalFixtures extends Fixture implements DependentFixtureInterface
                 $animal->{'set' . ucfirst($setField)}($value);
             }
 
+            $animal->setCreatedBy($this->getReference('veterinary_0'));
+
             $this->addReference('animal_' . $key, $animal);
 
             $manager->persist($animal);
@@ -138,6 +141,7 @@ class AnimalFixtures extends Fixture implements DependentFixtureInterface
             RaceFixtures::class,
             SpeciesFixtures::class,
             CommentFixtures::class,
+            VeterinaryAndSectorFixtures::class
         ];
     }
 }

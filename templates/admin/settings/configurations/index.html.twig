@@ -20,7 +20,7 @@
                 </div>
             {% endif %}
         </div>
-        {{ form_start(form) }}
+        {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
 
         <ul class="tabs">
             {% for ongletTitle, ongletNames in onglets %}

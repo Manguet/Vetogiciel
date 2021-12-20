@@ -27,9 +27,13 @@ trait ClinicTrait
 
     /**
      * @param $clinic
+     *
+     * @return $this
      */
-    public function setClinic($clinic): void
+    public function setClinic($clinic): self
     {
         $this->clinic = $clinic;
+
+        return $this;
     }
 }

@@ -32,41 +32,44 @@ class EmployeeFixtures extends Fixture implements DependentFixtureInterface
      * First client
      */
     public const EMPLOYEE_ONE = [
-        'email'        => 'john@gmail.com',
-        'roles'        => ['ROLE_USER'],
-        'password'     => 'johnDo',
-        'firstname'    => 'John',
-        'lastname'     => 'Do',
-        'isManager'    => false,
-        'sector'       => '0',
-        'isVerified'   => true,
+        'email'              => 'john@gmail.com',
+        'roles'              => ['ROLE_USER'],
+        'password'           => 'johnDo',
+        'firstname'          => 'John',
+        'lastname'           => 'Do',
+        'isManager'          => false,
+        'sector'             => '0',
+        'isVerified'         => true,
+        'fullNameSlugiffied' => 'john-do'
     ];
 
     /**
      * Second client
      */
     public const EMPLOYEE_TWO = [
-        'email'        => 'unVerified@yahoo.fr',
-        'roles'        => ['ROLE_USER'],
-        'password'     => 'unverified',
-        'firstname'    => 'Jean',
-        'lastname'     => 'Fiche',
-        'isManager'    => false,
-        'isVerified'   => false,
+        'email'              => 'unVerified@yahoo.fr',
+        'roles'              => ['ROLE_USER'],
+        'password'           => 'unverified',
+        'firstname'          => 'Jean',
+        'lastname'           => 'Fiche',
+        'isManager'          => false,
+        'isVerified'         => false,
+        'fullNameSlugiffied' => 'jean-fiche'
     ];
 
     /**
      * Third Client
      */
     public const EMPLOYEE_THREE = [
-        'email'        => 'armelle@hotmail.fr',
-        'roles'        => ['ROLE_MANAGER'],
-        'password'     => 'armelleDoucet',
-        'firstname'    => 'Armelle',
-        'lastname'     => 'Doucet',
-        'isManager'    => true,
-        'sector'       => '0,1,2',
-        'isVerified'   => true,
+        'email'              => 'armelle@hotmail.fr',
+        'roles'              => ['ROLE_MANAGER'],
+        'password'           => 'armelleDoucet',
+        'firstname'          => 'Armelle',
+        'lastname'           => 'Doucet',
+        'isManager'          => true,
+        'sector'             => '0,1,2',
+        'isVerified'         => true,
+        'fullNameSlugiffied' => 'armelle-doucet'
     ];
 
     public const EMPLOYEES = [
@@ -114,6 +117,8 @@ class EmployeeFixtures extends Fixture implements DependentFixtureInterface
                 }
             }
 
+            $employee->setCreatedBy($this->getReference('veterinary_0'));
+
             $manager->persist($employee);
         }
 
@@ -126,7 +131,7 @@ class EmployeeFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-            SectorFixtures::class,
+            VeterinaryAndSectorFixtures::class,
         ];
     }
 }

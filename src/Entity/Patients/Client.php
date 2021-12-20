@@ -2,6 +2,7 @@
 
 namespace App\Entity\Patients;
 
+use App\Entity\Calendar\Booking;
 use App\Entity\Structure\Clinic;
 use App\Interfaces\DateTime\EntityDateInterface;
 use App\Interfaces\User\CreatedByWithUserInterface;
@@ -91,12 +92,18 @@ class Client implements EntityDateInterface, UserInterface, UserEntityInterface,
     private bool $isVerified = false;
 
     /**
+     * @ORM\OneToMany(targetEntity=Booking::class, mappedBy="client")
+     */
+    private $bookings;
+
+    /**
      * @return void
      */
     public function __construct()
     {
         $this->animals  = new ArrayCollection();
         $this->clinic   = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     /**
@@ -373,6 +380,36 @@ class Client implements EntityDateInterface, UserInterface, UserEntityInterface,
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getClient() === $this) {
+                $booking->setClient(null);
+            }
+        }
 
         return $this;
     }

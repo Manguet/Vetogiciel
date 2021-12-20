@@ -23,10 +23,12 @@
             )) }}
         {% endblock %}
 
-        {{ render(controller(
-            'App\\Controller\\DefaultController::annonceAction',
-            { 'clinic' : twigClinic.getActualClinic.id }
-        )) }}
+        {% if twigClinic.getActualClinic %}
+            {{ render(controller(
+                'App\\Controller\\DefaultController::annonceAction',
+                { 'clinic' : twigClinic.getActualClinic.id }
+            )) }}
+        {% endif %}
 
         {% block body %}{% endblock %}
 
@@ -50,6 +52,12 @@
                         annonceClinic.css('display', 'none');
                     })
                 })
+            </script>
+            <script>
+                $(document).on('change', '.custom-file-input', function () {
+                    let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
+                    $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
+                });
             </script>
         {% endblock %}
 

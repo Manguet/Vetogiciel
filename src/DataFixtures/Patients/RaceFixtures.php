@@ -2,14 +2,16 @@
 
 namespace App\DataFixtures\Patients;
 
+use App\DataFixtures\Structure\VeterinaryAndSectorFixtures;
 use App\Entity\Patients\Race;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
  * @author Benjamin Manguet <benjamin.manguet@gmail.com>
  */
-class RaceFixtures extends Fixture
+class RaceFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
      * First race
@@ -57,11 +59,23 @@ class RaceFixtures extends Fixture
                 $race->{'set' . ucfirst($setField)}($value);
             }
 
+            $race->setCreatedBy($this->getReference('veterinary_0'));
+
             $this->addReference('race_' . $key, $race);
 
             $manager->persist($race);
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDependencies(): array
+    {
+        return [
+            VeterinaryAndSectorFixtures::class,
+        ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\DataFixtures\Patients;
 
 use App\DataFixtures\Structure\ClinicFixtures;
+use App\DataFixtures\Structure\VeterinaryAndSectorFixtures;
 use App\Entity\Patients\Client;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -156,6 +157,10 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
                 $client->{$setterType . ucfirst($setField)}($value);
             }
 
+            $client->setCreatedBy($this->getReference('veterinary_0'));
+
+            $this->addReference('client_' . $key, $client);
+
             $manager->persist($client);
         }
 
@@ -171,6 +176,7 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
             AnimalFixtures::class,
             ClinicFixtures::class,
             CommentFixtures::class,
+            VeterinaryAndSectorFixtures::class
         ];
     }
 }

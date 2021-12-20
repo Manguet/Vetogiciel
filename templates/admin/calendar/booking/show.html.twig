@@ -1,0 +1,251 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block morestylesheets %}
+    {{ encore_entry_link_tags('datepicker') }}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <a href="{{ path('admin_calendar_booking_index', { 'id' : booking.veterinary.id }) }}">
+            <button class="custom-button">
+                <i class="fas fa-backspace"></i> Retour
+            </button>
+        </a>
+        <div>
+            <a href="#">
+                <button class="custom-button">
+                    <i class="fas fa-external-link-alt"></i> Mettre en salle d'attente
+                </button>
+            </a>
+            <a href="{{ path('admin_calendar_booking_edit', { 'id' : booking.id }) }}">
+                <button class="custom-button">
+                    <i class="far fa-edit"></i> Modifier
+                </button>
+            </a>
+            <a href="{{ path('admin_calendar_booking_delete', { 'id' : booking.id }) }}">
+                <button class="custom-button">
+                    <i class="far fa-edit"></i> Supprimer
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <ul class="tabs">
+        <li class="tab-link current" data-tab="tab-1">Informations Générales</li>
+        <li class="tab-link" data-tab="tab-2">Informations Complémentaires</li>
+    </ul>
+
+    <div id="tab-1" class="tab-content current">
+        <div class="d-flex justify-content-between">
+            <div>
+                <p class="text-show">
+                    <span>Motif : </span> {{ booking.title }}
+                </p>
+                <p class="text-show" style="width: 60vw">
+                    <span>Heures du rendez-vous : </span> {{ booking.beginAt|date('H:i') }} à {{ booking.endAt|date('H:i') }}
+                </p>
+                {% if booking.client %}
+                    <p class="text-show">
+                        <a data-toggle="collapse" data-target="#collapseClient"
+                           aria-expanded="false" aria-controls="collapseClient"
+                           style="cursor: pointer;"
+                        >
+                            <span>Client : </span>{{ booking.client.firstname }} {{ booking.client.lastname }}
+                        </a>
+                    </p>
+                    <div class="collapse container" id="collapseClient">
+                        <div class="ml-5">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="text-show"><span>Dernière visite le : </span> {{ booking.client.lastVisit|date('d/m/Y H:i') }}</p>
+                                </div>
+                                {% if booking.client.isInDebt %}
+                                    <div class="warning-client">
+                                        <i class="fas fa-exclamation-triangle"></i> Endetté
+                                    </div>
+                                {% endif %}
+                            </div>
+                            {{ form_start(clientForm) }}
+                            <div class="row">
+                                <div class="col-6">
+                                    {{ form_label(clientForm.firstname) }}
+                                    {{ form_widget(clientForm.firstname) }}
+
+                                </div>
+                                <div class="col-6">
+                                    {{ form_label(clientForm.lastname) }}
+                                    {{ form_widget(clientForm.lastname) }}
+                                </div>
+                            </div>
+                            <div>
+                                {{ form_label(clientForm.email) }}
+                                {{ form_widget(clientForm.email) }}
+                            </div>
+                            <div>
+                                {{ form_label(clientForm.address) }}
+                                {{ form_widget(clientForm.address) }}
+                            </div>
+                            <div>
+                                {{ form_label(clientForm.address2) }}
+                                {{ form_widget(clientForm.address2) }}
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    {{ form_label(clientForm.postalCode) }}
+                                    {{ form_widget(clientForm.postalCode) }}
+
+                                </div>
+                                <div class="col-6">
+                                    {{ form_label(clientForm.city) }}
+                                    {{ form_widget(clientForm.city) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    {{ form_label(clientForm.phoneNumber) }}
+                                    {{ form_widget(clientForm.phoneNumber) }}
+
+                                </div>
+                                <div class="col-6">
+                                    {{ form_label(clientForm.phoneNumber2) }}
+                                    {{ form_widget(clientForm.phoneNumber2) }}
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center my-5">
+                                {{ form_widget(clientForm.save) }}
+                            </div>
+                            {{ form_end(clientForm) }}
+                        </div>
+                    </div>
+                {% endif %}
+                {% if booking.animal %}
+                    <p class="text-show">
+                        <a data-toggle="collapse" data-target="#collapseAnimal"
+                           aria-expanded="false" aria-controls="collapseAnimal"
+                           style="cursor: pointer;"
+                        >
+                            <span>Animal : </span>{{ booking.animal.name }}
+                        </a>
+                    </p>
+                    <div class="collapse container" id="collapseAnimal">
+                        <div class="ml-5">
+                            {{ form_start(animalForm) }}
+                            <div>
+                                {{ form_label(animalForm.name) }}
+                                {{ form_widget(animalForm.name) }}
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    {{ form_label(animalForm.birthdate) }}
+                                    {{ form_widget(animalForm.birthdate) }}
+
+                                </div>
+                                <div class="col-6">
+                                    {{ form_label(animalForm.age) }}
+                                    {{ form_widget(animalForm.age) }}
+                                </div>
+                            </div>
+                            <div>
+                                {{ form_label(animalForm.color) }}
+                                {{ form_widget(animalForm.color) }}
+                            </div>
+                            <div class="d-flex flex-column">
+                                {{ form_label(animalForm.race) }}
+                                {{ form_widget(animalForm.race) }}
+                            </div>
+                            <div class="d-flex flex-column">
+                                {{ form_label(animalForm.species) }}
+                                {{ form_widget(animalForm.species) }}
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    {{ form_label(animalForm.transponder) }}
+                                    {{ form_widget(animalForm.transponder) }}
+
+                                </div>
+                                <div class="col-6">
+                                    {{ form_label(animalForm.tatoo) }}
+                                    {{ form_widget(animalForm.tatoo) }}
+                                </div>
+                            </div>
+                            <div>
+                                {{ form_label(animalForm.idLocalization) }}
+                                {{ form_widget(animalForm.idLocalization) }}
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-6">
+                                    {{ form_label(animalForm.isLof) }}
+                                    {{ form_widget(animalForm.isLof) }}
+
+                                </div>
+                                <div class="col-6">
+                                    {{ form_label(animalForm.isInsured) }}
+                                    {{ form_widget(animalForm.isInsured) }}
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center my-5">
+                                {{ form_widget(animalForm.save) }}
+                            </div>
+                            {{ form_end(animalForm) }}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-2" class="tab-content">
+        <div class="d-flex justify-content-between">
+            <div>
+                <p class="text-show">
+                    <a data-toggle="collapse" data-target="#collapseCreatedBy"
+                       aria-expanded="false" aria-controls="collapseCreatedBy"
+                       style="cursor: pointer"
+                    >
+                        <span>Créé par :</span> {% if booking.createdBy|getClass is same as ('Veterinary') %}Dr. {% endif %}{{ booking.createdBy.firstname }} {{ booking.createdBy.lastname }}
+                    </a>
+                </p>
+                <div class="collapse container" id="collapseCreatedBy">
+                    <div class="d-flex justify-content-between" >
+                        {% if booking.createdBy.photo is defined and booking.createdBy.photo is not null %}
+                            <img src="{{ vich_uploader_asset(booking.createdBy, 'photoFile')|imagine_filter('mini_thumb') }}"
+                                 alt="{{ app.user.lastName }}"
+                                 title="photo de.{{ app.user.lastName }}"
+                                 class="avatar"
+                            >
+                        {% endif %}
+                        <div class="ml-5">
+                            <div>
+                                <i class="fas fa-angle-right"></i> {% if booking.createdBy|getClass is same as ('Veterinary') %}Dr. {% endif %}{{ booking.createdBy.firstname }} {{ booking.createdBy.lastname }}
+                            </div>
+                            <div>
+                                <i class="fas fa-angle-right"></i> {{ booking.createdBy.email }}
+                            </div>
+                            <div>
+                                <i class="fas fa-angle-right"></i> {{ booking.createdBy.clinic.name }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-show mt-3">
+                    <span>Créé le :</span> {{ booking.dateCreation|date('d/m/Y H:i') }}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block endjavascript %}
+    <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ asset('build/datepicker.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.js-datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+            })
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,194 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block morestylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">
+{% endblock %}
+
+{% block body %}
+    <h1 class="main-color text-center">Dr. {{ veterinary.firstName }} {{ veterinary.lastName }}</h1>
+
+    <div id="calendar-holder"></div>
+
+    {% if is_granted('ADMIN_BOOKING_ADD') %}
+        {{ include('admin/calendar/booking/include/form.html.twig') }}
+        {{ include('admin/calendar/booking/include/new_event.html.twig') }}
+    {% endif %}
+{% endblock %}
+
+{% block endjavascript %}
+    <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.js"></script>
+    <script src='https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js'></script>
+    <script type="text/javascript">
+        let minTime = {% if settings.minHour is defined %}"{{ settings.minHour }}"{% else %}'08:00'{% endif %};
+        let maxTime = {% if settings.maxHour is defined %}"{{ settings.maxHour }}"{% else %}'20:00'{% endif %};
+
+        let calendarEl = document.getElementById('calendar-holder');
+        let firstHour  = new Date().getUTCHours();
+
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            defaultView: 'timeGridWeek',
+            editable: true,
+            locale: 'fr',
+            firstDay: 1,
+            titleFormat: { year: 'numeric', month: 'long', day: 'numeric' },
+            allDaySlot: false,
+            scrollTime: firstHour + ':00:00',
+            minTime: minTime,
+            maxTime: maxTime,
+            expandRows: true,
+            nowIndicator: true,
+            businessHours : {{ settings.days|json_encode|raw|replace({'"': ''})|raw }},
+            buttonText: {
+                today: "Aujourd'hui",
+                day: "Jour",
+                week: "Semaine",
+                month: "Mois",
+            },
+            customButtons: {
+                addRecurantEvent: {
+                    text: '+ Ajouter un évènement récurrent',
+                    click: function() {
+                        $('#recurrent-modal').modal('show');
+                    }
+                },
+                return: {
+                    text: '< Retour',
+                    click: function () {
+                        location.href = "{{ path('admin_calendar_booking_index', { 'veterinary' : veterinary.id }) }}";
+                    }
+                }
+            },
+            eventSources: [
+                {
+                    url: "{{ path('fc_load_events') }}",
+                    method: "POST",
+                    extraParams: {
+                        filters: JSON.stringify({
+                            veterinary: "{{ veterinary.id }}"
+                        })
+                    },
+                    failure: () => {
+                        swal({
+                            title: 'ATTENTION',
+                            text: 'Le calendrier n\'a pas pu être chargé contactez un administrateur',
+                            icon: 'warning',
+                            dangerMode: true
+                        })
+                    },
+                }],
+            header: {
+                left: 'return, prev,next today',
+                center: 'title',
+                right: 'addRecurantEvent, dayGridMonth,timeGridWeek,timeGridDay',
+            },
+            plugins: [ 'interaction', 'dayGrid', 'timeGrid' ], // https://fullcalendar.io/docs/plugin-index
+            timeZone: 'UTC',
+            select: function( start, end, jsEvent, view ) {
+                $('#admin_booking_beginAt').val(
+                    getFormattedDate(start.start)
+                );
+                $('#admin_booking_endAt').val(
+                    getFormattedDate(start.end)
+                );
+
+                $('#event-modal').modal('show');
+            },
+            eventDrop: function(info) {
+                let url = "{{ path('admin_calendar_booking_drag_and_drop', {'id' : '5'}) }}";
+                url = url.replace('5', info.event.id )
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    dataType: "json",
+                    data: {
+                        "beginAt": getFormattedDate(info.event.start),
+                        "endAt": getFormattedDate(info.event.end)
+                    },
+                    async: true,
+                }).done(function (data) {
+                    swal(data.message, "", data.type);
+                });
+            },
+            eventResize: function(info) {
+                let url = "{{ path('admin_calendar_booking_drag_and_drop', {'id' : '5'}) }}";
+                url = url.replace('5', info.event.id )
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    dataType: "json",
+                    data: {
+                        "endAt": getFormattedDate(info.event.end)
+                    },
+                    async: true,
+                }).done(function (data) {
+                    swal(data.message, "", data.type);
+                });
+            },
+            selectHelper: true,
+            selectable: true,
+            snapDuration: '00:15:00',
+        });
+        calendar.render();
+
+        function getFormattedDate(date) {
+            let year    = date.getFullYear();
+            let month   = (1 + date.getMonth()).toString();
+            let day     = date.getDate().toString();
+            let hour    = (date.getHours() - 1).toString();
+
+            if (hour === '0') {
+                hour = '00';
+            }
+
+            let minutes = date.getMinutes().toString();
+
+            if (minutes === '0') {
+                minutes = '00';
+            }
+
+            return day + '/' + month + '/' + year + ' ' + hour + ':' + minutes;
+        }
+
+        $('#new-event').submit(function(e) {
+            e.preventDefault();
+
+            let form = $(e.currentTarget);
+            let url = form.attr('action');
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                dataType: "json",
+                data: {
+                    "motif": $('#motif').val(),
+                    "duration": $('#choiceDuration').val(),
+                    "lenght": $('#choiceLength').val(),
+                    "veterinary": "{{ veterinary.id }}",
+                },
+                async: true,
+                success: function(data)
+                {
+                    $('#recurrent-modal').modal('hide');
+                    calendar.refetchEvents()
+                }
+            });
+        })
+
+        $('.form-check-label').each(function () {
+
+            let input = $("input[id='" + $(this).attr('for') + "']");
+
+            $(this).css('background-color', input.val())
+        })
+    </script>
+{% endblock %}

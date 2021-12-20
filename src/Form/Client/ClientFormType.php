@@ -124,8 +124,6 @@ class ClientFormType extends AbstractType
                 ],
             ])
         ;
-
-        $this->addRoleField($builder, $options);
     }
 
     /**
