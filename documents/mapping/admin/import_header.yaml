@@ -31,6 +31,27 @@ Clients:
       icon:
       authorizations: [ 'ADMIN_ANIMAL_ACCESS' ]
 
+Produits:
+  icon: 'fas fa-pills'
+  authorizations: [ 'ADMIN_PRESTATION_ACCESS' ]
+  childs:
+    Medicaments:
+      path: 'admin_medecine_index'
+      icon:
+      authorizations: ['ADMIN_PRESTATION_ACCESS']
+    Prestations:
+      path: 'admin_prestation_index'
+      icon:
+      authorizations: ['ADMIN_PRESTATION_ACCESS']
+    Aliments:
+      path: 'admin_food_index'
+      icon:
+      authorizations: ['ADMIN_PRESTATION_ACCESS']
+    Autre:
+      path: 'admin_other_index'
+      icon:
+      authorizations: ['ADMIN_PRESTATION_ACCESS']
+
 Facturation:
   icon: 'fas fa-credit-card'
   childs:

@@ -45,7 +45,7 @@ class Prestation implements EntityDateInterface, CreatedByInterface, ClinicInter
     private ?string $description;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, unique=true)
      */
     private ?string $code;
 
@@ -80,9 +80,9 @@ class Prestation implements EntityDateInterface, CreatedByInterface, ClinicInter
     private ?Vat $vat;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="enumPrestationTypes", nullable=true)
      */
-    private ?bool $isMedecine;
+    private $type;
 
     public function __construct()
     {
@@ -216,14 +216,14 @@ class Prestation implements EntityDateInterface, CreatedByInterface, ClinicInter
         return $this;
     }
 
-    public function getIsMedecine(): ?bool
+    public function getType()
     {
-        return $this->isMedecine;
+        return $this->type;
     }
 
-    public function setIsMedecine(?bool $isMedecine): self
+    public function setType($type): self
     {
-        $this->isMedecine = $isMedecine;
+        $this->type = $type;
 
         return $this;
     }
