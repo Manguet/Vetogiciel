@@ -49,6 +49,8 @@ interface DatatableFieldInterface
     /**
      * @param DataTable $table
      * @param $class
+     *
+     * @param string|null $extraRestrictions
      */
-    public function createDatatableAdapter(DataTable $table, $class): void;
+    public function createDatatableAdapter(DataTable $table, $class, ?string $extraRestrictions = null): void;
 }

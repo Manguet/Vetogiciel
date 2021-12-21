@@ -12,6 +12,7 @@ use App\Entity\Settings\Role;
 use App\Entity\Structure\Clinic;
 use App\Entity\Structure\Employee;
 use App\Entity\Structure\Sector;
+use App\Entity\Structure\Vat;
 use App\Entity\Structure\Veterinary;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -323,5 +324,30 @@ class AdminAjaxController extends AbstractController
         }
 
         return new JsonResponse($roleResults);
+    }
+
+    /**
+     * @Route("vat", name="vat")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function autoCompleteVat(Request $request): JsonResponse
+    {
+        $query = $request->get('q');
+
+        $vats = $this->entityManager->getRepository(Vat::class)
+            ->findAllByNameResults($query);
+
+        $vatResults = [];
+        foreach ($vats as $vat) {
+            $vatResults[] = [
+                'id'   => $vat->getId(),
+                'text' => $vat->getValue() . '%',
+            ];
+        }
+
+        return new JsonResponse($vatResults);
     }
 }

@@ -39,6 +39,8 @@ class DatatableServices implements DatatableFieldInterface
 
     private $role;
 
+    private ?string $extraRestrictions = null;
+
     /**
      * @param Environment $environment
      * @param EntityManagerInterface $entityManager
@@ -248,9 +250,13 @@ class DatatableServices implements DatatableFieldInterface
     /**
      * @param DataTable $table
      * @param $class
+     *
+     * @param string|null $extraRestrictions
      */
-    public function createDatatableAdapter(DataTable $table, $class): void
+    public function createDatatableAdapter(DataTable $table, $class, ?string $extraRestrictions = null): void
     {
+        $this->extraRestrictions = $extraRestrictions;
+
         $table
             ->createAdapter(ORMAdapter::class, [
                 'entity' => $class,
@@ -293,6 +299,15 @@ class DatatableServices implements DatatableFieldInterface
                             ->where('a.createdByVeterinary = :user')
                             ->orWhere('a.createdByEmployee = :user')
                             ->setParameter('user', $user)
+                        ;
+                    }
+
+                    if ($this->extraRestrictions) {
+
+                        $lastWord = explode(':', $this->extraRestrictions)[1];
+                        $qb
+                            ->andWhere($this->extraRestrictions)
+                            ->setParameter($lastWord, $lastWord)
                         ;
                     }
                 },

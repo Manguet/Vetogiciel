@@ -22,7 +22,7 @@ class PrestationFixtures extends Fixture implements DependentFixtureInterface
         'PriceHT'      => 160.00,
         'PriceTTC'     => 176.00,
         'vat'          => '1',
-        'isMedecine'   => false,
+        'type'         => 'prestation',
     ];
 
     /**
@@ -35,7 +35,7 @@ class PrestationFixtures extends Fixture implements DependentFixtureInterface
         'PriceHT'      => 70.00,
         'PriceTTC'     => 77.00,
         'vat'          => '1',
-        'isMedecine'   => false,
+        'type'         => 'prestation',
     ];
 
     /**
@@ -50,7 +50,7 @@ class PrestationFixtures extends Fixture implements DependentFixtureInterface
         'PriceTTC'     => 13.65,
         'reduction'    => 10.00,
         'vat'          => '0',
-        'isMedecine'   => true,
+        'type'         => 'medecine',
     ];
 
     /**

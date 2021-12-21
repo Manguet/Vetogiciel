@@ -1,0 +1,48 @@
+<div>
+    {{ form_start(form) }}
+
+    <ul class="tabs">
+        <li class="tab-link current" data-tab="tab-1">Informations Générales</li>
+        <li class="tab-link" data-tab="tab-2">Informations Prestation</li>
+    </ul>
+
+    <div id="tab-1" class="tab-content current">
+        <div>
+            {{ form_label(form.title) }}
+            {{ form_widget(form.title) }}
+        </div>
+
+        <div>
+            {{ form_label(form.code) }}
+            {{ form_widget(form.code) }}
+        </div>
+
+        <div>
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description) }}
+        </div>
+
+        <div>
+            {{ form_label(form.clinic) }}
+            {{ form_widget(form.clinic) }}
+        </div>
+    </div>
+
+    <div id="tab-2" class="tab-content">
+        <div>
+            {{ form_label(form.PriceHT) }}
+            {{ form_widget(form.PriceHT) }}
+        </div>
+
+        <div>
+            {{ form_label(form.vat) }}
+            {{ form_widget(form.vat) }}
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center my-5">
+        {{ form_widget(form.save) }}
+    </div>
+
+    {{ form_end(form) }}
+</div>

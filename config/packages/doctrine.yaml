@@ -3,6 +3,7 @@ doctrine:
         url: '%env(resolve:DATABASE_URL)%'
         types:
             enumStructureTypes: App\DBAL\Types\Structures\StructureTypeEnum
+            enumPrestationTypes: App\DBAL\Types\Structures\PrestationTypeEnum
             enumVeterinaryTypes: App\DBAL\Types\Structures\VeterinaryEnum
             enumConfigurationTypes: App\DBAL\Types\Configuration\ConfigurationTypeEnum
             enumRoleLevel: App\DBAL\Types\Configuration\RoleLevelEnum

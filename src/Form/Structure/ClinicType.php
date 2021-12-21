@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Form\Structure;
 
 use App\DBAL\Types\Structures\StructureTypeEnum;
