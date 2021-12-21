@@ -9,6 +9,7 @@ use App\Service\User\PasswordEncoderServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
+use Omines\DataTablesBundle\Column\BoolColumn;
 use Omines\DataTablesBundle\Column\DateTimeColumn;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTableFactory;
@@ -63,7 +64,8 @@ class ClientController extends AbstractController
             ->addFieldWithEditField($table, 'lastname',
                 'Nom',
                 'user',
-                'ADMIN_CLIENT_EDIT'
+                'ADMIN_CLIENT_SHOW',
+                true
             )
             ->add('firstname', TextColumn::class, [
                 'label'     => 'Prénom',
@@ -174,12 +176,14 @@ class ClientController extends AbstractController
     {
         $table = $dataTableFactory->create();
 
-        $datatableField
-            ->addFieldWithEditField($table, 'name',
-                'Nom',
-                'animal',
-                'ADMIN_ANIMAL_EDIT'
-            )
+        $table
+            ->add('name', TextColumn::class, [
+                'label'     => 'Nom',
+                'orderable' => true,
+                'render'    => function ($value, $animal) {
+                    return '<a href="/admin/animal/edit/' . $animal->getClient()->getId() . '/animal/' . $animal->getId() . '">' . $value . '</a>';
+                }
+            ])
             ->add('age', TextColumn::class, [
                 'label'     => 'Age',
                 'orderable' => true,
@@ -209,7 +213,15 @@ class ClientController extends AbstractController
 
                     return '';
                 }
-            ]);
+            ])
+            ->add('isAlive', BoolColumn::class, [
+                'label'      => 'Vivant ?',
+                'orderable'  => true,
+                'trueValue'  => '',
+                'falseValue' => 'Décédé',
+                'nullValue'  => '',
+            ])
+        ;
 
         $datatableField
             ->addCreatedBy($table)

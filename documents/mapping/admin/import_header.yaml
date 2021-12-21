@@ -20,15 +20,16 @@ Contenu:
 
 Clients:
   icon: 'fas fa-user'
-  authorizations: ['ADMIN_CLIENT_ACCESS']
+  authorizations: ['ADMIN_CLIENT_ACCESS', 'ADMIN_ANIMAL_ACCESS']
   childs:
     Clients:
       path: 'admin_user_index'
       icon:
       authorizations: ['ADMIN_CLIENT_ACCESS']
     Animaux:
-      path:
+      path: 'admin_animal_index'
       icon:
+      authorizations: [ 'ADMIN_ANIMAL_ACCESS' ]
 
 Facturation:
   icon: 'fas fa-credit-card'

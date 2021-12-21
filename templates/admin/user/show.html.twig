@@ -198,7 +198,13 @@
                 language: {
                     "url": "https://cdn.datatables.net/plug-ins/1.10.21/i18n/French.json"
                 },
-                pageLength: 25
+                pageLength: 25,
+                rowCallback: function( row, data, index ) {
+                    if (data.isAlive !== '') {
+                        $('td', row).css('text-decoration', 'line-through');
+                        $('td', row).css('opacity', '0.4');
+                    }
+                }
             }).then(function (dt) {
 
                 /** Ajax delete */
