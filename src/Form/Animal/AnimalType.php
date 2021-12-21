@@ -4,6 +4,7 @@
 namespace App\Form\Animal;
 
 use App\Entity\Patients\Animal;
+use App\Entity\Patients\Client;
 use App\Entity\Patients\Race;
 use App\Entity\Patients\Species;
 use App\Form\DataTransformer\RacePropertyToTransform;
@@ -180,6 +181,22 @@ class AnimalType extends AbstractType
                 ->addModelTransformer($this->speciesPropertyTransform);
 
         }
+
+        if ($options['alone']) {
+            $builder
+                ->add('client', Select2EntityType::class, [
+                    'label'         => 'Propriétaire de l\'animal',
+                    'required'      => false,
+                    'placeholder'   => 'Propriétaire de l\'animal',
+                    'class'         => Client::class,
+                    'multiple'      => false,
+                    'remote_route'  => 'admin_ajax_client',
+                    'language'      => 'fr',
+                    'scroll'        => true,
+                    'allow_clear'   => true,
+                    'text_property' => 'lastname',
+                ]);
+        }
     }
 
     /**
@@ -192,6 +209,7 @@ class AnimalType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Animal::class,
             'isNew'      => null,
+            'alone'      => null,
         ]);
     }
 }

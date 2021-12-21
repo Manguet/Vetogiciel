@@ -225,11 +225,18 @@ class AdminAjaxController extends AbstractController
     {
         $query        = $request->get('q');
         $veterinaryId = $request->get('veterinary');
-        $veterinary   = $this->entityManager->getRepository(Veterinary::class)
-            ->find($veterinaryId);
 
-        $clients = $this->entityManager->getRepository(Client::class)
-            ->findAllByNameResults($query, $veterinary->getClinic());
+        if ($veterinaryId) {
+            $veterinary   = $this->entityManager->getRepository(Veterinary::class)
+                ->find($veterinaryId);
+
+            $clients = $this->entityManager->getRepository(Client::class)
+                ->findAllByNameResults($query, $veterinary->getClinic());
+
+        } else {
+            $clients = $this->entityManager->getRepository(Client::class)
+                ->findAllByNameResults($query, $this->getUser()->getClinic());
+        }
 
         $clientResults = [];
         foreach ($clients as $client) {
